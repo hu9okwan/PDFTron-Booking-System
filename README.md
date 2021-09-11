@@ -14,7 +14,7 @@ An in-depth paragraph about your project and overview of use.
 
 ### Installing
 
-* To get started, type 
+* 
 
 ### Executing program
 
