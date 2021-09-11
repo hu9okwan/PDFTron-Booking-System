@@ -32,8 +32,7 @@ Any advise for common problems or issues.
 
 Contributors names and contact info
 
-ex. Dominique Pizzie  
-ex. [@DomPizzie](https://twitter.com/dompizzie)
+ex. [@ericchanko](github.com/ericchanko)
 
 ## Version History
 
