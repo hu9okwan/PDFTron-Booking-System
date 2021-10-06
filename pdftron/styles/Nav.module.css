@@ -1,0 +1,12 @@
+nav {
+    position: absolute;
+    top: 8px;
+    left: 1px;
+    background: url("../public/pdftron-icons/pdftron-logo-blue.png");
+    color: var(--blue);
+}
+
+nav img {
+    width: 200px;
+    height: 50px;
+}

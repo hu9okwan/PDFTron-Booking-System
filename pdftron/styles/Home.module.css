@@ -1,47 +1,48 @@
-.container {
+@import url("https://fonts.googleapis.com/css?family=Nunito+Sans");
+
+.loginBody {
     display: flex;
-    height: 320px;
-    margin: 0 auto;
-    width: 640px;
-    background: white;
-    position: relative;
-    border-radius: 5px;
+    align-items: center;
+    justify-content: center;
+    font-family: "Nunito sans", sans-serif;
+    color: #0e0620;
+    font-size: 1em;
 }
 
-.left, .right {
-    width: 50%;
-    height: 80%;
-    top: 20px;
-    align-self: center;
+.loginContainer {
+    display: flex;
+    width: 80vw;
+}
+
+.main-container {
     display: flex;
     flex-direction: column;
 }
 
-.left {
-    border-right: 1px solid grey;
+.leftHalf, .rightHalf {
+    flex: 1;
 }
 
-.right {
-    align-content: center;
-    justify-content: center;
+.rightHalf h1, .rightHalf h2 {
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
 }
 
-/*login box styling*/
-.login {
-    font-size: 50px;
-    font-weight: 900;
-    margin: 40px 80px;
+.rightHalf h1 {
+    font-size: 4.5em;
 }
 
-.desc {
-    color: #999;
-    font-size: 14px;
-    line-height: 1.5;
-    margin-left: 40px;
-    margin-right: 40px;
+.leftHalf img {
+    width: 700px;
+    height: 300px;
+    object-fit: cover;
 }
 
-.google {
-    align-self: center;
-    justify-self: center;
+.googleLogin {
+    width: 200px;
+    height: 50px;
+    object-fit: contain;
 }
+
+/* ============== Implementation fo mobile friendly goes below ============== */
