@@ -45,4 +45,19 @@
     object-fit: contain;
 }
 
+
+/* Edit Page */
+
+.flexContainer {
+    display: flex;
+}
+
+.buttonsContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+
 /* ============== Implementation fo mobile friendly goes below ============== */
