@@ -1,6 +1,6 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import Login from '../components/Login';
 
 export default function Home() {
     return (
@@ -39,11 +39,7 @@ export default function Home() {
                     condimentum
                     urna consectetur ante commodo tincidunt.
                 </p>
-                <a className="signin" href="#">
-                    <img className={styles.googleLogin} src={"sign-in-dark.png"}
-    width="100"
-    height="50"/>
-                </a>
+                <Login />
             </div>
         </main>
         </body>
