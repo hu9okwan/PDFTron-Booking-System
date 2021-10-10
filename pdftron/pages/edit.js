@@ -20,9 +20,9 @@ export default function Edit() {
 
     useEffect(() => {
         if (canvas) {
-            loadFromSVG(canvas)
-            preventObjOut(canvas)
-            limitRotation(canvas)
+            loadFromSVG(canvas);
+            preventObjOut(canvas);
+            limitRotation(canvas);
             hotkeys(canvas)
         }
     }, [canvas]);
@@ -147,6 +147,8 @@ export default function Edit() {
         });
 
 
+
+
         // this only exports the custom properties to JSON but not to SVG
         rect.toObject = (function(toObject) {
             return function() {
@@ -206,6 +208,9 @@ export default function Edit() {
         <div>
             <div className={styles.flexContainer}>
                 <canvas id="canvas"></canvas>
+
+                {/*Temporarily commented it out to test modal event handling*/}
+
                 <div>
                     <h1>Modify Floor Plan</h1>
                     <div className={styles.buttonsContainer}>

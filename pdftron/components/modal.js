@@ -9,14 +9,15 @@ export default class PopUp extends Component {
 
     render() {
         return (
-            <div className={styles.modal}>
-                <span className={styles.close}
-                      onClick={this.handleClick}>&times;    </span>
-                <div className={styles.selectContainer}>
-                    <TableDatePicker></TableDatePicker>
-                    <button>Book</button>
+
+                <div className={styles.modal}>
+                    <span className={styles.close}
+                          onClick={this.handleClick}>&times;    </span>
+                    <div className={styles.selectContainer}>
+                        <TableDatePicker></TableDatePicker>
+                    </div>
+                    <button className={styles.bookButton}>Book</button>
                 </div>
-            </div>
         );
     }
 }
