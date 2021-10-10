@@ -8,7 +8,7 @@ export default function Edit() {
     useEffect(() => {
         setCanvas(initCanvas());
     }, []);
-    
+
     const initCanvas = () => (
         new fabric.Canvas('canvas', {
             height: 800,
@@ -26,7 +26,7 @@ export default function Edit() {
             hotkeys(canvas)
         }
     }, [canvas]);
-    
+
 
     const hotkeys = (canvas) => {
 
@@ -50,7 +50,7 @@ export default function Edit() {
         })
 
     }
-    
+
     const preventObjOut = (canvas) => {
         // Prevent objects from leaving the canvas
         // solution from Pedrop Paulo @ https://stackoverflow.com/a/56366195
@@ -119,7 +119,7 @@ export default function Edit() {
 
 
     const addTable = (canvas) => {
-        // creates a new table object 
+        // creates a new table object
 
         let colour, id
 
@@ -132,7 +132,7 @@ export default function Edit() {
         } else if ( tableTeam == "web") {
             colour = "#7D99E8",
             id = 2
-        }  
+        }
 
         const rect = new fabric.Rect({
             id: id,
@@ -182,10 +182,10 @@ export default function Edit() {
         // test function
         // loads current items on canvas to textarea and renders an SVG preview
         const canvasSVG = canvas.toSVG();
-        document.getElementById('SVGRasterizer').innerHTML = canvasSVG
+        document.getElementById('SVGRasterizer').innerHTML = canvasSVG;
         // console.log(canvasSVG)
 
-        document.getElementById("loadSVG").value = canvasSVG
+        document.getElementById("loadSVG").value = canvasSVG;
 
     };
 
@@ -198,7 +198,7 @@ export default function Edit() {
             canvas.renderOnAddRemove = true;
             canvas.renderAll();
           })
-    }
+    };
 
 
 

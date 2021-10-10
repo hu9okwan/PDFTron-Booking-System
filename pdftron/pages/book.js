@@ -1,6 +1,10 @@
 import React from "react";
-import PopUp from "./PopUp";
-export default class App extends React.Component {
+import Modal from "../components/modal";
+import styles from "../styles/Book.module.css"
+import Edit from "./edit"
+
+
+export default class Book extends React.Component {
     state = {
         seen: false
     };
@@ -9,13 +13,15 @@ export default class App extends React.Component {
             seen: !this.state.seen
         });
     };
+
     render() {
         return (
-            <div>
+            <div className={styles.container}>
+                <Edit></Edit>
                 <div className="btn" onClick={this.togglePop}>
                     <button>New User?</button>
                 </div>
-                {this.state.seen ? <PopUp toggle={this.togglePop} /> : null}
+                {this.state.seen ? <Modal toggle={this.togglePop} /> : null}
             </div>
         );
     }
