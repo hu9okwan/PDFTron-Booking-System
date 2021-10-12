@@ -23,13 +23,37 @@ export default function Edit() {
             loadFromSVG(canvas)
             preventObjOut(canvas)
             limitRotation(canvas)
+            hotkeys(canvas)
         }
     }, [canvas]);
-
     
 
+    const hotkeys = (canvas) => {
+
+        fabric.util.addListener(document.body, "keydown", function(options) {
+            if (options.repeat) {
+                return
+            }
+            const key = options.which || options.keyCode;
+            let selectedObj = canvas.getActiveObject()
+            if (key == 46) {
+                // deletes all selected with the delete key
+                removeTable(canvas)
+            } else if (selectedObj && key == 37) {
+                // rotates table 90 degrees to the left
+                selectedObj.angle -= 90
+            } else if (selectedObj && key == 39) {
+                // rotates table 90 degrees to the right
+                selectedObj.angle += 90
+            }
+            canvas.renderAll()
+        })
+
+    }
+    
     const preventObjOut = (canvas) => {
         // Prevent objects from leaving the canvas
+        // solution from Pedrop Paulo @ https://stackoverflow.com/a/56366195
         canvas.on('object:moving', function (e) {
             var obj = e.target;
             // if object is too big ignore
@@ -37,7 +61,7 @@ export default function Edit() {
                 return;
             }
             obj.setCoords();
-            // top-left  corner
+            // top-left corner
             if (obj.getBoundingRect().top < 0 || obj.getBoundingRect().left < 0) {
                 obj.top = Math.max(obj.top, obj.top - obj.getBoundingRect().top);
                 obj.left = Math.max(obj.left, obj.left - obj.getBoundingRect().left);
@@ -54,6 +78,7 @@ export default function Edit() {
         var scale1y = 0;
         var width1 = 0;
         var height1 = 0;
+
         canvas.on('object:scaling', function (e) {
             var obj = e.target;
             obj.setCoords();
@@ -85,7 +110,9 @@ export default function Edit() {
         });
     }
 
+
     const [tableTeam,setOption] = useState("general")
+    // sets default dropdown to general table
     function handleChange(event){
         setOption(event.target.value)
     }
@@ -94,19 +121,29 @@ export default function Edit() {
     const addTable = (canvas) => {
         // creates a new table object 
 
-        let colour
-        if (tableTeam == "general") {
-            colour = "green"
+        let colour, id
+
+        if (tableTeam == "notAvail") {
+            colour = "#F7A8B2",
+            id = 0
+        } else if (tableTeam == "general") {
+            colour = "#C7E4A7",
+            id = 1
         } else if ( tableTeam == "web") {
-            colour = "blue"
-        } else if (tableTeam == "notAvail") {
-            colour = "red"
-        }
+            colour = "#7D99E8",
+            id = 2
+        }  
 
         const rect = new fabric.Rect({
+            id: id,
+            team: "test",
             height: 50,
             width: 25,
-            fill: colour
+            stroke: "black",
+            strokeWidth: 1,
+            originX: 'center',
+            originY: 'center',
+            fill: colour,
         });
 
 
@@ -122,6 +159,7 @@ export default function Edit() {
         })(rect.toObject);
 
         canvas.add(rect);
+        canvas.centerObject(rect);
         canvas.renderAll();
         console.log(JSON.stringify(canvas))
         // console.log(canvas.toSVG())
@@ -130,7 +168,6 @@ export default function Edit() {
     const removeTable = (canvas) => {
         // removes all selected tables
         const activeObject = canvas.getActiveObjects();
-        console.log(activeObject)
         if (activeObject) {
             activeObject.forEach(object => {
                 canvas.remove(object);
@@ -141,12 +178,12 @@ export default function Edit() {
     }
 
 
-    const saveToSVG = canvas => {
+    const saveToSVG = (canvas) => {
         // test function
         // loads current items on canvas to textarea and renders an SVG preview
         const canvasSVG = canvas.toSVG();
         document.getElementById('SVGRasterizer').innerHTML = canvasSVG
-        console.log(canvasSVG)
+        // console.log(canvasSVG)
 
         document.getElementById("loadSVG").value = canvasSVG
 
@@ -178,10 +215,10 @@ export default function Edit() {
                                 <option value="web">Web</option>
                                 <option value="notAvail">Not Available</option>
                             </select>
-                            <button onClick={() => addTable(canvas)}>Add Table</button>
+                            <button className={styles.pointer} onClick={() => addTable(canvas)}>Add Table</button>
                         </div>
-                        <button onClick={() => removeTable(canvas)}>Remove Selected</button>
-                        <button onClick={() => saveToSVG(canvas)}>Save Changes</button>
+                        <button className={styles.pointer} onClick={() => removeTable(canvas)}>Remove Selected</button>
+                        <button className={styles.pointer} onClick={() => saveToSVG(canvas)}>Save Changes</button>
                     </div>
                 </div>
 
