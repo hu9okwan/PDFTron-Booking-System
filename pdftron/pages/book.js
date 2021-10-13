@@ -53,7 +53,7 @@ export default class Book extends React.Component {
 
                     <svg xmlns="http://www.w3.org/2000/svg" width={1000} height={800}
                     className={styles.bookingSVG}>
-                        <g onClick={this.togglePop}>
+                        <g onClick={this.togglePop} className={styles.pointer}>
                             <rect
                                 x={-12.5}
                                 y={-25}

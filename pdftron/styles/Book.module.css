@@ -45,3 +45,7 @@
 .bookingSVG {
      background: url("/office-outline.png");
 }
+
+.pointer {
+    cursor: pointer;
+}
