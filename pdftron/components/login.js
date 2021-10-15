@@ -20,11 +20,13 @@ function Login() {
         <div>
         <GoogleLogin
             clientId={clientId}
+            hostedDomain="pdftron.com"
             buttonText="Login"
             onSuccess={onSuccess}
             onFailure={onFailure}
             cookiePolicy={'single_host_origin'}
             style={{ marginTop: '100px' }}
+            isSignedIn="True"
         />
         </div>
     );
