@@ -46,6 +46,15 @@
      background: url("/office-outline.png");
 }
 
-.pointer {
-    cursor: pointer;
+.toolTip{
+    position: absolute;
+    z-index: 1;
+    background: black;
+    border-radius: 5px;
+    height: fit-content;
+    width: fit-content;
+    padding: 8px;
+    font-size: 13px;
+    color: #fff;
+    visibility: hidden;
 }

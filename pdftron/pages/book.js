@@ -62,6 +62,7 @@ Low Priority:
             loadJson(canvas);
             canvas.hoverCursor = 'pointer';
             clickTable(canvas);
+            hoverTable(canvas);
         }
     }, [canvas]);
 
@@ -73,10 +74,48 @@ Low Priority:
     }
 
 
+    const hoverTable = (canvas) => {
+        let toolTip = document.getElementById("toolTip")
+        let selected_object_opacity = 0.5;
+        let original_opacity
+        canvas.on('mouse:over', function(e) {
+            if (e.target) {
+                const status = e.target.reserved ? "Reserved" : "Available"
+                toolTip.innerText =
+                    `Table ID: ${e.target.tableID}
+                    Team: ${e.target.team}
+                    Status: ${status}`
+
+                toolTip.style.visibility = 'visible'
+                
+                var offset = canvas.calcOffset();
+                let left = offset._offset.left + e.target.left
+                let top = offset._offset.top + e.target.top - 100
+                toolTip.style.left = left + "px"
+                toolTip.style.top = top + "px"
+
+
+                original_opacity    = e.target.opacity;
+              
+                e.target.set('opacity', selected_object_opacity);
+                canvas.renderAll();
+            }
+        })
+        canvas.on('mouse:out', function(e) {
+            if (e.target) {
+                toolTip.style.visibility = 'hidden'
+
+                e.target.set('opacity', original_opacity);
+                canvas.renderAll();
+            }
+        })
+    }
+
+
     const clickTable = (canvas) => {
         canvas.on('mouse:up', function(e) {
             //check if user clicked an object
-            if (e.target && !e.target.reserved) {
+            if (e.target) {
                 //clicked on object
                 console.log(`Table ID: ${e.target.tableID}, Team: ${e.target.team}, Reserved: ${e.target.reserved}`)
                 let selectedTableData = {tableID: e.target.tableID,
@@ -94,6 +133,7 @@ Low Priority:
         <div>
             <div className={styles.flexContainer}>
                 <canvas id="canvas"></canvas>
+                <span id="toolTip" className={styles.toolTip}></span>
                 {state.seen ? <Modal tableID={tableData.tableID} team={tableData.team} toggle={togglePop}/> : null}
             </div>
         </div>
