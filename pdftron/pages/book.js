@@ -39,6 +39,7 @@ Low Priority:
         setCanvas(initCanvas());
     }, []);
 
+    
     const initCanvas = () => (
         new fabric.Canvas('canvas', {
             height: 800,
@@ -47,12 +48,20 @@ Low Priority:
         })
     );
 
+    
+    const [tableData, setTableData] = useState (
+        {
+            tableID: -1,
+            team: "",
+        }
+    )
+
     useEffect(() => {
         if (canvas) {
             // loadFromSVG(canvas);
             loadJson(canvas);
             canvas.hoverCursor = 'pointer';
-
+            clickTable(canvas);
         }
     }, [canvas]);
 
@@ -62,6 +71,23 @@ Low Priority:
             object.set("selectable", false);
         })
     }
+
+
+    const clickTable = (canvas) => {
+        canvas.on('mouse:up', function(e) {
+            //check if user clicked an object
+            if (e.target && !e.target.reserved) {
+                //clicked on object
+                console.log(`Table ID: ${e.target.tableID}, Team: ${e.target.team}, Reserved: ${e.target.reserved}`)
+                let selectedTableData = {tableID: e.target.tableID,
+                                         team: e.target.team,
+                                        }
+                setTableData(selectedTableData)
+                togglePop()
+                
+            }
+        }
+    )}
 
 
     return (
