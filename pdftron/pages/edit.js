@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fabric } from 'fabric';
 import styles from '../styles/Home.module.css'
+const jsonObj = require('../public/tempJSON.json');
 
 export default function Edit() {
 
@@ -20,10 +21,11 @@ export default function Edit() {
 
     useEffect(() => {
         if (canvas) {
-            loadFromSVG(canvas);
+            // loadFromSVG(canvas);
+            loadJson(canvas);
             preventObjOut(canvas);
             limitRotation(canvas);
-            hotkeys(canvas)
+            hotkeys(canvas);
         }
     }, [canvas]);
 
@@ -121,39 +123,38 @@ export default function Edit() {
     const addTable = (canvas) => {
         // creates a new table object
 
+        // TODO change ID to assign lowest available ID 
         let colour, id
 
-        if (tableTeam == "notAvail") {
-            colour = "#F7A8B2",
-            id = 0
-        } else if (tableTeam == "general") {
-            colour = "#C7E4A7",
+        if (tableTeam == "Unavailable") {
+            colour = "#D3D3D3",
             id = 1
-        } else if ( tableTeam == "web") {
-            colour = "#7D99E8",
+        } else if (tableTeam == "General") {
+            colour = "#C7E4A7",
             id = 2
+        } else if ( tableTeam == "Web") {
+            colour = "#7D99E8",
+            id = 3
         }
 
         const rect = new fabric.Rect({
-            id: id,
-            team: "test",
             height: 50,
             width: 25,
             stroke: "black",
             strokeWidth: 1,
+            strokeUniform: true,
+            lockScalingFlip: true,
             originX: 'center',
             originY: 'center',
             fill: colour,
         });
 
-
-
-
-        // this only exports the custom properties to JSON but not to SVG
+        // Adds custom properties to the tables 
+        // IMPORTANT: make sure to add the key name to the array in saveToJson method if adding new properties
         rect.toObject = (function(toObject) {
             return function() {
               return fabric.util.object.extend(toObject.call(this), {
-                tableID: 1,
+                tableId: 1,
                 reserved: false,
                 team: tableTeam
               });
@@ -163,8 +164,6 @@ export default function Edit() {
         canvas.add(rect);
         canvas.centerObject(rect);
         canvas.renderAll();
-        console.log(JSON.stringify(canvas))
-        // console.log(canvas.toSVG())
     }
 
     const removeTable = (canvas) => {
@@ -179,21 +178,30 @@ export default function Edit() {
         canvas.renderAll();
     }
 
+//  **************************************************************************
+    var bgImage;
+    const hideBg = (canvas) => {
+        bgImage = canvas.backgroundImage;
+        canvas.backgroundImage = null;
+    }
+
+    const showBg = (canvas) => {
+        canvas.backgroundImage = bgImage;
+    }
 
     const saveToSVG = (canvas) => {
-        // test function
+        // TODO this function should save the svg to the database
         // loads current items on canvas to textarea and renders an SVG preview
+
+        hideBg(canvas)
         const canvasSVG = canvas.toSVG();
-        document.getElementById('SVGRasterizer').innerHTML = canvasSVG;
-        // console.log(canvasSVG)
-
         document.getElementById("loadSVG").value = canvasSVG;
-
+        document.getElementById('SVGRasterizer').innerHTML = canvasSVG;
+        showBg(canvas)
     };
 
-
     const loadFromSVG = (canvas) => {
-        // this function should autoload when canvas is loaded and will grab from database instead of local file
+        // TODO this function should autoload when canvas is loaded and will grab from database instead of local file
         fabric.loadSVGFromURL("../tempSVG.svg", function(objects) {
             canvas.renderOnAddRemove = false;
             canvas.add.apply(canvas, objects);
@@ -201,6 +209,22 @@ export default function Edit() {
             canvas.renderAll();
           })
     };
+//  **************************************************************************
+
+    const saveToJson = (canvas) => {
+        const canvasJson = canvas.toJSON(["reserved", "tableID", "team"]);
+        console.log(canvasJson)
+
+    }
+
+
+    const loadJson = (canvas) => {
+        const jsonString = JSON.stringify(jsonObj)
+        console.log(jsonObj)
+        // console.log(jsonString)
+        canvas.loadFromJSON(jsonObj, canvas.renderAll.bind(canvas))
+
+    }
 
 
 
@@ -216,22 +240,16 @@ export default function Edit() {
                     <div className={styles.buttonsContainer}>
                         <div className="dropdown">
                             <select name="tableTeam" id="tableTeam" onChange={handleChange}>
-                                <option value="general">General</option>
-                                <option value="web">Web</option>
-                                <option value="notAvail">Not Available</option>
+                                <option value="General">General</option>
+                                <option value="Web">Web</option>
+                                <option value="Unavailable">Unavailable</option>
                             </select>
                             <button className={styles.pointer} onClick={() => addTable(canvas)}>Add Table</button>
                         </div>
                         <button className={styles.pointer} onClick={() => removeTable(canvas)}>Remove Selected</button>
-                        <button className={styles.pointer} onClick={() => saveToSVG(canvas)}>Save Changes</button>
+                        <button className={styles.pointer} onClick={() => saveToJson(canvas)}>Save Changes</button>
                     </div>
                 </div>
-
-            </div>
-
-            <textarea id="loadSVG" cols="125"></textarea>
-
-            <div id="SVGRasterizer" height="800" width="1000">
 
             </div>
 
