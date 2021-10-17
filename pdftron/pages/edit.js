@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { fabric } from 'fabric';
 import styles from '../styles/Home.module.css'
+import styles2 from "../styles/Book.module.css"
+
 const jsonObj = require('../public/tempJSON.json');
 
 export default function Edit() {
@@ -21,14 +23,16 @@ export default function Edit() {
 
     useEffect(() => {
         if (canvas) {
-            // loadFromSVG(canvas);
             loadJson(canvas);
             preventObjOut(canvas);
             limitRotation(canvas);
             hotkeys(canvas);
+            hoverTable(canvas);
         }
     }, [canvas]);
 
+    
+    
 
     const hotkeys = (canvas) => {
 
@@ -47,6 +51,10 @@ export default function Edit() {
             } else if (selectedObj && key == 39) {
                 // rotates table 90 degrees to the right
                 selectedObj.angle += 90
+            } else if (key == 90) {
+                
+            } else if (key == 82) {
+
             }
             canvas.renderAll()
         })
@@ -113,28 +121,62 @@ export default function Edit() {
     }
 
 
-    const [tableTeam,setOption] = useState("general")
-    // sets default dropdown to general table
-    function handleChange(event){
-        setOption(event.target.value)
+    const hoverTable = (canvas) => {
+        let toolTip = document.getElementById("toolTip")
+        let selected_object_opacity = 0.5;
+        let original_opacity
+        canvas.on('mouse:over', function(e) {
+            if (e.target) {
+                const status = e.target.reserved ? "Reserved" : "Available"
+                toolTip.innerText =
+                    `Table ID: ${e.target.tableId}
+                    Team: ${e.target.team}
+                    Status: ${status}`
+
+                toolTip.style.visibility = 'visible'
+                
+                var offset = canvas.calcOffset();
+                let left = offset._offset.left + e.target.left
+                let top = offset._offset.top + e.target.top - 100
+                toolTip.style.left = left + "px"
+                toolTip.style.top = top + "px"
+
+
+                original_opacity    = e.target.opacity;
+              
+                e.target.set('opacity', selected_object_opacity);
+                canvas.renderAll();
+            }
+        })
+        canvas.on('mouse:out', function(e) {
+            if (e.target) {
+                toolTip.style.visibility = 'hidden'
+
+                e.target.set('opacity', original_opacity);
+                canvas.renderAll();
+            }
+        })
     }
 
+
+    const [tableTeam,setOption] = useState("General")
+    // sets default dropdown to general table
+    function changeTeam(event){
+        setOption(event.target.value)
+    }
 
     const addTable = (canvas) => {
         // creates a new table object
 
         // TODO change ID to assign lowest available ID 
-        let colour, id
+        let colour
 
         if (tableTeam == "Unavailable") {
-            colour = "#D3D3D3",
-            id = 1
+            colour = "#D3D3D3"
         } else if (tableTeam == "General") {
-            colour = "#C7E4A7",
-            id = 2
+            colour = "#C7E4A7"
         } else if ( tableTeam == "Web") {
-            colour = "#7D99E8",
-            id = 3
+            colour = "#7D99E8"
         }
 
         const rect = new fabric.Rect({
@@ -147,19 +189,27 @@ export default function Edit() {
             originX: 'center',
             originY: 'center',
             fill: colour,
+
+            // custom properties
+            // IMPORTANT: make sure to add the key name to the array in saveToJson method if adding new properties
+
+            tableId:  canvas._objects.length - 1,
+            reserved: false,
+            team: tableTeam,
         });
 
         // Adds custom properties to the tables 
         // IMPORTANT: make sure to add the key name to the array in saveToJson method if adding new properties
-        rect.toObject = (function(toObject) {
-            return function() {
-              return fabric.util.object.extend(toObject.call(this), {
-                tableId: 1,
-                reserved: false,
-                team: tableTeam
-              });
-            };
-        })(rect.toObject);
+        // rect.toObject = (function(toObject) {
+        //     return function() {
+        //       return fabric.util.object.extend(toObject.call(this), {
+        //         tableId: canvas._objects.length - 1, // unique id is assigned by length atm, may change to smt like General-2
+        //         reserved: false,
+        //         team: tableTeam
+        //       });
+        //     };
+        // })(rect.toObject);
+
 
         canvas.add(rect);
         canvas.centerObject(rect);
@@ -178,41 +228,9 @@ export default function Edit() {
         canvas.renderAll();
     }
 
-//  **************************************************************************
-    var bgImage;
-    const hideBg = (canvas) => {
-        bgImage = canvas.backgroundImage;
-        canvas.backgroundImage = null;
-    }
-
-    const showBg = (canvas) => {
-        canvas.backgroundImage = bgImage;
-    }
-
-    const saveToSVG = (canvas) => {
-        // TODO this function should save the svg to the database
-        // loads current items on canvas to textarea and renders an SVG preview
-
-        hideBg(canvas)
-        const canvasSVG = canvas.toSVG();
-        document.getElementById("loadSVG").value = canvasSVG;
-        document.getElementById('SVGRasterizer').innerHTML = canvasSVG;
-        showBg(canvas)
-    };
-
-    const loadFromSVG = (canvas) => {
-        // TODO this function should autoload when canvas is loaded and will grab from database instead of local file
-        fabric.loadSVGFromURL("../tempSVG.svg", function(objects) {
-            canvas.renderOnAddRemove = false;
-            canvas.add.apply(canvas, objects);
-            canvas.renderOnAddRemove = true;
-            canvas.renderAll();
-          })
-    };
-//  **************************************************************************
 
     const saveToJson = (canvas) => {
-        const canvasJson = canvas.toJSON(["reserved", "tableID", "team"]);
+        const canvasJson = canvas.toJSON(["reserved", "tableId", "team"]);
         console.log(canvasJson)
 
     }
@@ -232,14 +250,13 @@ export default function Edit() {
         <div>
             <div className={styles.flexContainer}>
                 <canvas id="canvas"></canvas>
-
-                {/*Temporarily commented it out to test modal event handling*/}
+                <span id="toolTip" className={styles2.toolTip}></span>
 
                 <div>
                     <h1>Modify Floor Plan</h1>
                     <div className={styles.buttonsContainer}>
                         <div className="dropdown">
-                            <select name="tableTeam" id="tableTeam" onChange={handleChange}>
+                            <select name="tableTeam" id="tableTeam" onChange={changeTeam}>
                                 <option value="General">General</option>
                                 <option value="Web">Web</option>
                                 <option value="Unavailable">Unavailable</option>

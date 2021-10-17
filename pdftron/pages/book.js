@@ -82,7 +82,7 @@ Low Priority:
             if (e.target) {
                 const status = e.target.reserved ? "Reserved" : "Available"
                 toolTip.innerText =
-                    `Table ID: ${e.target.tableID}
+                    `Table ID: ${e.target.tableId}
                     Team: ${e.target.team}
                     Status: ${status}`
 
@@ -118,9 +118,10 @@ Low Priority:
             if (e.target) {
                 //clicked on object
                 console.log(`Table ID: ${e.target.tableID}, Team: ${e.target.team}, Reserved: ${e.target.reserved}`)
-                let selectedTableData = {tableID: e.target.tableID,
-                                         team: e.target.team,
-                                        }
+                let selectedTableData = {
+                    tableID: e.target.tableID,
+                    team: e.target.team,
+                    }
                 setTableData(selectedTableData)
                 togglePop()
                 
