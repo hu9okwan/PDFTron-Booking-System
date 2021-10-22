@@ -17,7 +17,7 @@ const user1 = {
 };
 db.collection('Users').doc('User1').set(user1);
 
-const user2 = {
+const user4 = {
     email: "myrandomemail@console.com",
     firstName: "Second User",
     isAdmin: false,
