@@ -21,7 +21,10 @@ function cancelRoomReservation() {
     //TODO
 }
 
-function checkRoomAvailability() {
+function checkRoomAvailability(roomId, startDate, endDate) {
     //TODO
 }
+
+
+//
 
