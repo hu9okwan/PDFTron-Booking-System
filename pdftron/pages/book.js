@@ -39,7 +39,7 @@ Low Priority:
         setCanvas(initCanvas());
     }, []);
 
-    
+
     const initCanvas = () => (
         new fabric.Canvas('canvas', {
             height: 800,
@@ -48,7 +48,7 @@ Low Priority:
         })
     );
 
-    
+
     const [tableData, setTableData] = useState (
         {
             tableID: -1,
@@ -87,7 +87,7 @@ Low Priority:
                     Status: ${status}`
 
                 toolTip.style.visibility = 'visible'
-                
+
                 var offset = canvas.calcOffset();
                 let left = offset._offset.left + e.target.left
                 let top = offset._offset.top + e.target.top - 100
@@ -96,7 +96,7 @@ Low Priority:
 
 
                 original_opacity    = e.target.opacity;
-              
+
                 e.target.set('opacity', selected_object_opacity);
                 canvas.renderAll();
             }
@@ -119,12 +119,12 @@ Low Priority:
                 //clicked on object
                 console.log(`Table ID: ${e.target.tableID}, Team: ${e.target.team}, Reserved: ${e.target.reserved}`)
                 let selectedTableData = {
-                    tableID: e.target.tableID,
+                    tableID: e.target.tableId,
                     team: e.target.team,
                     }
                 setTableData(selectedTableData)
                 togglePop()
-                
+
             }
         }
     )}

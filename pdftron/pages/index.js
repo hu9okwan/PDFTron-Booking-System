@@ -41,7 +41,7 @@ export default function Home() {
                     urna consectetur ante commodo tincidunt.
                 </p>
                 <Login />
-                <Logout />
+                {/*<Logout />*/}
             </div>
         </main>
         </body>
