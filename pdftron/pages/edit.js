@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { fabric } from 'fabric';
 import styles from '../styles/Home.module.css'
+import styles2 from "../styles/Book.module.css"
+
+const jsonObj = require('../public/tempJSON.json');
 
 export default function Edit() {
 
@@ -8,7 +11,7 @@ export default function Edit() {
     useEffect(() => {
         setCanvas(initCanvas());
     }, []);
-    
+
     const initCanvas = () => (
         new fabric.Canvas('canvas', {
             height: 800,
@@ -20,12 +23,15 @@ export default function Edit() {
 
     useEffect(() => {
         if (canvas) {
-            loadFromSVG(canvas)
-            preventObjOut(canvas)
-            limitRotation(canvas)
-            hotkeys(canvas)
+            loadJson(canvas);
+            preventObjOut(canvas);
+            limitRotation(canvas);
+            hotkeys(canvas);
+            hoverTable(canvas);
         }
     }, [canvas]);
+
+    
     
 
     const hotkeys = (canvas) => {
@@ -45,12 +51,16 @@ export default function Edit() {
             } else if (selectedObj && key == 39) {
                 // rotates table 90 degrees to the right
                 selectedObj.angle += 90
+            } else if (key == 90) {
+                
+            } else if (key == 82) {
+
             }
             canvas.renderAll()
         })
 
     }
-    
+
     const preventObjOut = (canvas) => {
         // Prevent objects from leaving the canvas
         // solution from Pedrop Paulo @ https://stackoverflow.com/a/56366195
@@ -111,58 +121,99 @@ export default function Edit() {
     }
 
 
-    const [tableTeam,setOption] = useState("general")
-    // sets default dropdown to general table
-    function handleChange(event){
-        setOption(event.target.value)
+    const hoverTable = (canvas) => {
+        let toolTip = document.getElementById("toolTip")
+        let selected_object_opacity = 0.5;
+        let original_opacity
+        canvas.on('mouse:over', function(e) {
+            if (e.target) {
+                const status = e.target.reserved ? "Reserved" : "Available"
+                toolTip.innerText =
+                    `Table ID: ${e.target.tableId}
+                    Team: ${e.target.team}
+                    Status: ${status}`
+
+                toolTip.style.visibility = 'visible'
+                
+                var offset = canvas.calcOffset();
+                let left = offset._offset.left + e.target.left
+                let top = offset._offset.top + e.target.top - 100
+                toolTip.style.left = left + "px"
+                toolTip.style.top = top + "px"
+
+
+                original_opacity    = e.target.opacity;
+              
+                e.target.set('opacity', selected_object_opacity);
+                canvas.renderAll();
+            }
+        })
+        canvas.on('mouse:out', function(e) {
+            if (e.target) {
+                toolTip.style.visibility = 'hidden'
+
+                e.target.set('opacity', original_opacity);
+                canvas.renderAll();
+            }
+        })
     }
 
 
+    const [tableTeam,setOption] = useState("General")
+    // sets default dropdown to general table
+    function changeTeam(event){
+        setOption(event.target.value)
+    }
+
     const addTable = (canvas) => {
-        // creates a new table object 
+        // creates a new table object
 
-        let colour, id
+        // TODO change ID to assign lowest available ID 
+        let colour
 
-        if (tableTeam == "notAvail") {
-            colour = "#F7A8B2",
-            id = 0
-        } else if (tableTeam == "general") {
-            colour = "#C7E4A7",
-            id = 1
-        } else if ( tableTeam == "web") {
-            colour = "#7D99E8",
-            id = 2
-        }  
+        if (tableTeam == "Unavailable") {
+            colour = "#D3D3D3"
+        } else if (tableTeam == "General") {
+            colour = "#C7E4A7"
+        } else if ( tableTeam == "Web") {
+            colour = "#7D99E8"
+        }
 
         const rect = new fabric.Rect({
-            id: id,
-            team: "test",
             height: 50,
             width: 25,
             stroke: "black",
             strokeWidth: 1,
+            strokeUniform: true,
+            lockScalingFlip: true,
             originX: 'center',
             originY: 'center',
             fill: colour,
+
+            // custom properties
+            // IMPORTANT: make sure to add the key name to the array in saveToJson method if adding new properties
+
+            tableId:  canvas._objects.length - 1,
+            reserved: false,
+            team: tableTeam,
         });
 
+        // Adds custom properties to the tables 
+        // IMPORTANT: make sure to add the key name to the array in saveToJson method if adding new properties
+        // rect.toObject = (function(toObject) {
+        //     return function() {
+        //       return fabric.util.object.extend(toObject.call(this), {
+        //         tableId: canvas._objects.length - 1, // unique id is assigned by length atm, may change to smt like General-2
+        //         reserved: false,
+        //         team: tableTeam
+        //       });
+        //     };
+        // })(rect.toObject);
 
-        // this only exports the custom properties to JSON but not to SVG
-        rect.toObject = (function(toObject) {
-            return function() {
-              return fabric.util.object.extend(toObject.call(this), {
-                tableID: 1,
-                reserved: false,
-                team: tableTeam
-              });
-            };
-        })(rect.toObject);
 
         canvas.add(rect);
         canvas.centerObject(rect);
         canvas.renderAll();
-        console.log(JSON.stringify(canvas))
-        // console.log(canvas.toSVG())
     }
 
     const removeTable = (canvas) => {
@@ -178,26 +229,19 @@ export default function Edit() {
     }
 
 
-    const saveToSVG = (canvas) => {
-        // test function
-        // loads current items on canvas to textarea and renders an SVG preview
-        const canvasSVG = canvas.toSVG();
-        document.getElementById('SVGRasterizer').innerHTML = canvasSVG
-        // console.log(canvasSVG)
+    const saveToJson = (canvas) => {
+        const canvasJson = canvas.toJSON(["reserved", "tableId", "team"]);
+        console.log(canvasJson)
 
-        document.getElementById("loadSVG").value = canvasSVG
-
-    };
+    }
 
 
-    const loadFromSVG = (canvas) => {
-        // this function should autoload when canvas is loaded and will grab from database instead of local file
-        fabric.loadSVGFromURL("../tempSVG.svg", function(objects) {
-            canvas.renderOnAddRemove = false;
-            canvas.add.apply(canvas, objects);
-            canvas.renderOnAddRemove = true;
-            canvas.renderAll();
-          })
+    const loadJson = (canvas) => {
+        const jsonString = JSON.stringify(jsonObj)
+        console.log(jsonObj)
+        // console.log(jsonString)
+        canvas.loadFromJSON(jsonObj, canvas.renderAll.bind(canvas))
+
     }
 
 
@@ -206,27 +250,23 @@ export default function Edit() {
         <div>
             <div className={styles.flexContainer}>
                 <canvas id="canvas"></canvas>
+                <span id="toolTip" className={styles2.toolTip}></span>
+
                 <div>
                     <h1>Modify Floor Plan</h1>
                     <div className={styles.buttonsContainer}>
                         <div className="dropdown">
-                            <select name="tableTeam" id="tableTeam" onChange={handleChange}>
-                                <option value="general">General</option>
-                                <option value="web">Web</option>
-                                <option value="notAvail">Not Available</option>
+                            <select name="tableTeam" id="tableTeam" onChange={changeTeam}>
+                                <option value="General">General</option>
+                                <option value="Web">Web</option>
+                                <option value="Unavailable">Unavailable</option>
                             </select>
                             <button className={styles.pointer} onClick={() => addTable(canvas)}>Add Table</button>
                         </div>
                         <button className={styles.pointer} onClick={() => removeTable(canvas)}>Remove Selected</button>
-                        <button className={styles.pointer} onClick={() => saveToSVG(canvas)}>Save Changes</button>
+                        <button className={styles.pointer} onClick={() => saveToJson(canvas)}>Save Changes</button>
                     </div>
                 </div>
-
-            </div>
-
-            <textarea id="loadSVG" cols="125"></textarea>
-
-            <div id="SVGRasterizer" height="800" width="1000">
 
             </div>
 
