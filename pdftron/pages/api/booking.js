@@ -7,31 +7,43 @@ admin.initializeApp({
 
 const db = admin.firestore();
 
+// global variables
+const maxTimeBooked = 24;
 
 // ======================== READ FUNCTIONS =============================
-const generateTableBookingID = async () => {
-    // get current ID, increment, update database, return new ID
-    let id = await db.collection("uniqueCounters").doc("tableBookingID").get();
-
-    try {
-        let newID = id.data().tableBookingID + 1;
-        await db.collection("uniqueCounters").doc("tableBookingID").update({tableBookingID: newID});
-        return newID;
-    } catch (e) {
-        return e;
-    }
-};
-
 const tableExists = async (tableID) => {
-
+    const table = await db.collection("Table").col(tableID).get();
+    if (table.exists) {
+        return table.data();
+    }
+    else { return {}}
 };
 
+
+const userExists = async (username) => {
+    const user = await db.collection("User").col(username).get();
+    if (user.exists) {
+        return user.data();
+    }
+    else { return {}}
+};
+
+
+const _checkTableAvailability = async (tableID, startDate, endDate) => {
+    /*
+    Function checks if specific table is available for that certain date.
+
+    Constraints:
+    - table needs to exist
+    - startDate needs to be available
+    - needs to be no other bookings between startDate and endDate
+     */
+    const tableBookingSnapShot = tableExists;
+    console.log(tableBookingSnapShot);
+};
 
 // ========================= WRITE FUNCTIONS ===============================
-
-
-const bookTable = async (user_email, table_ID, start_date, end_date) => {
-
+const createBooking = async (user_email, table_ID, start_date, end_date) => {
     const newID = generateTableBookingID();
 
     const booking_req = {
@@ -45,31 +57,56 @@ const bookTable = async (user_email, table_ID, start_date, end_date) => {
     await db.collection("TableBooking").doc("TableBooking1").set(booking_req)
 };
 
+const createTable = async (section) => {
+    const newID = generateTableID();
+    const newTable = {
+        maxTimeBooked: maxTimeBooked,
+        section: section,
+        tableID: newID
+    };
+    console.log("successfully created table with these attributes" + newTable);
+    await db.collection("Table").doc("Table"+newID).set(newTable);
+};
+
+const createUser = async (email) => {
+    const username = email.substr(0, email.indexOf("@"));
+    const user = {
+        email: email,
+        username: username  // test@pdftron.com > test
+    };
+    await db.collection("User").doc(username).set(user);
+};
 
 // ===================== UPDATE FUNCTIONS ==========================
+const generateTableBookingID = async () => {
+    // get current ID, increment, update database, return new ID
+    let id = await db.collection("uniqueCounters").doc("tableBookingID").get();
 
-/*
-Function checks if specific table is available for that certain date.
-
-Constraints:
-- table needs to exist
-- startDate needs to be available
-- needs to be no other bookings between startDate and endDate
- */
-const checkTableAvailability = async (tableID, startDate, endDate) => {
-    const tableBookingSnapShot = await db.collection("TableBooking").doc("TableBooking1").get();
-
-    if (tableBookingSnapShot.exists) {
-
-        console.log(tableBookingSnapShot.data().tableBookingID);
-        return true;
-    }
-    else {
-        console.log("Table does not exist!");
-        return false;
+    try {
+        let newID = id.data().tableBookingID + 1;
+        await db.collection("uniqueCounters").doc("tableBookingID").update({tableBookingID: newID});
+        return newID;
+    } catch (e) {
+        return e;
     }
 };
 
-// ============================= DELETE FUNCTIONS =====================
+const generateTableID = async () => {
+    // get current ID, increment, update database, return new ID
+    let id = await db.collection("uniqueCounters").doc("tableID").get();
+    try {
+        let newID = id.data().tableBookingID + 1;
+        await db.collection("uniqueCounters").doc("tableID").update({tableID: newID});
+        return newID;
+    } catch (e) {
+        return e;
+    }
+};
 
-module.exports = {bookTable, checkTableAvailability, generateTableBookingID };
+
+// ============================= DELETE FUNCTIONS =====================
+const deleteTable = async (tableID) => {
+    await db.collection("Table").doc(tableID).delete();
+};
+
+module.exports = {_checkTableAvailability };
