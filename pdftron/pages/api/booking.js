@@ -11,21 +11,17 @@ const db = admin.firestore();
 const maxTimeBooked = 24;
 
 // ======================== READ FUNCTIONS =============================
-const tableExists = async (tableID) => {
-    const table = await db.collection("Table").col(tableID).get();
-    if (table.exists) {
-        return table.data();
-    }
-    else { return {}}
+const tableExists = async (tableName) => {
+    const table = await db.collection("Table").doc(tableName).get();
+    if (table.exists) { return table.data(); }
+    else { return null }
 };
 
 
 const userExists = async (username) => {
-    const user = await db.collection("User").col(username).get();
-    if (user.exists) {
-        return user.data();
-    }
-    else { return {}}
+    const user = await db.collection("User").doc(username).get();
+    if (user.exists) { return user.data(); }
+    else { return null }
 };
 
 
@@ -38,8 +34,25 @@ const _checkTableAvailability = async (tableID, startDate, endDate) => {
     - startDate needs to be available
     - needs to be no other bookings between startDate and endDate
      */
-    const tableBookingSnapShot = tableExists;
-    console.log(tableBookingSnapShot);
+    const table = tableExists("Table"+tableID);
+    const curBookings = await db.collection("TableBooking").where("tableID", "==", 1).get();
+
+    // convert string to datetime then timestamp for comparisons
+    const start = new Date(startDate).getTime() / 1000;
+    const end = new Date(endDate).getTime() / 1000;
+
+    console.log(curBookings.length);
+
+    curBookings.forEach(doc => {
+        //TODO:
+        // compare using start timestamp so less calculations
+        // check for any overallping dates in pseudo
+        // if cur_start >= book_start and cur_start <= book_end or
+        // cur _end >= book_start and cur_end <= book_end:
+
+        console.log("cur table availability", doc.data())
+    })
+
 };
 
 // ========================= WRITE FUNCTIONS ===============================
@@ -109,4 +122,4 @@ const deleteTable = async (tableID) => {
     await db.collection("Table").doc(tableID).delete();
 };
 
-module.exports = {_checkTableAvailability };
+module.exports = {tableExists, _checkTableAvailability };
