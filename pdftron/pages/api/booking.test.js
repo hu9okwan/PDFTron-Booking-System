@@ -32,7 +32,7 @@ const bookingModule = require("./booking");
 // });
 
 
-test("Check if table is available between these dates", async () => {
-    const avail = await bookingModule._checkTableAvailability(1, "", "");
-    expect(avail).toBe(null);
+test("Fail Check if table is available between these dates", async () => {
+    const avail = await bookingModule._checkTableAvailability(2, "Oct 24, 2021 00:00:00", "Oct 24, 2021 00:00:00");
+    expect(avail).toBe(false);
 });

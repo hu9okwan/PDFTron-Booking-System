@@ -26,48 +26,52 @@ const userExists = async (username) => {
 
 
 const _checkTableAvailability = async (tableID, startDate, endDate) => {
-    /*
-    Function checks if specific table is available for that certain date.
+    //
+    // TODO:
+    // DOESNT WORK CURRENTLY
+    // NEEDS PROPERT CONVERSION BETWEEN DATE TO TIMESTAMP
+    // NEEDS PROPER TIMEZONE, FIREBASE USES UTC7
 
-    Constraints:
-    - table needs to exist
-    - startDate needs to be available
-    - needs to be no other bookings between startDate and endDate
-     */
     const table = tableExists("Table"+tableID);
     const curBookings = await db.collection("TableBooking").where("tableID", "==", 1).get();
 
     // convert string to datetime then timestamp for comparisons
-    const start = new Date(startDate).getTime() / 1000;
-    const end = new Date(endDate).getTime() / 1000;
-
-    console.log(curBookings.length);
+    const newStart = new Date.UTC(startDate).getTime() / 1000;
+    const newEnd = new Date.UTC(endDate).getTime() / 1000;
 
     curBookings.forEach(doc => {
-        //TODO:
-        // compare using start timestamp so less calculations
-        // check for any overallping dates in pseudo
-        // if cur_start >= book_start and cur_start <= book_end or
-        // cur _end >= book_start and cur_end <= book_end:
+        const curStart = doc.data().startDate._seconds;
+        const curEnd = doc.data().endDate._seconds;
 
-        console.log("cur table availability", doc.data())
-    })
+        console.log("Current start", curStart);
+        console.log("new start", newStart);
+        console.log("current end", curEnd);
+        console.log("new end", newEnd);
 
+        if (curStart <= newStart <= newEnd <= curEnd) {
+            return false;
+        }
+    });
+    return true;
 };
 
 // ========================= WRITE FUNCTIONS ===============================
-const createBooking = async (user_email, table_ID, start_date, end_date) => {
-    const newID = generateTableBookingID();
+const createBooking = async (email, tableID, startDate, endDate) => {
 
-    const booking_req = {
-        tableBookingID: "tblBook_" + newID, // this fields needs to be incremented / unique
-        tableID: table_ID,
-        userID: user_email,
-        startDate: start_date,
-        endDate: end_date
-    };
+    const avail = await _checkTableAvailability(tableID, startDate, endDate);
 
-    await db.collection("TableBooking").doc("TableBooking1").set(booking_req)
+    if (avail) {
+        const newID = generateTableBookingID();
+        const booking_req = {
+            tableBookingID: newID, // this fields needs to be incremented / unique
+            tableID: tableID,
+            userID: email,
+            startDate: startDate,
+            endDate: endDate
+        };
+        await db.collection("TableBooking").doc("TableBooking1").set(booking_req)
+    }
+
 };
 
 const createTable = async (section) => {
@@ -81,6 +85,7 @@ const createTable = async (section) => {
     await db.collection("Table").doc("Table"+newID).set(newTable);
 };
 
+
 const createUser = async (email) => {
     const username = email.substr(0, email.indexOf("@"));
     const user = {
@@ -89,6 +94,7 @@ const createUser = async (email) => {
     };
     await db.collection("User").doc(username).set(user);
 };
+
 
 // ===================== UPDATE FUNCTIONS ==========================
 const generateTableBookingID = async () => {
