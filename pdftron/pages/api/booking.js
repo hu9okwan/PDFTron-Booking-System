@@ -22,11 +22,7 @@ const tableExists = async (tableName) => {
 
 const userExists = async (username) => {
     const user = await db.collection("User").doc(username).get();
-    if (user.exists) {
-        return user.data();
-    } else {
-        return null
-    }
+    return user.exists;
 };
 
 const _checkTableAvailability = async (tableID, startDate, endDate) => {
@@ -91,12 +87,16 @@ const createTable = async (section) => {
 
 
 const createUser = async (email) => {
-    const username = email.substr(0, email.indexOf("@"));
-    const user = {
-        email: email,
-        username: username  // test@pdftron.com > test
-    };
-    await db.collection("User").doc(username).set(user);
+
+    if (await userExists()) {
+        const username = email.substr(0, email.indexOf("@"));
+        const user = {
+            email: email,
+            username: username  // test@pdftron.com > test
+        };
+        await db.collection("User").doc(username).set(user);
+    }
+
 };
 
 // ===================== UPDATE FUNCTIONS ==========================
