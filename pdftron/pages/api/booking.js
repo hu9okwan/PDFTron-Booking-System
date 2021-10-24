@@ -13,17 +13,21 @@ const maxTimeBooked = 24;
 // ======================== READ FUNCTIONS =============================
 const tableExists = async (tableName) => {
     const table = await db.collection("Table").doc(tableName).get();
-    if (table.exists) { return table.data(); }
-    else { return null }
+    if (table.exists) {
+        return table.data();
+    } else {
+        return null
+    }
 };
-
 
 const userExists = async (username) => {
     const user = await db.collection("User").doc(username).get();
-    if (user.exists) { return user.data(); }
-    else { return null }
+    if (user.exists) {
+        return user.data();
+    } else {
+        return null
+    }
 };
-
 
 const _checkTableAvailability = async (tableID, startDate, endDate) => {
     //
@@ -32,7 +36,7 @@ const _checkTableAvailability = async (tableID, startDate, endDate) => {
     // NEEDS PROPERT CONVERSION BETWEEN DATE TO TIMESTAMP
     // NEEDS PROPER TIMEZONE, FIREBASE USES UTC7
 
-    const table = tableExists("Table"+tableID);
+    const table = tableExists("Table" + tableID);
     const curBookings = await db.collection("TableBooking").where("tableID", "==", 1).get();
 
     // convert string to datetime then timestamp for comparisons
@@ -82,7 +86,7 @@ const createTable = async (section) => {
         tableID: newID
     };
     console.log("successfully created table with these attributes" + newTable);
-    await db.collection("Table").doc("Table"+newID).set(newTable);
+    await db.collection("Table").doc("Table" + newID).set(newTable);
 };
 
 
@@ -94,7 +98,6 @@ const createUser = async (email) => {
     };
     await db.collection("User").doc(username).set(user);
 };
-
 
 // ===================== UPDATE FUNCTIONS ==========================
 const generateTableBookingID = async () => {
@@ -130,4 +133,11 @@ const deleteTable = async (tableID) => {
 
 
 //TODO: add all the functions to be exported
-module.exports = {tableExists, _checkTableAvailability };
+module.exports = {
+    tableExists,
+    _checkTableAvailability,
+    userExists,
+    createBooking,
+    createTable,
+    createUser
+};
