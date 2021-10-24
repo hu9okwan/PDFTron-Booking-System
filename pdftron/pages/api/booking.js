@@ -128,4 +128,6 @@ const deleteTable = async (tableID) => {
     await db.collection("Table").doc(tableID).delete();
 };
 
+
+//TODO: add all the functions to be exported
 module.exports = {tableExists, _checkTableAvailability };
