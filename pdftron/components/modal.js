@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {useState} from "react";
 import TableDatePicker from "./datepicker";
 import styles from "../styles/Book.module.css"
 
@@ -9,8 +9,12 @@ const Modal = ({ tableID, team, toggle }) => {
     };
 
     const submitBooking = () => {
-        console.log("hello nooblando cow")
+        console.log(startDate, endDate, tableID, team)
     }
+
+
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
 
     return (
 
@@ -18,7 +22,7 @@ const Modal = ({ tableID, team, toggle }) => {
                 <span className={styles.close}
                         onClick={closeModal}>&times;    </span>
                 <div className={styles.selectContainer}>
-                    <TableDatePicker></TableDatePicker>
+                    <TableDatePicker startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate}></TableDatePicker>
                 </div>
                 <div>Table ID: {tableID}</div>
                 <div>{team}</div>
