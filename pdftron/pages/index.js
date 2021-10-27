@@ -23,6 +23,7 @@ export default function Home() {
                                 <img src="pdftron-icons/pdftron-logo-blue.png" alt="PDFTron Icon"/>
                             </a>
                             </li>
+                            
                         </ul>
                     </nav>
                 </header>
@@ -30,7 +31,9 @@ export default function Home() {
                 <section className={styles.section}>
                     <h1>Booking Portal</h1>
                     <h2>Book your workspace today!</h2>
-                {/* </section> */}
+                    <p>Welcome to PDFTron's Internal Table/Room Booking system!
+                    Begin by logging in with your valid @PDFTron email address.
+                    Contact your system administrator for assistance if required</p>
                     {/* <section className={styles.section}> */}
                         <div className={styles.googleLogin}>
                             <Login />
