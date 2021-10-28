@@ -40,6 +40,11 @@
 
 .navbar li {
     list-style: none;
+    margin-inline: auto;
+}
+
+.navbar img {
+    max-width: 20vw;
 }
 
 .loginBody header {

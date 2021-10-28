@@ -28,8 +28,6 @@ function Login() {
             onSuccess={onSuccess}
             onFailure={onFailure}
             cookiePolicy={'single_host_origin'}
-            // style={{textAlign: 'match-parent'}}
-            // style={{ marginTop: '100px' }}
             isSignedIn="True"
         />
         </div>

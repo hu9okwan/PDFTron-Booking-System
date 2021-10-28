@@ -23,7 +23,18 @@ export default function Home() {
                                 <img src="pdftron-icons/pdftron-logo-blue.png" alt="PDFTron Icon"/>
                             </a>
                             </li>
-                            
+                            <li>
+                            <a href="#">Home</a>
+                            </li>
+                            <li>
+                            <a href="#">My Bookings</a>
+                            </li>
+                            <li>
+                            <a href="#">Settings</a>
+                            </li>
+                            <li>
+                            <a href="#">Sign Out</a>
+                            </li>
                         </ul>
                     </nav>
                 </header>
