@@ -55,6 +55,32 @@ const _checkTableAvailability = async (tableID, startDate, endDate) => {
     return true;
 };
 
+const getUserBoookings = async (userID) =>  {
+    // TODO:
+    // get all the users bookings
+    // returns a list of TableBookings with userID
+};
+
+const updateTableSection = async (tableID) => {
+    // TODO
+    // Given a tableId
+    // change the table section
+    // returns nothing
+};
+
+const updateRoomSection = async (roomID) => {
+    // TODO
+    // Given a roomID
+    // change the room section
+    // returns nothing
+};
+
+const updateMaxRoomHours = async (maxHours) => {
+    // TODO
+    // given a new maxHours
+    // update the Admin settings
+    // returns nothing
+};
 // ========================= WRITE FUNCTIONS ===============================
 const createBooking = async (email, tableID, startDate, endDate) => {
 
