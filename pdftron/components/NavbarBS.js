@@ -9,7 +9,7 @@ export const NavbarBS = ({isLoggedin}) => {
     //     // checks if user is logged in
     //     let name = user.name
     //     let adminPriv = user.admin
-    // } 
+    // }
     let name = "Williard"
 
     return (
@@ -17,7 +17,7 @@ export const NavbarBS = ({isLoggedin}) => {
         <Navbar collapseOnSelect expand="lg">
         <Container>
         <Navbar.Brand href="#home">
-            <img src="pdftron-icons/pdftron-logo-blue.png" className="d-inline-block align-top" alt="PDFTron Icon"/> 
+            <img src="pdftron-icons/pdftron-logo-blue.png" className="d-inline-block align-top" alt="PDFTron Icon"/>
         </Navbar.Brand>
 
         {isLoggedin && <Navbar.Toggle aria-controls="responsive-navbar-nav" /> }
@@ -26,7 +26,7 @@ export const NavbarBS = ({isLoggedin}) => {
             </Nav>
             <Nav>
                 {isLoggedin && <Nav.Link href="/book">Book</Nav.Link> }
-                {isLoggedin && <Nav.Link href="#link">My Bookings</Nav.Link>}
+                {isLoggedin && <Nav.Link href="/mybookings">My Bookings</Nav.Link>}
                 {isLoggedin && <NavDropdown title={name} id="basic-nav-dropdown">
                     <NavDropdown.Item href="/edit">Admin Dashboard</NavDropdown.Item>
                     <NavDropdown.Item href="#">Settings</NavDropdown.Item>

@@ -2,48 +2,93 @@
 
 .loginBody {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
     font-family: "Nunito sans", sans-serif;
     color: #0e0620;
-    font-size: 1em;
     padding-top: 15%;
+    font-size: 1rem;
+    box-sizing: border-box;
+    margin: 0;
+    background-color: white;
+    width: 100vw;
 }
 
 .loginContainer {
-    display: flex;
-    width: 80vw;
+    margin-inline: auto;
+    width: min(90%, 70rem);
+    padding-top: 1rem;
+    background-color: white;
+    max-width: 90vh;
+    margin-top: 0.5rem;
 }
 
-.main-container {
+.navbar {
+    padding: 0;
+    margin-inline: auto;
+    width: 99.9%;
+    background-color: white;
+}
+
+.navbar ul {
+    display: flex;
+    align-items: center;
+    /* box-shadow: 0px 0px 1px; */
+    /* background: white; */
+    margin: 0;
+}
+
+.navbar li {
+    list-style: none;
+    margin-inline: auto;
+}
+
+.navbar img {
+    max-width: 20vw;
+}
+
+.loginBody header {
+    padding: 30px 10%;
+    max-width: 100vw;
+    background-color: white;
+}
+
+.mainContainer {
+    margin-bottom: 1em;
+    align-items: center;
+}
+
+.section {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    /* line-height: 1; */
+    /* font-weight: 400; */
 }
 
-.leftHalf, .rightHalf {
-    flex: 1;
-}
-
-.rightHalf h1, .rightHalf h2 {
+.section h1, .section h2 {
     font-weight: bold;
-    margin: 0;
-    padding: 0;
+    margin: .5rem;
 }
 
-.rightHalf h1 {
-    font-size: 4.5em;
+.section h1 {
+    font-size: 3rem;
 }
 
-.leftHalf img {
-    width: 700px;
-    height: 300px;
-    object-fit: cover;
+.section h2 {
+    padding-bottom: 1rem;
+}
+
+.bottomHalf img {
+    display: block;
+    max-width: 100%;
 }
 
 .googleLogin {
-    width: 200px;
-    height: 50px;
-    object-fit: contain;
+    display: flex;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }
 
 
@@ -67,7 +112,7 @@
     position: relative;
     display: inline-block;
 }
-  
+
 .tooltip .tooltiptext {
     visibility: hidden;
     width: fit-content;
@@ -84,7 +129,7 @@
     left: 50%;
     margin-left: -60px;
 }
-  
+
 .tooltip .tooltiptext::after {
     content: "";
     position: absolute;
@@ -95,7 +140,7 @@
     border-style: solid;
     border-color: black transparent transparent transparent;
 }
-  
+
 .tooltip:hover .tooltiptext {
     visibility: visible;
 }
@@ -108,3 +153,40 @@
 
 
 /* ============== Implementation fo mobile friendly goes below ============== */
+
+@media (min-width: 55em) {
+    .loginBody {
+        flex-direction: row;
+        max-width: 100vw;
+    }
+    .loginContainer {
+        flex-basis: 100%;
+        max-width: 100vw;
+    }
+
+    .mainContainer {
+        display:flex;
+        flex-direction: row-reverse;
+        width: 100%;
+        /* align-items: flex-end; */
+    }
+
+    .section {
+        /* align-items: top; */
+        padding-right: 5rem;
+        height: 60vh;
+    }
+
+    .bottomHalf {
+        max-width: 60vw;
+    }
+    /* .bottomHalf {
+        align-items: flex-end;
+    } */
+
+    /* .bottomHalf{
+        max-width: 100%;
+        padding: 0;
+        margin: 0;
+    } */
+}
