@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fabric } from 'fabric';
+import { NavbarBS } from '../components/NavbarBS';
 import styles from '../styles/Home.module.css'
 import styles2 from "../styles/Book.module.css"
 
@@ -126,7 +127,10 @@ export default function Edit() {
         let selected_object_opacity = 0.5;
         let original_opacity
         canvas.on('mouse:over', function(e) {
-            if (e.target) {
+            if (e.target && e.target._objects) {
+                return
+            }
+            else if (e.target) {
                 const status = e.target.reserved ? "Reserved" : "Available"
                 toolTip.innerText =
                     `Table ID: ${e.target.tableId}
@@ -198,18 +202,6 @@ export default function Edit() {
             team: tableTeam,
         });
 
-        // Adds custom properties to the tables 
-        // IMPORTANT: make sure to add the key name to the array in saveToJson method if adding new properties
-        // rect.toObject = (function(toObject) {
-        //     return function() {
-        //       return fabric.util.object.extend(toObject.call(this), {
-        //         tableId: canvas._objects.length - 1, // unique id is assigned by length atm, may change to smt like General-2
-        //         reserved: false,
-        //         team: tableTeam
-        //       });
-        //     };
-        // })(rect.toObject);
-
 
         canvas.add(rect);
         canvas.centerObject(rect);
@@ -248,7 +240,8 @@ export default function Edit() {
 
     return (
         <div>
-            <div className={styles.flexContainer}>
+            <NavbarBS isLoggedin={true} />
+            <div className={styles2.flexContainer}>
                 <canvas id="canvas"></canvas>
                 <span id="toolTip" className={styles2.toolTip}></span>
 

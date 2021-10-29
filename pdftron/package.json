@@ -21,7 +21,7 @@
     "framer-motion": "^4.1.17",
     "next": "11.1.2",
     "react": "17.0.2",
-    "react-bootstrap": "^2.0.0",
+    "react-bootstrap": "^2.0.1",
     "react-bootstrap-table": "^4.3.1",
     "react-bootstrap-table-next": "^4.0.3",
     "react-datepicker": "^4.2.1",
