@@ -55,35 +55,21 @@ const _checkTableAvailability = async (tableID, startDate, endDate) => {
     return true;
 };
 
-const getUserBoookings = async (userID) =>  {
+
+const getUserTableBoookings = async (userID) =>  {
     // TODO:
-    // get all the users bookings
+    // given the users ID (email)
     // returns a list of TableBookings with userID
 };
 
-const updateTableSection = async (tableID) => {
-    // TODO
-    // Given a tableId
-    // change the table section
-    // returns nothing
+const getUserRoomBoookings = async (userID) =>  {
+    // TODO:
+    // given the users ID (email)
+    // returns a list of RoomBookings with userID
 };
 
-const updateRoomSection = async (roomID) => {
-    // TODO
-    // Given a roomID
-    // change the room section
-    // returns nothing
-};
-
-const updateMaxRoomHours = async (maxHours) => {
-    // TODO
-    // given a new maxHours
-    // update the Admin settings
-    // returns nothing
-};
 // ========================= WRITE FUNCTIONS ===============================
 const createBooking = async (email, tableID, startDate, endDate) => {
-
     const avail = await _checkTableAvailability(tableID, startDate, endDate);
 
     if (avail) {
@@ -113,7 +99,6 @@ const createTable = async (section) => {
 
 
 const createUser = async (email) => {
-
     if (await userExists()) {
         const username = email.substr(0, email.indexOf("@"));
         const user = {
@@ -122,7 +107,6 @@ const createUser = async (email) => {
         };
         await db.collection("User").doc(username).set(user);
     }
-
 };
 
 // ===================== UPDATE FUNCTIONS ==========================
@@ -151,6 +135,33 @@ const generateTableID = async () => {
     }
 };
 
+const updateTableSection = async (tableID) => {
+    // TODO
+    // Given a tableId
+    // change the table section
+    // returns nothing
+};
+
+const updateRoomSection = async (roomID) => {
+    // TODO
+    // Given a roomID
+    // change the room section
+    // returns nothing
+};
+
+const updateMaxRoomHours = async (maxHours) => {
+    // TODO
+    // given a new maxHours
+    // update the Admin settings to reflect the new maxHours
+    // returns nothing
+};
+
+const updateMaxTableDays = async (maxDays) => {
+    // TODO
+    // given a new maxDays
+    // update the Admin settings to reflect the new maxDays
+    // returns nothing
+};
 
 // ============================= DELETE FUNCTIONS =====================
 const deleteTable = async (tableID) => {
