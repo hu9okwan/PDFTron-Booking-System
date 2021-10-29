@@ -114,13 +114,6 @@ export default function App() {
     <html>
       {/* <div className={styles.loginContainer}> */}
       <header className={styles.navbar}>
-            {/* <ul> */}
-                {/* <li> */}
-                <a href="https://www.pdftron.com">
-                    <img src="pdftron-icons/pdftron-logo-blue.png" alt="PDFTron Icon"/>
-                </a>
-                {/* </li> */}
-            {/* </ul> */}
     </header>
       <body className={styles.tableBody}>
         <section className={styles.section}>
