@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fabric } from 'fabric';
+import { NavbarBS } from '../components/NavbarBS';
 import styles from "../styles/Book.module.css"
 import Modal from "../components/modal";
 const jsonObj = require('../public/tempJSON.json');
@@ -10,16 +11,13 @@ Low Priority:
 - make pop up look nicer
 - make booking button fully functional
  - Make page look nicer overall
- - wait for high fidel UI people to finish so I can have a direction
 
  Medium Priority:
- - be able to read from datepicker component
  - connect it to database
 
 
  High Priority:
  - be able to click a specific table and book for that specific table LOL
- - make the process between saving an svg and making it clickable easily done
  */
 
 
@@ -132,6 +130,7 @@ Low Priority:
 
     return (
         <div>
+            <NavbarBS isLoggedin={true} />
             <div className={styles.flexContainer}>
                 <canvas id="canvas"></canvas>
                 <span id="toolTip" className={styles.toolTip}></span>

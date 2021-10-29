@@ -58,3 +58,10 @@
     color: #fff;
     visibility: hidden;
 }
+
+.flexContainer {
+    display: flex;
+    padding-top: 50px;
+    align-items: center;
+    justify-content: center;
+}

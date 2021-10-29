@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fabric } from 'fabric';
+import { NavbarBS } from '../components/NavbarBS';
 import styles from '../styles/Home.module.css'
 import styles2 from "../styles/Book.module.css"
 
@@ -239,7 +240,8 @@ export default function Edit() {
 
     return (
         <div>
-            <div className={styles.flexContainer}>
+            <NavbarBS isLoggedin={true} />
+            <div className={styles2.flexContainer}>
                 <canvas id="canvas"></canvas>
                 <span id="toolTip" className={styles2.toolTip}></span>
 
