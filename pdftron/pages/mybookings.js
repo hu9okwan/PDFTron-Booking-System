@@ -3,7 +3,6 @@ import styles from '../styles/Table.module.css'
 import "bootstrap/dist/css/bootstrap.css";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import BootstrapTable from "react-bootstrap-table-next";
-// import { Button } from "react-bootstrap"
 import { Button, ButtonGroup, Stack } from "@chakra-ui/react"
 
 const tables = [
