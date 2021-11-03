@@ -114,8 +114,8 @@ export default function App() {
   return (
     <html>
       {/* <div className={styles.loginContainer}> */}
-      <header className={styles.navbar}>
-    </header>
+      {/* <header className={styles.navbar}>
+    </header> */}
       <NavbarBS isLoggedin={true} />
       <body className={styles.tableBody}>
         <section className={styles.section}>

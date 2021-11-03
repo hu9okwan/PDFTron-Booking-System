@@ -27,8 +27,10 @@ export const NavbarBS = ({isLoggedin}) => {
             <Nav>
                 {isLoggedin && <Nav.Link href="/book">Book</Nav.Link> }
                 {isLoggedin && <Nav.Link href="/mybookings">My Bookings</Nav.Link>}
+                {isLoggedin && <Nav.Link href="/usersettings">User Settings</Nav.Link>}
+                {isLoggedin && <Nav.Link href="/allbookings">See All Bookings</Nav.Link>}
                 {isLoggedin && <NavDropdown title={name} id="basic-nav-dropdown">
-                    <NavDropdown.Item href="/edit">Admin Dashboard</NavDropdown.Item>
+                    {/* <NavDropdown.Item href="/edit">Admin Dashboard</NavDropdown.Item> */}
                     <NavDropdown.Item href="#">Settings</NavDropdown.Item>
                     <NavDropdown.Divider />
                     <NavDropdown.Item href="#">Logout</NavDropdown.Item>
