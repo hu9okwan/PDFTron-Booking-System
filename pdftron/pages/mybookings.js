@@ -5,6 +5,7 @@ import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import BootstrapTable from "react-bootstrap-table-next";
 // import { Button } from "react-bootstrap"
 import { Button, ButtonGroup, Stack } from "@chakra-ui/react"
+import {NavbarBS} from "../components/NavbarBS";
 
 const tables = [
   { table: "#2", startDate: "October 27, 2021", endDate: "October 27, 2021", type: "General" },
@@ -115,11 +116,12 @@ export default function App() {
       {/* <div className={styles.loginContainer}> */}
       <header className={styles.navbar}>
     </header>
+      <NavbarBS isLoggedin={true} />
       <body className={styles.tableBody}>
         <section className={styles.section}>
           <h1>Table Bookings</h1>
-          <div className="App" style={{backgroundColor: 'white' }}> 
-            <BootstrapTable 
+          <div className="App" style={{backgroundColor: 'white' }}>
+            <BootstrapTable
               bootstrap4
               keyField="id"
               data={tables}
@@ -142,4 +144,4 @@ export default function App() {
       </body>
     </html>
   );
-}                 
+}

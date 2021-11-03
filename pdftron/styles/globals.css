@@ -33,7 +33,7 @@ html, body {
 }
 
 body {
-    display: flex;
+    /* display: flex; */
     align-items: center;
     justify-content: center;
     font-family: "Nunito sans", sans-serif;
@@ -45,7 +45,7 @@ nav {
     position: absolute;
     top: 8px;
     left: 1px;
-    background: url("../public/pdftron-icons/pdftron-logo-blue.png");
+    /* background: url("../public/pdftron-icons/pdftron-logo-blue.png"); */
     color: var(--blue);
 }
 
