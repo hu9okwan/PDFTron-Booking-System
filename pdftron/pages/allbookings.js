@@ -3,12 +3,12 @@ import styles from '../styles/Table.module.css'
 import "bootstrap/dist/css/bootstrap.css";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import BootstrapTable from "react-bootstrap-table-next";
-import { Button, ButtonGroup, Stack } from "@chakra-ui/react"
 import {NavbarBS} from "../components/NavbarBS";
+import { Button, ButtonGroup, Stack } from "@chakra-ui/react"
 
 const tables = [
-  { table: "#2", startDate: "October 27, 2021", endDate: "October 27, 2021", type: "General" },
-  { table: "#3", startDate: "October 25, 2021", endDate: "October 25, 2021", type: "HR" },
+  { table: "#2", user: "Diego Felix", startDate: "October 27, 2021", endDate: "October 27, 2021", type: "General" },
+  { table: "#3", user: "Tyler Gordon", startDate: "October 25, 2021", endDate: "October 25, 2021", type: "HR" },
 ];
 
 const columns = [
@@ -17,6 +17,13 @@ const columns = [
     text: "Table",
     headerStyle: (column, colIndex) => {
       return { width: '10%',  backgroundColor: '#00a5e4' };
+    }
+  },
+  {
+    dataField: "user",
+    text: "User",
+    headerStyle: (column, colIndex) => {
+      return { backgroundColor: '#00a5e4' };
     }
   },
   {
@@ -62,8 +69,8 @@ const columns = [
 ];
 
 const rooms = [
-  { room: "#2", date: "October 27, 2021", time: "11:00 am - 1:00 pm" },
-  { room: "#3", date: "October 25, 2021", time: "11:00 am - 1:00 pm" }
+  { room: "#2", user: "Agnes Ko", date: "October 27, 2021", time: "11:00 am - 1:00 pm" },
+  { room: "#3", user: "Shaniah Nizzar", date: "October 25, 2021", time: "11:00 am - 1:00 pm" }
 ];
 
 const roomColumns = [
@@ -72,6 +79,13 @@ const roomColumns = [
     text: "Room",
     headerStyle: (column, colIndex) => {
       return { width: '10%',  backgroundColor: '#00a5e4'};
+    }
+  },
+  {
+    dataField: "user",
+    text: "User",
+    headerStyle: (column, colIndex) => {
+      return { backgroundColor: '#00a5e4'};
     }
   },
   {
@@ -112,15 +126,13 @@ const roomColumns = [
 export default function App() {
   return (
     <>
-      {/* <div className={styles.loginContainer}> */}
-      {/* <header className={styles.navbar}>
-    </header> */}
       <NavbarBS isLoggedin={true} />
       <div className={styles.tableBody}>
+        <h1 style={{fontWeight: 'bold', fontSize: '4rem', textAlign: 'left'}}>All Bookings</h1>
         <section className={styles.section}>
           <h1>Table Bookings</h1>
-          <div className="App" style={{backgroundColor: 'white' }}>
-            <BootstrapTable
+          <div className="App" style={{backgroundColor: 'white' }}> 
+            <BootstrapTable 
               bootstrap4
               keyField="id"
               data={tables}
@@ -139,8 +151,7 @@ export default function App() {
             />
           </div>
         </section>
-        {/* </div> */}
       </div>
     </>
   );
-}
+}                 
