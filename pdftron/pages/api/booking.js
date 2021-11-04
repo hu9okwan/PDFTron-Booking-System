@@ -139,5 +139,108 @@ module.exports = {
     userExists,
     createBooking,
     createTable,
-    createUser
+    createUser,
+    generateTableBookingID,
+    generateTableID,
+    deleteTable
 };
+
+
+// imports here
+const admin = require('firebase-admin');
+const serviceAccount = require('./pdftron-461d4-firebase-adminsdk-u1i9d-e77537e5ea.json');
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+    });
+
+const db = admin.firestore();
+
+const table_data = {
+    endDate: admin.firestore.Timestamp.fromDate(new Date('December 20, 1815')),
+    startDate: admin.firestore.Timestamp.fromDate(new Date('December 10, 1815')),
+    tableBookingID: "tblbook_4",
+    tableID: 1,
+    userID:"test@pdftron.com"
+}
+
+async function bookTable(table_data) {
+    const table = await db.collection('TableBooking').add(table_data);
+    document_id = table.id
+    //console.log(document_id);
+    return document_id;
+}
+
+async function cancelTableReservation(booking_id) {
+    const remove_booking = await db.collection('TableBooking').doc(booking_id).delete();
+    console.log("Booking Removed")
+}
+
+async function checkTableAvailability() {
+    
+    const tables = db.collection('Table');
+    
+    const tablesnapshot = await tables.get();
+    
+    if (tablesnapshot.empty) {
+        console.log('No matching documents.');
+        return;
+    }  
+    
+    tablesnapshot.forEach(doc => {
+        //console.log(doc.id, '=>', doc.data());
+        const tables = doc.data();
+        console.log(tables)
+        return (tables);
+    });
+     
+}
+
+const room_data = {
+    endDate: admin.firestore.Timestamp.fromDate(new Date('December 20, 1815')),
+    startDate: admin.firestore.Timestamp.fromDate(new Date('December 10, 1815')),
+    roomBookingID: "rmlbook_4",
+    roomID: 1,
+    userID:"test@pdftron.com"
+}
+function bookRoom(room_data) {
+    const room = await db.collection('RoomBooking').add(room_data);
+    document_id = room.id
+    //console.log(document_id);
+    return document_id;
+}
+
+function cancelRoomReservation(booking_id) {
+    const remove_booking = await db.collection('RoomBooking').doc(booking_id).delete();
+    console.log("Booking Removed")
+}
+
+function checkRoomAvailability() {
+    const rooms = db.collection('Room');
+    
+    const roomsnapshot = await rooms.get();
+    
+    if (roomsnapshot.empty) {
+        console.log('No matching documents.');
+        return;
+    }  
+    
+    roomsnapshot.forEach(doc => {
+        //console.log(doc.id, '=>', doc.data());
+        const rooms = doc.data();
+        console.log(rooms)
+        return (rooms);
+    });
+}
+
+//checkTableAvailability()
+//    .then(tables => console.log(tables))
+
+//bookTable(table_data)
+//    .then(document_id => console.log(document_id))
+
+//const booking_id = "89ghgWKfamTYB7dG9PRN"
+//cancelTableReservation(booking_id)
+
+//checkTableAvailability()
+//    .then(tables => console.log(tables))
