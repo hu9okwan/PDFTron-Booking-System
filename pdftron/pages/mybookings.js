@@ -117,7 +117,9 @@ export default function App() {
       {/* <header className={styles.navbar}>
     </header> */}
       <NavbarBS isLoggedin={true} />
+      <div className={styles.flexContainer}>
       <div className={styles.tableBody}>
+      <h1 style={{fontWeight: 'bold', fontSize: '4rem', textAlign: 'left'}}>My Bookings</h1>
         <section className={styles.section}>
           <h1>Table Bookings</h1>
           <div className="App" style={{backgroundColor: 'white' }}>
@@ -141,6 +143,7 @@ export default function App() {
           </div>
         </section>
         {/* </div> */}
+      </div>
       </div>
     </>
   );

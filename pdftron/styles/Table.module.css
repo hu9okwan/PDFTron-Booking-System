@@ -6,14 +6,12 @@
     justify-content: flex-start;
     flex-direction: column;
     font-family: "Nunito sans", sans-serif;
-    width: 90vw;
-    height: 100vh;
-    padding-inline: 2rem;
+    padding-inline: 5rem;
     background-color: #e9ecef;
     font-weight: bold;
     padding-top: 4rem;
-}
 
+}
 
 .tableBody h1 {
     font-size: 2rem;
