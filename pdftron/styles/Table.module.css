@@ -2,16 +2,16 @@
 
 .tableBody {
     display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
     flex-direction: column;
     font-family: "Nunito sans", sans-serif;
-    width: 100%;
-    height: 100%;
     padding-inline: 5rem;
     background-color: #e9ecef;
     font-weight: bold;
     padding-top: 4rem;
-}
 
+}
 
 .tableBody h1 {
     font-size: 2rem;
