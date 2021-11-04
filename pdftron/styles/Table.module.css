@@ -2,9 +2,11 @@
 
 .tableBody {
     display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
     flex-direction: column;
     font-family: "Nunito sans", sans-serif;
-    width: 100vw;
+    width: 90vw;
     height: 100vh;
     padding-inline: 2rem;
     background-color: #e9ecef;
