@@ -1,0 +1,15 @@
+.body {
+    display: flex;
+    justify-content: center;
+}
+.flexContainer {
+   display: flex;
+   width: 80%;
+   flex-wrap: wrap;
+   padding-top: 200px;
+   justify-content: space-evenly;
+}
+
+.buttons {
+    margin: 25px 10px;
+}

@@ -112,12 +112,12 @@ const roomColumns = [
 
 export default function App() {
   return (
-    <html>
+    <>
       {/* <div className={styles.loginContainer}> */}
       {/* <header className={styles.navbar}>
     </header> */}
       <NavbarBS isLoggedin={true} />
-      <body className={styles.tableBody}>
+      <div className={styles.tableBody}>
         <section className={styles.section}>
           <h1>Table Bookings</h1>
           <div className="App" style={{backgroundColor: 'white' }}>
@@ -141,7 +141,7 @@ export default function App() {
           </div>
         </section>
         {/* </div> */}
-      </body>
-    </html>
+      </div>
+    </>
   );
 }
