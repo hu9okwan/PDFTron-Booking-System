@@ -125,9 +125,9 @@ const roomColumns = [
 
 export default function App() {
   return (
-    <html>
+    <>
       <NavbarBS isLoggedin={true} />
-      <body className={styles.tableBody}>
+      <div className={styles.tableBody}>
         <h1 style={{fontWeight: 'bold', fontSize: '4rem', textAlign: 'left'}}>All Bookings</h1>
         <section className={styles.section}>
           <h1>Table Bookings</h1>
@@ -151,8 +151,7 @@ export default function App() {
             />
           </div>
         </section>
-        {/* </div> */}
-      </body>
-    </html>
+      </div>
+    </>
   );
 }                 

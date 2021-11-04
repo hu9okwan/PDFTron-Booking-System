@@ -54,9 +54,9 @@ const columns = [
 
 export default function App() {
   return (
-    <html>
+    <>
       <NavbarBS isLoggedin={true} />
-      <body className={styles.tableBody}>
+      <div className={styles.tableBody}>
         <section className={styles.section}>
           <h1>User Settings</h1>
           <div className="App" style={{backgroundColor: 'white' }}>
@@ -68,7 +68,7 @@ export default function App() {
             />
         </div>
         </section>
-      </body>
-    </html>
+      </div>
+    </>
   );
 }
