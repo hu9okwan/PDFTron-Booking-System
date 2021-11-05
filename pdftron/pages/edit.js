@@ -32,8 +32,8 @@ export default function Edit() {
         }
     }, [canvas]);
 
-    
-    
+
+
 
     const hotkeys = (canvas) => {
 
@@ -53,7 +53,7 @@ export default function Edit() {
                 // rotates table 90 degrees to the right
                 selectedObj.angle += 90
             } else if (key == 90) {
-                
+
             } else if (key == 82) {
 
             }
@@ -138,7 +138,7 @@ export default function Edit() {
                     Status: ${status}`
 
                 toolTip.style.visibility = 'visible'
-                
+
                 var offset = canvas.calcOffset();
                 let left = offset._offset.left + e.target.left
                 let top = offset._offset.top + e.target.top - 100
@@ -147,7 +147,7 @@ export default function Edit() {
 
 
                 original_opacity    = e.target.opacity;
-              
+
                 e.target.set('opacity', selected_object_opacity);
                 canvas.renderAll();
             }
@@ -172,7 +172,7 @@ export default function Edit() {
     const addTable = (canvas) => {
         // creates a new table object
 
-        // TODO change ID to assign lowest available ID 
+        // TODO change ID to assign lowest available ID
         let colour
 
         if (tableTeam == "Unavailable") {
@@ -224,8 +224,7 @@ export default function Edit() {
     const saveToJson = (canvas) => {
         const canvasJson = canvas.toJSON(["reserved", "tableId", "team"]);
         console.log(canvasJson)
-
-    }
+    };
 
 
     const loadJson = (canvas) => {
