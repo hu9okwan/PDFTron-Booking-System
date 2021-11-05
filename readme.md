@@ -13,7 +13,7 @@
 <h3 align="center">Booking System</h3>
 
   <p align="center">
-    This project seeks to provide a systematic way for employees to book table and room space within a physical office. 
+    This project seeks to provide a systematic way for employees to book table and room space for a physical office. 
     <br />
 <!--     <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
     <br />
