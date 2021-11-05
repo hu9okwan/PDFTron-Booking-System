@@ -177,7 +177,7 @@ async function updateTableSection(tableID,custom_section){
     // };
 
 
-updateTableSection("2","dev")
+//updateTableSection("2","dev")
     
 
 async function updateRoomSection(roomID,room_section){
@@ -202,6 +202,8 @@ async function updateRoomSection(roomID,room_section){
     )
 };
 
+//updateRoomSection("1","f")
+
 async function updateMaxRoomHours(maxHours){
     // TODO
     // given a new maxHours
@@ -211,8 +213,9 @@ async function updateMaxRoomHours(maxHours){
         {
             RoomMaxHours: maxHours
         }
-    )
+    ).then(console.log("Max Hours Updated"))
 };
+//updateMaxRoomHours(8)
 
 async function updateMaxTableDays(maxDays){
     // TODO
@@ -223,8 +226,10 @@ async function updateMaxTableDays(maxDays){
         {
             TableMaxDays: maxDays
         }
-    )
+    ).then(console.log("Max Days Updated"))
 };
+
+//updateMaxTableDays(30)
 
 //checkTableAvailability()
 //    .then(tables => console.log(tables))
