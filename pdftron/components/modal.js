@@ -1,35 +1,17 @@
 import React, {useState} from "react";
 import TableDatePicker from "./datepicker";
 import styles from "../styles/Book.module.css"
-import { Button } from "@chakra-ui/react"
+import {createRoomBooking} from "../database/create";
 
 
-
-import firebase from ''
-
-
-export default Modal = ({ tableID, roomID, team, toggle }) => {
+const Modal = ({ tableID, team, toggle }) => {
     const closeModal = () => {
         toggle();
     };
-
-    const test = async () => {
-        const
-    }
-
-
-
+    //tableId, startDate, endDate, userID
     const submitBooking = () => {
-        console.log(startDate, endDate, tableID, roomID, team)
+        createRoomBooking(tableID, startDate, endDate, team).then(r => console.log(startDate, endDate, tableID, team))
     };
-
-    const checkKey = (e) => {
-        if (e.key === 'Escape') {
-            closeModal();
-            document.removeEventListener('keydown', checkKey)
-        }
-    };
-    document.addEventListener('keydown', checkKey)
 
 
     const [startDate, setStartDate] = useState(new Date());
@@ -37,24 +19,20 @@ export default Modal = ({ tableID, roomID, team, toggle }) => {
 
     return (
 
-            <div className={styles.modal}>
+        <div className={styles.modal}>
                 <span className={styles.close}
-                        onClick={closeModal}>&times;    </span>
-                <div className={styles.selectContainer}>
-                    <TableDatePicker startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate}></TableDatePicker>
-                </div>
-                <div>
-                    {console.log(tableID, roomID)}
-                    {tableID ? `Table ID: ${tableID}` : `Room ID: ${roomID}`}
-
-                </div>
-                <div>{team}</div>
-
-                <Button className={styles.bookButton}
-                    onClick={submitBooking}>Book</Button>
+                      onClick={closeModal}>&times;    </span>
+            <div className={styles.selectContainer}>
+                <TableDatePicker startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate}></TableDatePicker>
             </div>
+            <div>Table ID: {tableID}</div>
+            <div>{team}</div>
+
+            <button className={styles.bookButton}
+                    onClick={submitBooking}>Book</button>
+        </div>
     );
 
 }
 
-
+export default Modal

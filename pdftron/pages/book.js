@@ -25,7 +25,7 @@ Low Priority:
 
     const [state, setState] = useState ({
         seen: false
-    })
+    });
     const togglePop = () => {
         setState({
             seen: !state.seen
@@ -129,6 +129,48 @@ Low Priority:
             }
         }
     )}
+
+    function updateMap(selectedDate, canvas) {
+        // find data for tables with selected date and updates their status
+        let tables = canvas._objects
+        if (tables !== undefined) { // change to async await so dont have to check here for initial load
+            for (let table of tables) {
+                // console.log(table.tableId)
+
+                table["reserved"] = false;
+                let fillColour;
+                if (table["team"] === "General") {
+                    fillColour = "#C7E4A7"
+                } else if (table["team"] === "Web") {
+                    fillColour = "#7D99E8"
+                } else if (table["team"] === "Unavailable") {
+                    fillColour = "#D3D3D3"
+                }
+
+                table.set("fill", fillColour)
+
+                for (let booking in dummyData.TableBooking) {
+
+                    // it should call function from api to check if table is booked on selected date
+                    let bookingDate = dummyData.TableBooking[booking]["startDate"]
+                    let bookingTableID = dummyData.TableBooking[booking]["tableID"]
+                    let date = `${selectedDate.getMonth()}/${selectedDate.getDate()}/${selectedDate.getFullYear()}`
+                    let date2 = bookingDate
+                    console.log("selected date:", date)
+                    console.log(date2)
+
+                    if (date === date2 && bookingTableID === table.tableId) {
+                        console.log("yes")
+                        table.set("reserved", true)
+                        table.set("fill", "#CD5C5C")
+                    }
+
+                }
+
+            }
+            canvas.renderAll()
+        }
+    }
 
 
     return (

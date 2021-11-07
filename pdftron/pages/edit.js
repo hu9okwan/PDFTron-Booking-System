@@ -4,7 +4,8 @@ import { NavbarBS } from '../components/NavbarBS';
 import styles from '../styles/Home.module.css'
 import styles2 from "../styles/Book.module.css"
 import { Heading, Button, Select } from "@chakra-ui/react"
-
+import {saveToDatabase} from "../database/create";
+import {getFloorPlan} from "../database/read";
 
 const jsonObj = require('../public/tempJSON.json');
 
@@ -200,9 +201,9 @@ export default function Edit() {
 
             // custom properties
             // IMPORTANT: make sure to add the key name to the array in saveToJson method if adding new properties
-            
+
             // tableID:  canvas._objects.length - 1,
-            reserved: false,
+            bookings: [],
             team: tableTeam,
         });
 
@@ -211,7 +212,6 @@ export default function Edit() {
         } else {
             rect["roomID"] = canvas._objects.length - 1
         }
-
 
         canvas.add(rect);
         canvas.centerObject(rect);
@@ -232,9 +232,10 @@ export default function Edit() {
 
 
     const saveToJson = (canvas) => {
-        const canvasJson = canvas.toJSON(["reserved", "tableID", "roomID", "team"]);
-        console.log(canvasJson)
+        const canvasJson = canvas.toJSON(["bookings", "tableID", "roomID", "team"]);
+        saveToDatabase(canvasJson).then(r => console.log("saved floor plan"));
     };
+
 
 
     const loadJson = (canvas) => {
@@ -242,8 +243,7 @@ export default function Edit() {
         console.log(jsonObj)
         // console.log(jsonString)
         canvas.loadFromJSON(jsonObj, canvas.renderAll.bind(canvas))
-
-    }
+    };
 
 
 
@@ -257,7 +257,7 @@ export default function Edit() {
                 <div>
                     <Heading>Modify Floor Plan</Heading>
                     <div className={styles.buttonsContainer}>
-                        Team: 
+                        Team:
                         <div className="dropdown">
                             <Select name="tableTeam" id="tableTeam" onChange={changeTeam}>
                                 <option value="General">General</option>
@@ -270,7 +270,7 @@ export default function Edit() {
                         <Button className={styles.pointer} onClick={() => removeTable(canvas)}>Remove Selected</Button>
                         <Button className={styles.pointer} onClick={() => saveToJson(canvas)}>Save Changes</Button>
                     </div>
-                    
+
                 </div>
 
             </div>
