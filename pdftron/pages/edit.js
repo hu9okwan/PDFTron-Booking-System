@@ -3,6 +3,8 @@ import { fabric } from 'fabric';
 import { NavbarBS } from '../components/NavbarBS';
 import styles from '../styles/Home.module.css'
 import styles2 from "../styles/Book.module.css"
+import { Heading, Button, Select } from "@chakra-ui/react"
+
 
 const jsonObj = require('../public/tempJSON.json');
 
@@ -246,18 +248,18 @@ export default function Edit() {
                 <span id="toolTip" className={styles2.toolTip}></span>
 
                 <div>
-                    <h1>Modify Floor Plan</h1>
+                    <Heading>Modify Floor Plan</Heading>
                     <div className={styles.buttonsContainer}>
                         <div className="dropdown">
-                            <select name="tableTeam" id="tableTeam" onChange={changeTeam}>
+                            <Select name="tableTeam" id="tableTeam" onChange={changeTeam}>
                                 <option value="General">General</option>
                                 <option value="Web">Web</option>
                                 <option value="Unavailable">Unavailable</option>
-                            </select>
-                            <button className={styles.pointer} onClick={() => addTable(canvas)}>Add Table</button>
+                            </Select>
                         </div>
-                        <button className={styles.pointer} onClick={() => removeTable(canvas)}>Remove Selected</button>
-                        <button className={styles.pointer} onClick={() => saveToJson(canvas)}>Save Changes</button>
+                        <Button className={styles.pointer} onClick={() => addTable(canvas)}>Add Table</Button>
+                        <Button className={styles.pointer} onClick={() => removeTable(canvas)}>Remove Selected</Button>
+                        <Button className={styles.pointer} onClick={() => saveToJson(canvas)}>Save Changes</Button>
                     </div>
                 </div>
 
