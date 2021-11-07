@@ -145,4 +145,17 @@ export const getFloorPlan = async ()=> {
     }).catch((error) => {
         console.error(error);
     });
-}
+};
+
+
+export const getAllTeams = async () => {
+    get(child(dbRef, `teams/`)).then((snapshot) => {
+        if (snapshot.exists()) {
+            return snapshot.val()
+        } else {
+            console.log("No data available");
+        }
+    }).catch((error) => {
+        console.error(error);
+    });
+};

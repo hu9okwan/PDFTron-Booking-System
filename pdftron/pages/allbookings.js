@@ -4,10 +4,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import BootstrapTable from "react-bootstrap-table-next";
 import {NavbarBS} from "../components/NavbarBS";
-import { Button, ButtonGroup, Stack } from "@chakra-ui/react"
-
-
-
+import { Button, Stack, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper } from "@chakra-ui/react"
 const tables = [
   { table: "#2", user: "Diego Felix", startDate: "October 27, 2021", endDate: "October 27, 2021", type: "General" },
   { table: "#3", user: "Tyler Gordon", startDate: "October 25, 2021", endDate: "October 25, 2021", type: "HR" },
@@ -54,14 +51,14 @@ const columns = [
     text: "Edit/Delete",
     formatter: () => {
       return (
-        <Stack direction="row" spacing={4} justifyContent="center">
-        <Button colorScheme="twitter" variant="outline">
-        Edit
-        </Button>
-        <Button colorScheme="red" variant="outline">
-          Delete
-      </Button>
-      </Stack>
+          <Stack direction="row" spacing={4} justifyContent="center">
+            <Button colorScheme="twitter" variant="outline">
+              Edit
+            </Button>
+            <Button colorScheme="red" variant="outline">
+              Delete
+            </Button>
+          </Stack>
       )
     },
     headerStyle: (column, colIndex) => {
@@ -109,14 +106,14 @@ const roomColumns = [
     text: "Edit/Delete",
     formatter: () => {
       return (
-        <Stack direction="row" spacing={4} justifyContent="center">
-        <Button colorScheme="twitter" variant="outline">
-        Edit
-        </Button>
-        <Button colorScheme="red" variant="outline">
-          Delete
-        </Button>
-        </Stack>
+          <Stack direction="row" spacing={4} justifyContent="center">
+            <Button colorScheme="twitter" variant="outline">
+              Edit
+            </Button>
+            <Button colorScheme="red" variant="outline">
+              Delete
+            </Button>
+          </Stack>
       )
     },
     headerStyle: (column, colIndex) => {
@@ -125,62 +122,45 @@ const roomColumns = [
   }
 ];
 
-
-
-export async function getStaticProps() {
-  // SERVER SIDE RENDERING OF DATABSE FUNCTIONS
-  var admin = require("firebase-admin");
-  const serviceAccount = require('../firebase/pdftron-461d4-firebase-adminsdk-u1i9d-e77537e5ea.json');
-  // admin.initializeApp({
-  //   credential: admin.credential.cert(serviceAccount)
-  // });
-  const db = admin.firestore();
-
-  const all_teams = db.collection('teams');
-  const snapshot = await all_teams.get();
-  if (snapshot.empty) {
-    console.log('No matching documents.');
-  }
-  let team_list = [];
-  snapshot.forEach(doc => {
-    //console.log(doc.id, '=>', doc.data());
-    team_list.push(doc.data())
-  });
-  return {props: {team_list},};
-}
-
-
-export default function App({ team_list }) {
+export default function App() {
   return (
-    <>
+      <>
+        <NavbarBS isLoggedin={true} />
+        <div className={styles.tableBody}>
+          <h1 style={{fontWeight: 'bold', fontSize: '4rem', textAlign: 'left'}}>All Bookings</h1>
 
-      <NavbarBS isLoggedin={true} />
-      <div className={styles.tableBody}>
-        <h1 style={{fontWeight: 'bold', fontSize: '4rem', textAlign: 'left'}}>All Bookings</h1>
-        <section className={styles.section}>
-          <h1></h1>
-          <div className="App" style={{backgroundColor: 'white' }}>
-            <BootstrapTable
-              bootstrap4
-              keyField="id"
-              data={tables}
-              columns={columns}
-            />
-
+          <div>Max Booking Hours
+            <NumberInput id="maxHours" precision={0} size="md" maxW={20} defaultValue={1} min={1} max={24} allowMouseWheel>
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
           </div>
-        </section>
-        <section className={styles.section}>
-          <h1>Room Bookings</h1>
-          <div className="App" style={{backgroundColor: 'white'}}>
-            <BootstrapTable
-              bootstrap4
-              keyField="id"
-              data={rooms}
-              columns={roomColumns}
-            />
-          </div>
-        </section>
-      </div>
-    </>
+          <section className={styles.section}>
+            <h1>Table Bookings</h1>
+            <div className="App" style={{backgroundColor: 'white' }}>
+              <BootstrapTable
+                  bootstrap4
+                  keyField="id"
+                  data={tables}
+                  columns={columns}
+              />
+            </div>
+          </section>
+          <section className={styles.section}>
+            <h1>Room Bookings</h1>
+            <div className="App" style={{backgroundColor: 'white'}}>
+              <BootstrapTable
+                  bootstrap4
+                  keyField="id"
+                  data={rooms}
+                  columns={roomColumns}
+              />
+            </div>
+          </section>
+        </div>
+      </>
   );
 }
