@@ -10,7 +10,9 @@ export const getRooms = async () => {
     get(child(dbRef, `rooms/`)).then((snapshot) => {
         if (snapshot.exists()) {
             const data = snapshot.val();
-            console.log(data[0].name)
+            for (let i = 0; i<data.length; i++) {
+                console.log(data[i].name)
+            }
         } else {
             console.log("No data available");
         }
