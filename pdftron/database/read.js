@@ -47,6 +47,31 @@ export const getUserTableBookings = async (userID) => {
     });
 };
 
+export const getAllTableBookings = async () => {
+    let allBookings = [];
+    get(child(dbRef, `table/`)).then((snapshot) => {
+
+        if (snapshot.exists()) {
+            const data = snapshot.val();
+
+
+            for (let table of data) {
+                for (let booking of table.bookings) {
+                    let ans = {table: table.id, startDate: booking.startDate, endDate: booking.endDate, teamId: table.teamId}
+                    allBookings.push(ans);
+                }
+            }
+        }
+        else {
+            console.log("No data available");
+        }
+        return allBookings;
+
+    }).catch((error) => {
+        console.error(error);
+    });
+};
+
 export const getUserRoomBookings = async (userID) => {
     get(child(dbRef, `rooms/`)).then((snapshot) => {
         let curBookings = [];
@@ -67,6 +92,31 @@ export const getUserRoomBookings = async (userID) => {
             console.log("No data available");
         }
         return curBookings;
+
+    }).catch((error) => {
+        console.error(error);
+    });
+};
+
+export const getAllRoomBookings = async () => {
+    let allBookings = [];
+    get(child(dbRef, `rooms/`)).then((snapshot) => {
+
+        if (snapshot.exists()) {
+            const data = snapshot.val();
+
+
+            for (let table of data) {
+                for (let booking of table.bookings) {
+                    let ans = {table: table.id, startDate: booking.startDate, endDate: booking.endDate, teamId: table.teamId}
+                    allBookings.push(ans);
+                    }
+                }
+            }
+        else {
+            console.log("No data available");
+        }
+        return allBookings;
 
     }).catch((error) => {
         console.error(error);
