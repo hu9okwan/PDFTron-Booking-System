@@ -42,15 +42,16 @@ Low Priority:
         new fabric.Canvas('canvas', {
             height: 800,
             width: 1000,
-            // backgroundImage: '../office-outline.png'
+            backgroundImage: '../office-outline.png'
         })
     );
 
 
-    const [tableData, setTableData] = useState (
+    const [rectData, setRectData] = useState (
         {
-            tableID: -1,
-            team: "",
+            tableID: undefined,
+            roomID: undefined,
+            team: undefined
         }
     )
 
@@ -79,8 +80,9 @@ Low Priority:
         canvas.on('mouse:over', function(e) {
             if (e.target) {
                 const status = e.target.reserved ? "Reserved" : "Available"
+                const tableOrRoom = e.target.tableID ? `Table ID: ${e.target.tableID}` : `Room ID: ${e.target.roomID}`
                 toolTip.innerText =
-                    `Table ID: ${e.target.tableId}
+                    `${tableOrRoom}
                     Team: ${e.target.team}
                     Status: ${status}`
 
@@ -115,12 +117,13 @@ Low Priority:
             //check if user clicked an object
             if (e.target) {
                 //clicked on object
-                console.log(`Table ID: ${e.target.tableID}, Team: ${e.target.team}, Reserved: ${e.target.reserved}`)
-                let selectedTableData = {
-                    tableID: e.target.tableId,
+                let selectedRectData = {
+                    tableID: e.target.tableID,
+                    roomID: e.target.roomID,
                     team: e.target.team,
                     }
-                setTableData(selectedTableData)
+                setRectData(selectedRectData)
+                console.log(selectedRectData)
                 togglePop()
 
             }
@@ -134,7 +137,7 @@ Low Priority:
             <div className={styles.flexContainer}>
                 <canvas id="canvas"></canvas>
                 <span id="toolTip" className={styles.toolTip}></span>
-                {state.seen ? <Modal tableID={tableData.tableID} team={tableData.team} toggle={togglePop}/> : null}
+                {state.seen ? <Modal tableID={rectData.tableID} roomID={rectData.roomID} team={rectData.team} toggle={togglePop}/> : null}
             </div>
         </div>
 
