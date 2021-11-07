@@ -4,21 +4,31 @@ import styles from "../styles/Book.module.css"
 import { Button } from "@chakra-ui/react"
 
 
-const Modal = ({ tableID, roomID, team, toggle }) => {
+
+import firebase from ''
+
+
+export default Modal = ({ tableID, roomID, team, toggle }) => {
     const closeModal = () => {
         toggle();
     };
 
+    const test = async () => {
+        const
+    }
+
+
+
     const submitBooking = () => {
         console.log(startDate, endDate, tableID, roomID, team)
-    }
+    };
 
     const checkKey = (e) => {
         if (e.key === 'Escape') {
-            closeModal()
+            closeModal();
             document.removeEventListener('keydown', checkKey)
         }
-    }
+    };
     document.addEventListener('keydown', checkKey)
 
 
@@ -47,4 +57,4 @@ const Modal = ({ tableID, roomID, team, toggle }) => {
 
 }
 
-export default Modal
+
