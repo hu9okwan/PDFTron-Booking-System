@@ -3,6 +3,8 @@ import { fabric } from 'fabric';
 import { NavbarBS } from '../components/NavbarBS';
 import styles from '../styles/Home.module.css'
 import styles2 from "../styles/Book.module.css"
+import { Heading, Button, Select } from "@chakra-ui/react"
+
 
 const jsonObj = require('../public/tempJSON.json');
 
@@ -132,8 +134,9 @@ export default function Edit() {
             }
             else if (e.target) {
                 const status = e.target.reserved ? "Reserved" : "Available"
+                const tableOrRoom = e.target.tableID ? `Table ID: ${e.target.tableID}` : `Room ID: ${e.target.roomID}`
                 toolTip.innerText =
-                    `Table ID: ${e.target.tableId}
+                    `${tableOrRoom}
                     Team: ${e.target.team}
                     Status: ${status}`
 
@@ -169,7 +172,7 @@ export default function Edit() {
         setOption(event.target.value)
     }
 
-    const addTable = (canvas) => {
+    const addRect = (canvas, isAddTable) => {
         // creates a new table object
 
         // TODO change ID to assign lowest available ID
@@ -184,8 +187,9 @@ export default function Edit() {
         }
 
         const rect = new fabric.Rect({
-            height: 50,
-            width: 25,
+
+            height: isAddTable ? 50 : 100,
+            width: isAddTable ? 25 : 100,
             stroke: "black",
             strokeWidth: 1,
             strokeUniform: true,
@@ -196,11 +200,17 @@ export default function Edit() {
 
             // custom properties
             // IMPORTANT: make sure to add the key name to the array in saveToJson method if adding new properties
-
-            tableId:  canvas._objects.length - 1,
+            
+            // tableID:  canvas._objects.length - 1,
             reserved: false,
             team: tableTeam,
         });
+
+        if (isAddTable) {
+            rect["tableID"] = canvas._objects.length - 1
+        } else {
+            rect["roomID"] = canvas._objects.length - 1
+        }
 
 
         canvas.add(rect);
@@ -222,7 +232,7 @@ export default function Edit() {
 
 
     const saveToJson = (canvas) => {
-        const canvasJson = canvas.toJSON(["reserved", "tableId", "team"]);
+        const canvasJson = canvas.toJSON(["reserved", "tableID", "roomID", "team"]);
         console.log(canvasJson)
     };
 
@@ -245,19 +255,22 @@ export default function Edit() {
                 <span id="toolTip" className={styles2.toolTip}></span>
 
                 <div>
-                    <h1>Modify Floor Plan</h1>
+                    <Heading>Modify Floor Plan</Heading>
                     <div className={styles.buttonsContainer}>
+                        Team: 
                         <div className="dropdown">
-                            <select name="tableTeam" id="tableTeam" onChange={changeTeam}>
+                            <Select name="tableTeam" id="tableTeam" onChange={changeTeam}>
                                 <option value="General">General</option>
                                 <option value="Web">Web</option>
                                 <option value="Unavailable">Unavailable</option>
-                            </select>
-                            <button className={styles.pointer} onClick={() => addTable(canvas)}>Add Table</button>
+                            </Select>
                         </div>
-                        <button className={styles.pointer} onClick={() => removeTable(canvas)}>Remove Selected</button>
-                        <button className={styles.pointer} onClick={() => saveToJson(canvas)}>Save Changes</button>
+                        <Button className={styles.pointer} onClick={() => addRect(canvas, true)}>Add Table</Button>
+                        <Button className={styles.pointer} onClick={() => addRect(canvas, false)}>Add Room</Button>
+                        <Button className={styles.pointer} onClick={() => removeTable(canvas)}>Remove Selected</Button>
+                        <Button className={styles.pointer} onClick={() => saveToJson(canvas)}>Save Changes</Button>
                     </div>
+                    
                 </div>
 
             </div>

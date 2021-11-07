@@ -1,16 +1,25 @@
 import React, {useState} from "react";
 import TableDatePicker from "./datepicker";
 import styles from "../styles/Book.module.css"
+import { Button } from "@chakra-ui/react"
 
 
-const Modal = ({ tableID, team, toggle }) => {
+const Modal = ({ tableID, roomID, team, toggle }) => {
     const closeModal = () => {
         toggle();
     };
 
     const submitBooking = () => {
-        console.log(startDate, endDate, tableID, team)
+        console.log(startDate, endDate, tableID, roomID, team)
     }
+
+    const checkKey = (e) => {
+        if (e.key === 'Escape') {
+            closeModal()
+            document.removeEventListener('keydown', checkKey)
+        }
+    }
+    document.addEventListener('keydown', checkKey)
 
 
     const [startDate, setStartDate] = useState(new Date());
@@ -24,11 +33,15 @@ const Modal = ({ tableID, team, toggle }) => {
                 <div className={styles.selectContainer}>
                     <TableDatePicker startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate}></TableDatePicker>
                 </div>
-                <div>Table ID: {tableID}</div>
+                <div>
+                    {console.log(tableID, roomID)}
+                    {tableID ? `Table ID: ${tableID}` : `Room ID: ${roomID}`}
+
+                </div>
                 <div>{team}</div>
 
-                <button className={styles.bookButton}
-                    onClick={submitBooking}>Book</button>
+                <Button className={styles.bookButton}
+                    onClick={submitBooking}>Book</Button>
             </div>
     );
 
