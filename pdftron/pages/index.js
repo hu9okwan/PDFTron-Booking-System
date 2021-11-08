@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import Login from '../components/Login'
-import Logout from '../components/Logout'
+import Login from '../components/login'
+import Logout from '../components/logout'
 import {NavbarBS} from '../components/NavbarBS';
 
 import 'bootstrap/dist/css/bootstrap.css'
@@ -41,7 +41,6 @@ export default function Home() {
     </div>
     </section>
     <section className={styles.bottomHalf}>
-    {/* <Logout /> */}
     <div>
     <img src="office.jpeg" alt="office icon"/>
     </div>
@@ -51,3 +50,20 @@ export default function Home() {
     </>
     )
 }
+
+
+// import { useSession, signIn, signOut } from "next-auth/react"
+
+// export default function Component() {
+//   const { data: session } = useSession()
+//   if(session) {
+//     return <>
+//       Signed in as {session.user.email} <br/>
+//       <button onClick={() => signOut()}>Sign out</button>
+//     </>
+//   }
+//   return <>
+//     Not signed in <br/>
+//     <button onClick={() => signIn()}>Sign in</button>
+//   </>
+// }

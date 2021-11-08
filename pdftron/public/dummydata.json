@@ -1,0 +1,905 @@
+{
+    "Admin": {
+        "settings": {
+            "RoomMaxHours": 2,
+            "TableMaxDays": 24
+        }
+    },
+    "Room": {
+        "Room1": {
+            "roomID": 1,
+            "section": "General"
+        },
+        "Room2": {
+            "roomID": 2,
+            "section": "Web"
+        }
+    },
+    "RoomBooking": {
+        "RandomUiqID": {
+            "RoomID": 1,
+            "endDatatime": "31 October 2021 at 00:00:00 UTC-7",
+            "startDatetime": "29 October 2021 at 00:00:00 UTC-7",
+            "userID": "test@pdftron.com"
+        },
+        "SomeRandomUiqID123": {
+            "RoomID": 2,
+            "endDatatime": "28 October 2021 at 00:00:00 UTC-7",
+            "startDatetime": "27 October 2021 at 00:00:00 UTC-7",
+            "userID": "test@pdftron.com"
+        }
+    },
+    "Table": {
+        "Table0": {
+            "left": 271.18,
+            "top": 131.65,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+            "scaleX": 6.48,
+            "scaleY": 3.49,
+            "reserved": false,
+            "tableId": 0,
+            "team": "General"
+        },
+        "Table1": {
+            "left": 192,
+            "top": 236,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 90,
+            "reserved": false,
+            "tableId": 1,
+            "team": "General"
+        },
+        "Table2": {
+            "left": 339,
+            "top": 264,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+            "reserved": false,
+            "tableId": 2,
+            "team": "General"
+        },
+        "Table3": {
+            "left": 339,
+            "top": 332,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+            "reserved": false,
+            "tableId": 3,
+            "team": "General"
+        },
+        
+        "Table4": {
+
+            "left": 339,
+            "top": 386,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+
+            "reserved": false,
+            "tableId": 4,
+            "team": "General"
+        },
+        "Table5": {
+
+            "left": 241,
+            "top": 362,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+
+            "reserved": false,
+            "tableId": 5,
+            "team": "General"
+        },
+        "Table6": {
+
+            "left": 326,
+            "top": 430,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 90,
+
+            "reserved": false,
+            "tableId": 6,
+            "team": "General"
+        },
+        "Table7": {
+
+            "left": 258,
+            "top": 489,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 90,
+
+            "reserved": false,
+            "tableId": 7,
+            "team": "General"
+        },
+        "Table8": {
+
+            "left": 339,
+            "top": 550,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+
+            "reserved": false,
+            "tableId": 8,
+            "team": "General"
+        },
+        "Table9": {
+
+            "left": 258,
+            "top": 518,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 90,
+
+            "reserved": false,
+            "tableId": 9,
+            "team": "General"
+        },
+        "Table10": {
+
+            "left": 108,
+            "top": 715,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+
+            "reserved": false,
+            "tableId": 10,
+            "team": "General"
+        },
+        "Table11": {
+
+            "left": 108,
+            "top": 662,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+
+            "reserved": false,
+            "tableId": 11,
+            "team": "General"
+        },
+        "Table12": {
+
+            "left": 108,
+            "top": 609,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+
+            "reserved": false,
+            "tableId": 12,
+            "team": "General"
+        },
+        "Table13": {
+
+            "left": 886,
+            "top": 533,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+
+            "reserved": false,
+            "tableId": 13,
+            "team": "General"
+        },
+        "Table14": {
+
+            "left": 817,
+            "top": 532,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+
+            "reserved": false,
+            "tableId": 14,
+            "team": "General"
+        },
+        "Table15": {
+
+            "left": 790,
+            "top": 532,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+
+            "reserved": false,
+            "tableId": 15,
+            "team": "General"
+        },
+        "Table16": {
+
+            "left": 817,
+            "top": 585,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+
+            "reserved": false,
+            "tableId": 16,
+            "team": "General"
+        },
+        "Table17": {
+
+            "left": 790,
+            "top": 585,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+
+            "reserved": false,
+            "tableId": 17,
+            "team": "General"
+        },
+        "Table18": {
+
+            "left": 695,
+            "top": 533,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+
+            "reserved": false,
+            "tableId": 18,
+            "team": "General"
+        },
+        "Table19": {
+
+            "left": 875,
+            "top": 660,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 90,
+
+            "reserved": false,
+            "tableId": 19,
+            "team": "General"
+        },
+        "Table20": {
+
+            "left": 876,
+            "top": 728,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 90,
+
+            "reserved": false,
+            "tableId": 20,
+            "team": "General"
+        },
+        "Table21": {
+
+            "left": 770,
+            "top": 716.5,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+
+            "scaleX": 1,
+            "scaleY": 0.94,
+            "angle": 0,
+
+            "reserved": false,
+            "tableId": 21,
+            "team": "General"
+        },
+        "Table22": {
+
+            "left": 741,
+            "top": 717,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+
+            "scaleX": 1,
+            "scaleY": 0.92,
+            "angle": 0,
+
+            "reserved": false,
+            "tableId": 22,
+            "team": "General"
+        },
+        "Table23": {
+
+            "left": 741,
+            "top": 668,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+
+            "scaleX": 1,
+            "scaleY": 0.92,
+            "angle": 0,
+
+            "reserved": false,
+            "tableId": 23,
+            "team": "General"
+        },
+        "Table24": {
+
+            "left": 626,
+            "top": 718.5,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+
+            "scaleX": 1,
+            "scaleY": 0.86,
+            "angle": 0,
+
+            "reserved": false,
+            "tableId": 24,
+            "team": "General"
+        },
+        "Table25": {
+
+            "left": 539.16,
+            "top": 693.9,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+
+            "scaleX": 3.82,
+            "scaleY": 2.77,
+            "angle": 90,
+
+            "reserved": false,
+            "tableId": 25,
+            "team": "General"
+        },
+        "Table26": {
+
+            "left": 107,
+            "top": 284,
+            "width": 25,
+            "height": 50,
+            "fill": "#D3D3D3",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+
+            "reserved": true,
+            "tableId": 26,
+            "team": "Unavailable"
+        },
+        "Table27": {
+
+            "left": 523,
+            "top": 532,
+            "width": 25,
+            "height": 50,
+            "fill": "#D3D3D3",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+
+            "reserved": true,
+            "tableId": 27,
+            "team": "Unavailable"
+        },
+        "Table28": {
+
+            "left": 496,
+            "top": 532,
+            "width": 25,
+            "height": 50,
+            "fill": "#D3D3D3",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+
+            "reserved": true,
+            "tableId": 28,
+            "team": "Unavailable"
+        },
+        "Table29": {
+
+            "left": 120,
+            "top": 352,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 90,
+
+            "reserved": false,
+            "tableId": 29,
+            "team": "General"
+        },
+        "Table30": {
+
+            "left": 120,
+            "top": 379,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 90,
+
+            "reserved": false,
+            "tableId": 30,
+            "team": "General"
+        },
+        "Table31": {
+
+            "left": 120,
+            "top": 460,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 90,
+
+            "reserved": false,
+            "tableId": 31,
+            "team": "General"
+        },
+        "Table32": {
+
+            "left": 120,
+            "top": 514,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 90,
+
+            "reserved": false,
+            "tableId": 32,
+            "team": "General"
+        },
+        "Table33": {
+
+            "left": 120,
+            "top": 433,
+            "width": 25,
+            "height": 50,
+            "fill": "#D3D3D3",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 90,
+
+            "reserved": true,
+            "tableId": 33,
+            "team": "Unavailable"
+        },
+        "Table34": {
+
+            "left": 120,
+            "top": 541,
+            "width": 25,
+            "height": 50,
+            "fill": "#7D99E8",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 90,
+
+            "reserved": false,
+            "tableId": 34,
+            "team": "Web"
+        },
+        "Table35": {
+
+            "left": 391,
+            "top": 715,
+            "width": 25,
+            "height": 50,
+            "fill": "#7D99E8",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+
+            "reserved": false,
+            "tableId": 35,
+            "team": "Web"
+        },
+        "Table36": {
+
+            "left": 418,
+            "top": 715,
+            "width": 25,
+            "height": 50,
+            "fill": "#7D99E8",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+
+            "reserved": false,
+            "tableId": 36,
+            "team": "Web"
+        },
+        "Table37": {
+
+            "left": 418,
+            "top": 663,
+            "width": 25,
+            "height": 50,
+            "fill": "#7D99E8",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+
+            "reserved": false,
+            "tableId": 37,
+            "team": "Web"
+        },
+        "Table38": {
+
+            "left": 391,
+            "top": 663,
+            "width": 25,
+            "height": 50,
+            "fill": "#7D99E8",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+
+            "reserved": false,
+            "tableId": 38,
+            "team": "Web"
+        },
+        "Table39": {
+
+            "left": 303,
+            "top": 715,
+            "width": 25,
+            "height": 50,
+            "fill": "#7D99E8",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+
+            "reserved": false,
+            "tableId": 39,
+            "team": "Web"
+        },
+        "Table40": {
+
+            "left": 330,
+            "top": 715,
+            "width": 25,
+            "height": 50,
+            "fill": "#7D99E8",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+
+            "reserved": false,
+            "tableId": 40,
+            "team": "Web"
+        },
+        "Table41": {
+
+            "left": 330,
+            "top": 663,
+            "width": 25,
+            "height": 50,
+            "fill": "#7D99E8",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+
+            "reserved": false,
+            "tableId": 41,
+            "team": "Web"
+        },
+        "Table42": {
+
+            "left": 303,
+            "top": 663,
+            "width": 25,
+            "height": 50,
+            "fill": "#7D99E8",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+
+            "reserved": false,
+            "tableId": 42,
+            "team": "Web"
+        },
+        "Table43": {
+
+            "left": 232,
+            "top": 663,
+            "width": 25,
+            "height": 50,
+            "fill": "#7D99E8",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+
+            "reserved": false,
+            "tableId": 43,
+            "team": "Web"
+        },
+        "Table44": {
+
+            "left": 232,
+            "top": 715,
+            "width": 25,
+            "height": 50,
+            "fill": "#7D99E8",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+
+            "reserved": false,
+            "tableId": 44,
+            "team": "Web"
+        },
+        "Table45": {
+
+            "left": 205,
+            "top": 663,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+
+            "reserved": false,
+            "tableId": 45,
+            "team": "General"
+        },
+        "Table46": {
+
+            "left": 205,
+            "top": 715,
+            "width": 25,
+            "height": 50,
+            "fill": "#C7E4A7",
+
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+
+            "reserved": false,
+            "tableId": 46,
+            "team": "General"
+        }
+
+    },
+    "TableBooking": {
+        "TableBooking1": {
+            "endDate": "23 October 2021 at 00:00:00 UTC-7",
+            "startDate": "10/6/2021",
+            "tableID": 1,
+            "userID": "test@pdftron.com"
+        },
+        "TableBooking2": {
+            "endDate": "23 October 2021 at 00:00:00 UTC-7",
+            "startDate": "10/6/2021",
+            "tableID": 6,
+            "userID": "test@pdftron.com"
+        },
+        "TableBooking3": {
+            "endDate": "23 October 2021 at 00:00:00 UTC-7",
+            "startDate": "10/6/2021",
+            "tableID": 32,
+            "userID": "test@pdftron.com"
+        },
+        "TableBooking4": {
+            "endDate": "23 October 2021 at 00:00:00 UTC-7",
+            "startDate": "10/6/2021",
+            "tableID": 44,
+            "userID": "test@pdftron.com"
+        }
+        ,"TableBooking5": {
+            "endDate": "23 October 2021 at 00:00:00 UTC-7",
+            "startDate": "10/6/2021",
+            "tableID": 25,
+            "userID": "test@pdftron.com"
+        },
+        "TableBooking6": {
+            "endDate": "23 October 2021 at 00:00:00 UTC-7",
+            "startDate": "10/6/2021",
+            "tableID": 21,
+            "userID": "test@pdftron.com"
+        },
+        "TableBooking7": {
+            "endDate": "23 October 2021 at 00:00:00 UTC-7",
+            "startDate": "10/7/2021",
+            "tableID": 4,
+            "userID": "test@pdftron.com"
+        },
+        "TableBooking8": {
+            "endDate": "23 October 2021 at 00:00:00 UTC-7",
+            "startDate": "10/7/2021",
+            "tableID": 24,
+            "userID": "test@pdftron.com"
+        },
+        "TableBooking9": {
+            "endDate": "23 October 2021 at 00:00:00 UTC-7",
+            "startDate": "10/7/2021",
+            "tableID": 27,
+            "userID": "test@pdftron.com"
+        }
+    },
+    "User": {
+        "username": {
+            "email": "test@pdftron.com",
+            "isAdmin": "True"
+        }
+    },
+    "DefaultData" : {
+
+        "TableData": {
+            "type": "rect",
+            "version": "4.6.0",
+            "originX": "center",
+            "originY": "center",
+            "stroke": "black",
+            "strokeWidth": 1,
+            "strokeDashArray": null,
+            "strokeLineCap": "butt",
+            "strokeDashOffset": 0,
+            "strokeLineJoin": "miter",
+            "strokeUniform": true,
+            "strokeMiterLimit": 4,
+            "flipX": false,
+            "flipY": false,
+            "opacity": 1,
+            "shadow": null,
+            "visible": true,
+            "backgroundColor": "",
+            "fillRule": "nonzero",
+            "paintFirst": "fill",
+            "globalCompositeOperation": "source-over",
+            "skewX": 0,
+            "skewY": 0,
+            "rx": 0,
+            "ry": 0
+        },
+        "BackgroundImage": {
+            "type": "image",
+            "version": "4.6.0",
+            "originX": "left",
+            "originY": "top",
+            "left": 0,
+            "top": 0,
+            "width": 1000,
+            "height": 800,
+            "fill": "rgb(0,0,0)",
+            "stroke": null,
+            "strokeWidth": 0,
+            "strokeDashArray": null,
+            "strokeLineCap": "butt",
+            "strokeDashOffset": 0,
+            "strokeLineJoin": "miter",
+            "strokeUniform": false,
+            "strokeMiterLimit": 4,
+            "scaleX": 1,
+            "scaleY": 1,
+            "angle": 0,
+            "flipX": false,
+            "flipY": false,
+            "opacity": 1,
+            "shadow": null,
+            "visible": true,
+            "backgroundColor": "",
+            "fillRule": "nonzero",
+            "paintFirst": "fill",
+            "globalCompositeOperation": "source-over",
+            "skewX": 0,
+            "skewY": 0,
+            "cropX": 0,
+            "cropY": 0,
+            "src": "http://localhost:3000/office-outline.png",
+            "crossOrigin": null,
+            "filters": []
+        }
+    }
+}

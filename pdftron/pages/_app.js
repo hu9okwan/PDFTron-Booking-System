@@ -4,13 +4,15 @@ import { ChakraProvider } from "@chakra-ui/react"
 import '../styles/globals.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
-function MyApp({ Component, pageProps }) {
+import { SessionProvider } from "next-auth/react"
+export default function App({
+  Component, pageProps: { session, ...pageProps }
+}) {
   return (
-  <ChakraProvider>
-    <Component {...pageProps} />
-  </ChakraProvider>
+    <ChakraProvider>
+    <SessionProvider session={session}>
+      <Component {...pageProps}/>
+    </SessionProvider>
+    </ChakraProvider>
   )
 }
-
-export default MyApp
