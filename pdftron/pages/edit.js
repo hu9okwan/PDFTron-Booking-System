@@ -4,7 +4,7 @@ import { NavbarBS } from '../components/NavbarBS';
 import styles from '../styles/Home.module.css'
 import styles2 from "../styles/Book.module.css"
 import { Heading, Button, Select } from "@chakra-ui/react"
-import {saveToDatabase} from "../database/create";
+import {saveToDatabase} from "../database/databaseCRUD";
 import {getFloorPlan} from "../database/read";
 
 const jsonObj = require('../public/tempJSON.json');

@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import TableDatePicker from "./datepicker";
 import styles from "../styles/Book.module.css"
-import {createRoomBooking} from "../database/create";
+import {createRoomBooking} from "../database/databaseCRUD";
 
 
 const Modal = ({ tableID, team, toggle }) => {
