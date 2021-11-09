@@ -7,7 +7,7 @@ import { Heading, Button, Select } from "@chakra-ui/react"
 import {saveToDatabase, getFloorPlan} from "../database/databaseCRUD";
 
 
-const jsonObj = require('../public/tempJSON.json');
+// const jsonObj = require('../public/tempJSON.json');
 
 export default function Edit() {
 
@@ -27,7 +27,7 @@ export default function Edit() {
 
     useEffect(() => {
         if (canvas) {
-            loadJson(canvas);
+            loadMap(canvas);
             preventObjOut(canvas);
             limitRotation(canvas);
             hotkeys(canvas);
@@ -231,18 +231,17 @@ export default function Edit() {
     }
 
 
-    const saveToJson = (canvas) => {
+    const saveToDatabase = (canvas) => {
         const canvasJson = canvas.toJSON(["bookings", "tableID", "roomID", "team"]);
         saveToDatabase(canvasJson).then(r => console.log("saved floor plan"));
     };
 
 
 
-    const loadJson = (canvas) => {
-        const jsonString = JSON.stringify(jsonObj)
-        console.log(jsonObj)
-        // console.log(jsonString)
-        canvas.loadFromJSON(jsonObj, canvas.renderAll.bind(canvas))
+    const loadMap = (canvas) => {
+        getFloorPlan().then(floorPlan =>
+            canvas.loadFromJSON(floorPlan, canvas.renderAll.bind(canvas))
+        )
     };
 
 
@@ -268,7 +267,7 @@ export default function Edit() {
                         <Button className={styles.pointer} onClick={() => addRect(canvas, true)}>Add Table</Button>
                         <Button className={styles.pointer} onClick={() => addRect(canvas, false)}>Add Room</Button>
                         <Button className={styles.pointer} onClick={() => removeTable(canvas)}>Remove Selected</Button>
-                        <Button className={styles.pointer} onClick={() => saveToJson(canvas)}>Save Changes</Button>
+                        <Button className={styles.pointer} onClick={() => saveToDatabase(canvas)}>Save Changes</Button>
                     </div>
 
                 </div>

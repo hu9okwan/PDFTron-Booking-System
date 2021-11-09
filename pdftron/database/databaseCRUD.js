@@ -193,7 +193,7 @@ export const getAllTables = async () => {
 };
 
 export const getFloorPlan = async ()=> {
-  get(child(dbRef, `floorplan/data`)).then((snapshot) => {
+  return get(child(dbRef, `floorplan/data`)).then((snapshot) => {
     if (snapshot.exists()) {
       return snapshot.val()
     } else {

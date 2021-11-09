@@ -3,7 +3,8 @@ import { fabric } from 'fabric';
 import { NavbarBS } from '../components/NavbarBS';
 import styles from "../styles/Book.module.css"
 import Modal from "../components/modal";
-const jsonObj = require('../public/tempJSON.json');
+// const jsonObj = require('../public/tempJSON.json');
+import { getFloorPlan } from "../database/databaseCRUD";
 
 
 /**
@@ -58,7 +59,7 @@ Low Priority:
     useEffect(() => {
         if (canvas) {
             // loadFromSVG(canvas);
-            loadJson(canvas);
+            loadMap(canvas);
             canvas.hoverCursor = 'pointer';
             clickTable(canvas);
             hoverTable(canvas);
@@ -66,10 +67,13 @@ Low Priority:
     }, [canvas]);
 
 
-    const loadJson = (canvas) => {
-        canvas.loadFromJSON(jsonObj, canvas.renderAll.bind(canvas), function (o, object) {
-            object.set("selectable", false);
-        })
+    const loadMap = async (canvas) => {
+        getFloorPlan().then( floorPlan =>
+            canvas.loadFromJSON(floorPlan, canvas.renderAll.bind(canvas), function (o, object) {
+                object.set("selectable", false);
+            })
+        )
+
     }
 
 
