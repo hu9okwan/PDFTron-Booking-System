@@ -3,6 +3,7 @@ import React, {useMemo} from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "../styles/Book.module.css"
+import {getMaxDays} from "../database/databaseCRUD";
 
 // This was completed with the help of https://www.npmjs.com/package/react-datetime-picker
 // see the above website for more documentation
@@ -12,6 +13,10 @@ import styles from "../styles/Book.module.css"
 // - enforce constraints
 //      - bug when booking between 11:30PM - 12 AM, all current day times become available
 // - implement hours for rooms
+
+
+// !!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!
+// getMaxDays() returns a promise and can be used to set max days
 
 
 export default function TableDatePicker(props) {
@@ -35,10 +40,10 @@ export default function TableDatePicker(props) {
         // changes selectable end datetime to the set minBookTime you can book a room
 
         const minBookTime = 30 // in 30 minute invervals (30, 60, 90)
-        
+
         const todayDate = new Date();
-        const selectedDateStart = new Date(props.startDate); 
-        const selectedDateEnd = new Date(props.endDate); 
+        const selectedDateStart = new Date(props.startDate);
+        const selectedDateEnd = new Date(props.endDate);
         if(selectedDateEnd.setHours(0,0,0,0) === todayDate.setHours(0,0,0,0)
             || selectedDateEnd.setHours(0,0,0,0) === selectedDateStart.setHours(0,0,0,0)) {
             let date = new Date(props.startDate)
@@ -52,9 +57,9 @@ export default function TableDatePicker(props) {
     const minSelected = useMemo(() => {
         // changes selected end datetime to be after the selected start datetime if start datetime is after end datetime
 
-        const selectedDateStart = new Date(props.startDate); 
-        const selectedDateEnd = new Date(props.endDate); 
-        
+        const selectedDateStart = new Date(props.startDate);
+        const selectedDateEnd = new Date(props.endDate);
+
         if (selectedDateStart.getTime() >= selectedDateEnd.getTime()) {
             let date = new Date(props.startDate)
             date.setMinutes(props.startDate.getMinutes() + 30)

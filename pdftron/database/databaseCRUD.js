@@ -1,11 +1,10 @@
 import firebase from "firebase/compat/app";
-import {getDatabase, ref, child, set, onValue, get} from 'firebase/database'
+import {getDatabase, ref, child, set, onValue, get, update } from 'firebase/database'
 import initFirebase from "./initFirebase"
 
 initFirebase();
 const db = getDatabase();
 const dbRef = ref(getDatabase());
-
 
 // ============================ CREATE =======================================
 
@@ -18,7 +17,6 @@ export const createRoomBooking = async (tableId, startDate, endDate, userID) => 
   });
   console.log("Booked table")
 };
-
 
 export const saveToDatabase = async (tableData) => {
   await set(ref(db, 'floorplan/'), {
@@ -41,6 +39,34 @@ export const getRooms = async () => {
     console.error(error);
   });
 };
+
+
+export const getMaxDays = async () => {
+  get(child(dbRef, `settings/`)).then((snapshot) => {
+    if (snapshot.exists()) {
+      const data = snapshot.val()
+      console.log(data["maxDays"])
+    } else {
+      console.log("No data available");
+    }
+  }).catch((error) => {
+    console.error(error);
+  });
+};
+
+export const getMaxHours = async () => {
+  get(child(dbRef, `settings/`)).then((snapshot) => {
+    if (snapshot.exists()) {
+      const data = snapshot.val()
+      console.log(data["maxHours"])
+    } else {
+      console.log("No data available");
+    }
+  }).catch((error) => {
+    console.error(error);
+  });
+};
+
 
 export const getUserTableBookings = async (userID) => {
   get(child(dbRef, `tables/`)).then((snapshot) => {
@@ -70,24 +96,35 @@ export const getUserTableBookings = async (userID) => {
 
 export const getAllTableBookings = async () => {
   let allBookings = [];
-  get(child(dbRef, `table/`)).then((snapshot) => {
+  get(child(dbRef, `tables/`)).then((snapshot) => {
 
     if (snapshot.exists()) {
       const data = snapshot.val();
+      // console.log(data);
+      for (let key in data) {
+        if (data[key]["bookings"] === undefined) {
+        }
+        else {
+          try {
+            for (let booking of data[key]["bookings"]) {
+              booking["table"] = data[key]["name"];
 
-
-      for (let table of data) {
-        for (let booking of table.bookings) {
-          let ans = {table: table.id, startDate: booking.startDate, endDate: booking.endDate, teamId: table.teamId}
-          allBookings.push(ans);
+              allBookings.push(booking)
+            }
+          }
+          catch(err) {
+            // object is not iterable
+            data[key]["bookings"]["table"] = data[key]["name"];
+            allBookings.push(data[key]["bookings"])
+          }
         }
       }
     }
     else {
       console.log("No data available");
     }
+    console.log(allBookings)
     return allBookings;
-
   }).catch((error) => {
     console.error(error);
   });
@@ -126,8 +163,7 @@ export const getAllRoomBookings = async () => {
     if (snapshot.exists()) {
       const data = snapshot.val();
 
-
-      for (let table of data) {
+      for (let key in data) {
         for (let booking of table.bookings) {
           let ans = {table: table.id, startDate: booking.startDate, endDate: booking.endDate, teamId: table.teamId}
           allBookings.push(ans);
@@ -168,7 +204,6 @@ export const getFloorPlan = async ()=> {
   });
 };
 
-
 export const getAllTeams = async () => {
   get(child(dbRef, `teams/`)).then((snapshot) => {
     if (snapshot.exists()) {
@@ -186,12 +221,14 @@ export const updateMaxRoomHours = async (maxHours) => {
   await update(ref(db, 'settings/' ), {
     maxHours: maxHours,
   });
+  console.log("Succesfully update max hours for rooms")
 };
 
 export const updateMaxTableDays = async (maxDays) => {
   await update(ref(db, 'settings/' ), {
     maxDays: maxDays,
   });
+  console.log("Successfully updated max days")
 };
 
 // ============================ DELETE =======================================
@@ -200,7 +237,6 @@ export const deleteTableBooking = async (tableBookingID) => {
   remove(ref(db, 'tables/booking/' + tableBookingID));
   console.log("Successfully delete this tableBookingID")
 };
-
 
 export const deleteRoomBooking = async (tableBookingID) => {
   remove(ref(db, 'rooms/bookings/' + tableBookingID));
