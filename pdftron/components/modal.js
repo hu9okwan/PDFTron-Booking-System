@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import TableDatePicker from "./datepicker";
 import styles from "../styles/Book.module.css"
-import {createRoomBooking} from "../database/databaseCRUD";
+import {createTableBooking} from "../database/databaseCRUD";
 
 
 const Modal = ({ tableID, team, toggle }) => {
@@ -10,7 +10,9 @@ const Modal = ({ tableID, team, toggle }) => {
     };
     //tableId, startDate, endDate, userID
     const submitBooking = () => {
-        createRoomBooking(tableID, startDate, endDate, team).then(r => console.log(startDate, endDate, tableID, team))
+        // change 1 to userID whenever sessions are implemented
+        // console.log(startDate, endDate, tableID, team);
+        createTableBooking(tableID, startDate, endDate, 1).then(r => console.log("succesfully created booking"))
     };
 
 

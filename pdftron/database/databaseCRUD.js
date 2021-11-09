@@ -8,11 +8,13 @@ const dbRef = ref(getDatabase());
 
 // ============================ CREATE =======================================
 
-export const createRoomBooking = async (tableId, startDate, endDate, userID) => {
+export const createTableBooking = async (tableId, startDate, endDate, userID) => {
   // /reservations/4 (4 needs to be uniquely generated)
-  await set(ref(db, 'tables/' + tableId + '/reservations/4' ), {
-    startDate: startDate,
-    endDate: endDate,
+
+  console.log(tableId, startDate, endDate, userID);
+  await set(ref(db, 'tables/' + tableId + '/bookings/' + 'bookId_' + generateID()), {
+    startDate: startDate.toString(),
+    endDate: endDate.toString(),
     userId: userID
   });
   console.log("Booked table")
@@ -66,6 +68,7 @@ export const getMaxHours = async () => {
     console.error(error);
   });
 };
+
 
 
 export const getUserTableBookings = async (userID) => {
@@ -242,3 +245,19 @@ export const deleteRoomBooking = async (tableBookingID) => {
   remove(ref(db, 'rooms/bookings/' + tableBookingID));
   console.log("Successfully delete this room Booking")
 };
+
+// ============================ HELPER =======================================
+
+const generateID = () => {
+  // probably bad but just need a way of generating IDs
+  let result           = '';
+  const characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789;';
+  const charactersLength = characters.length;
+  for ( var i = 0; i < 6; i++ ) {
+    result += characters.charAt(Math.floor(Math.random() *
+        charactersLength));
+  }
+  return result;
+};
+
+
