@@ -62,8 +62,10 @@ export const isAdmin = async (userEmail) => {
           return data[id]["isAdmin"];
         }
       }
+      return false;
     } else {
       console.log("No data available");
+      return false;
     }
   }).catch((error) => {
     console.error(error);
