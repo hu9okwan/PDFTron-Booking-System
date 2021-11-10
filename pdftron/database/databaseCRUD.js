@@ -142,7 +142,7 @@ export const getUserTableBookings = async (userID) => {
   });
 };
 
-export const getAllTableBookings = async (tableId) => {
+export const getAllTableBookings = async () => {
   let allBookings = [];
   return get(child(dbRef, `floorplan/data/objects/`)).then((snapshot) => {
 

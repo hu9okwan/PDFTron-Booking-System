@@ -82,6 +82,43 @@ export default function TableDatePicker(props) {
         return props.endDate
     }, [props.startDate, props.endDate])
 
+    const dateRange = (startDate, endDate, steps = 1) => {
+        const dateArray = [];
+        let currentDate = new Date(startDate);
+      
+        while (currentDate <= new Date(endDate)) {
+          dateArray.push(new Date(currentDate));
+          // Use UTC date to prevent problems with time zones and DST
+          currentDate.setUTCDate(currentDate.getUTCDate() + steps);
+        }
+      
+        return dateArray;
+    }
+
+    const excludeBookedDates = useMemo(() => {
+        let excludedDates = []
+
+        for (let bookings of props.bookedTables) {
+
+            for (let key in bookings) {
+                if (bookings[key] !== undefined && bookings[key]["tableId"] === props.tableID) {
+
+                    let startDate = new Date(bookings[key]["startDate"])
+                    let endDate = new Date(bookings[key]["endDate"])
+                    
+                    startDate.setHours(0,0,0,0)
+                    endDate.setHours(0,0,0,0)
+
+                    let dateRangeArray = dateRange(startDate, endDate)
+
+                    excludedDates = [...new Set([...excludedDates,...dateRangeArray])];
+                }
+            }
+        }
+
+        return excludedDates
+        
+    }, [props.bookedTables])
 
     return (
         <div className={styles.datePickerContainer}>
@@ -89,6 +126,7 @@ export default function TableDatePicker(props) {
                 className={styles.datePicker}
                 showTimeSelect={props.timeSelect}
                 dateFormat="MMM d, yyyy"
+                excludeDates={excludeBookedDates}
                 selected={props.startDate}
                 selectsStart
                 minDate={minSelectedStart}
@@ -107,6 +145,7 @@ export default function TableDatePicker(props) {
                 className={styles.datePicker}
                 showTimeSelect={props.timeSelect}
                 dateFormat="MMM d, yyyy"
+                excludeDates={excludeBookedDates}
                 selected={minSelectedEnd}
                 selectsEnd
                 minTime={minTimeEnd}

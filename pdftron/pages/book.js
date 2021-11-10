@@ -4,7 +4,7 @@ import { NavbarBS } from '../components/NavbarBS';
 import styles from "../styles/Book.module.css"
 import Modal from "../components/modal";
 // const jsonObj = require('../public/tempJSON.json');
-import { getFloorPlan, isAdmin } from "../database/databaseCRUD";
+import { getFloorPlan, isAdmin, getAllTableBookings } from "../database/databaseCRUD";
 const jsonObj = require('../public/tempJSON.json');
 import  { useSession }  from 'next-auth/react';
 
@@ -46,6 +46,20 @@ import  { useSession }  from 'next-auth/react';
             team: undefined
         }
     )
+
+    const [bookedTables, setBookedTables] = useState()
+    useEffect(() => {    
+        let active = true;
+        load()
+        return () => { active = false }
+    
+        async function load() {
+            const res = await Promise.resolve(getAllTableBookings());
+            if (!active) { return }
+            setBookedTables(res);
+        }
+    }, [])
+
 
     useEffect(() => {
         if (canvas) {
@@ -175,7 +189,7 @@ import  { useSession }  from 'next-auth/react';
             <div className={styles.flexContainer}>
                 <canvas id="canvas"></canvas>
                 <span id="toolTip" className={styles.toolTip}></span>
-                {state.seen ? <Modal tableID={rectData.tableID} roomID={rectData.roomID} team={rectData.team} toggle={togglePop}/> : null}
+                {state.seen ? <Modal tableID={rectData.tableID} roomID={rectData.roomID} team={rectData.team} bookedTables={bookedTables} toggle={togglePop}/> : null}
             </div>
         </div>
 

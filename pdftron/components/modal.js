@@ -6,7 +6,7 @@ import { Button } from "@chakra-ui/react"
 
 
 
-const Modal = ({ tableID, roomID, team, toggle }) => {
+const Modal = ({ tableID, roomID, team, toggle, bookedTables }) => {
     const closeModal = () => {
         toggle();
     };
@@ -35,7 +35,7 @@ const Modal = ({ tableID, roomID, team, toggle }) => {
                 &times;
             </span>
             <div className={styles.selectContainer}>
-                <TableDatePicker startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate} 
+                <TableDatePicker className={styles.datePicker} startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate} tableID={tableID} bookedTables={bookedTables} 
                     timeSelect={tableID ? false : true}></TableDatePicker>
             </div>
             <div>
