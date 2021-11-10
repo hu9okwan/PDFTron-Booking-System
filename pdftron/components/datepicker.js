@@ -65,10 +65,10 @@ export default function TableDatePicker(props) {
             tomorrowDate.setHours(0,0,0,0)
             return tomorrowDate
         }
-        return props.startDate
+        return new Date()
     })
 
-    const minSelected = useMemo(() => {
+    const minSelectedEnd = useMemo(() => {
         // changes selected end datetime to be after the selected start datetime if start datetime is after end datetime
 
         const selectedDateStart = new Date(props.startDate);
@@ -89,20 +89,25 @@ export default function TableDatePicker(props) {
                 className={styles.datePicker}
                 showTimeSelect={props.timeSelect}
                 dateFormat="MMM d, yyyy"
-                selected={minSelectedStart}
+                selected={props.startDate}
                 selectsStart
                 minDate={minSelectedStart}
                 minTime={minTimeStart}
                 maxTime={new Date(0, 0, 0, 23, 30)}
                 startDate={props.startDate}
                 endDate={props.endDate}
-                onChange={date => props.setStartDate(date)}
+                onChange={date => {
+                    props.setStartDate(date)
+                    if (props.endDate <= date) {
+                        props.setEndDate(date)
+                    }
+                }}
             />
             <DatePicker
                 className={styles.datePicker}
                 showTimeSelect={props.timeSelect}
                 dateFormat="MMM d, yyyy"
-                selected={minSelected}
+                selected={minSelectedEnd}
                 selectsEnd
                 minTime={minTimeEnd}
                 maxTime={new Date(0, 0, 0, 23, 30)}
