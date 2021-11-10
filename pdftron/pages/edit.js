@@ -3,11 +3,11 @@ import { fabric } from 'fabric';
 import { NavbarBS } from '../components/NavbarBS';
 import styles from '../styles/Home.module.css'
 import styles2 from "../styles/Book.module.css"
-
+import  { useSession }  from 'next-auth/react';
 const jsonObj = require('../public/tempJSON.json');
 
 export default function Edit() {
-
+    const { data: session } = useSession()
     const [canvas, setCanvas] = useState('');
     useEffect(() => {
         setCanvas(initCanvas());
@@ -267,3 +267,4 @@ export default function Edit() {
 
     );
 }
+Edit.auth = true;

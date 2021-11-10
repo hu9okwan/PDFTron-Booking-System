@@ -6,6 +6,7 @@ import BootstrapTable from "react-bootstrap-table-next";
 // import { Button } from "react-bootstrap"
 import { Button, ButtonGroup, Stack } from "@chakra-ui/react"
 import {NavbarBS} from "../components/NavbarBS";
+import  { useSession }  from 'next-auth/react';
 
 const tables = [
   { table: "#2", startDate: "October 27, 2021", endDate: "October 27, 2021", type: "General" },
@@ -111,6 +112,7 @@ const roomColumns = [
 ];
 
 export default function App() {
+  const { data: session } = useSession()
   return (
     <html>
       {/* <div className={styles.loginContainer}> */}
@@ -145,3 +147,4 @@ export default function App() {
     </html>
   );
 }
+App.auth = true;
