@@ -4,26 +4,13 @@ import { NavbarBS } from '../components/NavbarBS';
 import styles from "../styles/Book.module.css"
 import Modal from "../components/modal";
 // const jsonObj = require('../public/tempJSON.json');
-import { getFloorPlan } from "../database/databaseCRUD";
+import { getFloorPlan, isAdmin } from "../database/databaseCRUD";
 const jsonObj = require('../public/tempJSON.json');
 import  { useSession }  from 'next-auth/react';
 
 // console.log(useSession.user.email); // ty ty
 // and this is it right for book. ok ty
 
-/**
-Low Priority:
-- make pop up look nicer
-- make booking button fully functional
- - Make page look nicer overall
-
- Medium Priority:
- - connect it to database
-
-
- High Priority:
- - be able to click a specific table and book for that specific table LOL
- */
 
 
  export default function Book() {
@@ -86,7 +73,6 @@ Low Priority:
         let selected_object_opacity = 0.5;
         let original_opacity
         canvas.on('mouse:over', function(e) {
-            console.log(session.user.email);
 
             if (e.target) {
                 const status = e.target.reserved ? "Reserved" : "Available"

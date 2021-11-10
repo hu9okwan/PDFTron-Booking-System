@@ -19,7 +19,7 @@ export const createTableBooking = async (tableId, startDate, endDate, userID) =>
         if (status === "available") {
             let startDateTimestamp = startDate.getTime()
             let endDateTimestamp = endDate.getTime()
-        
+
             await set(ref(db, 'floorplan/data/objects/' + tableId + '/bookings/' + 'bookId_' + generateID()), {
                 tableId: tableId,
                 startDate: startDateTimestamp,
@@ -42,9 +42,36 @@ export const saveToDatabase = async (tableData) => {
   });
 };
 
+export const addUserToDatabase = async (userEmail) => {
+  await set(ref(db, 'users/' + 'user_' + generateID()), {
+    email: userEmail,
+    teamId: 0,
+    isAdmin: false
+  });
+};
+
 // ============================ READ =======================================
+
+export const isAdmin = async (userEmail) => {
+  return get(child(dbRef, `users/`)).then((snapshot) => {
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+      for (let id in data) {
+        if (data[id]["email"] === userEmail) {
+          // console.log(data[id]["isAdmin"])
+          return data[id]["isAdmin"];
+        }
+      }
+    } else {
+      console.log("No data available");
+    }
+  }).catch((error) => {
+    console.error(error);
+  });
+}
+
 export const getRooms = async () => {
-  get(child(dbRef, `rooms/`)).then((snapshot) => {
+  return get(child(dbRef, `rooms/`)).then((snapshot) => {
     if (snapshot.exists()) {
       const data = snapshot.val();
       for (let i = 0; i<data.length; i++) {
@@ -60,7 +87,7 @@ export const getRooms = async () => {
 
 
 export const getMaxDays = async () => {
-  get(child(dbRef, `settings/`)).then((snapshot) => {
+  return get(child(dbRef, `settings/`)).then((snapshot) => {
     if (snapshot.exists()) {
       const data = snapshot.val()
       console.log(data["maxDays"])
@@ -73,7 +100,7 @@ export const getMaxDays = async () => {
 };
 
 export const getMaxHours = async () => {
-  get(child(dbRef, `settings/`)).then((snapshot) => {
+  return get(child(dbRef, `settings/`)).then((snapshot) => {
     if (snapshot.exists()) {
       const data = snapshot.val()
       console.log(data["maxHours"])
@@ -88,7 +115,7 @@ export const getMaxHours = async () => {
 
 
 export const getUserTableBookings = async (userID) => {
-  get(child(dbRef, `tables/`)).then((snapshot) => {
+  return get(child(dbRef, `tables/`)).then((snapshot) => {
     let curBookings = [];
     if (snapshot.exists()) {
       const data = snapshot.val();
@@ -161,7 +188,7 @@ export const getTableBookings = async (tableId) => {
   };
 
 export const getUserRoomBookings = async (userID) => {
-  get(child(dbRef, `rooms/`)).then((snapshot) => {
+  return get(child(dbRef, `rooms/`)).then((snapshot) => {
     let curBookings = [];
     if (snapshot.exists()) {
       const data = snapshot.val();
@@ -187,11 +214,12 @@ export const getUserRoomBookings = async (userID) => {
 };
 
 export const getAllRoomBookings = async () => {
-  let allBookings = [];
-  get(child(dbRef, `rooms/`)).then((snapshot) => {
+
+  return get(child(dbRef, `rooms/`)).then((snapshot) => {
 
     if (snapshot.exists()) {
       const data = snapshot.val();
+      let allBookings = [];
 
       for (let key in data) {
         for (let booking of table.bookings) {
@@ -199,6 +227,7 @@ export const getAllRoomBookings = async () => {
           allBookings.push(ans);
         }
       }
+      return allBookings;
     }
     else {
       console.log("No data available");
@@ -211,7 +240,7 @@ export const getAllRoomBookings = async () => {
 };
 
 export const getAllTables = async () => {
-  get(child(dbRef, `tables/`)).then((snapshot) => {
+  return get(child(dbRef, `tables/`)).then((snapshot) => {
     if (snapshot.exists()) {
       return snapshot.val()
     } else {
@@ -235,7 +264,7 @@ export const getFloorPlan = async ()=> {
 };
 
 export const getAllTeams = async () => {
-  get(child(dbRef, `teams/`)).then((snapshot) => {
+  return get(child(dbRef, `teams/`)).then((snapshot) => {
     if (snapshot.exists()) {
       return snapshot.val()
     } else {
@@ -315,7 +344,7 @@ const isAvailable = (startDate, endDate, tableId) => {
                         (existingBookingStartDate <= endDate && endDate <= existingBookingEndDate) ||
                         (endDate < startDate)) {
                             avail = false
-                    }         
+                    }
                 }
             }
         })
