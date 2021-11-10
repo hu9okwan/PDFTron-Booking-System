@@ -8,8 +8,7 @@ import { getFloorPlan } from "../database/databaseCRUD";
 const jsonObj = require('../public/tempJSON.json');
 import  { useSession }  from 'next-auth/react';
 
-console.log(session.user.email); // ty ty
-console.log(session.user.name) // ok sure thing ty ty
+// console.log(useSession.user.email); // ty ty
 // and this is it right for book. ok ty
 
 /**
@@ -83,10 +82,12 @@ Low Priority:
 
 
     const hoverTable = (canvas) => {
-        let toolTip = document.getElementById("toolTip")
+        let toolTip = document.getElementById("toolTip");
         let selected_object_opacity = 0.5;
         let original_opacity
         canvas.on('mouse:over', function(e) {
+            console.log(session.user.email);
+
             if (e.target) {
                 const status = e.target.reserved ? "Reserved" : "Available"
                 const tableOrRoom = e.target.tableID ? `Table ID: ${e.target.tableID}` : `Room ID: ${e.target.roomID}`
