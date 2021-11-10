@@ -12,12 +12,28 @@ export const createTableBooking = async (tableId, startDate, endDate, userID) =>
   // /reservations/4 (4 needs to be uniquely generated)
 
   console.log(tableId, startDate, endDate, userID);
-  await set(ref(db, 'floorplan/data/objects/' + tableId + '/bookings/' + 'bookId_' + generateID()), {
-    startDate: startDate.toString(),
-    endDate: endDate.toString(),
-    userId: userID
-  });
-  console.log("Booked table")
+
+    return isAvailable(startDate, endDate, tableId).then(async (status) => {
+        console.log(status)
+
+        if (status === "available") {
+            let startDateTimestamp = startDate.getTime()
+            let endDateTimestamp = endDate.getTime()
+        
+            await set(ref(db, 'floorplan/data/objects/' + tableId + '/bookings/' + 'bookId_' + generateID()), {
+                tableId: tableId,
+                startDate: startDateTimestamp,
+                endDate: endDateTimestamp,
+                userId: userID
+            });
+            // console.log("Booked table")
+            return("Booked table")
+        } else if (status === "unavailable") {
+            // console.log("sucks to suck")
+            return("sucks to suck")
+        }
+    })
+
 };
 
 export const saveToDatabase = async (tableData) => {
@@ -97,9 +113,9 @@ export const getUserTableBookings = async (userID) => {
   });
 };
 
-export const getAllTableBookings = async () => {
+export const getAllTableBookings = async (tableId) => {
   let allBookings = [];
-  get(child(dbRef, `tables/`)).then((snapshot) => {
+  return get(child(dbRef, `floorplan/data/objects/`)).then((snapshot) => {
 
     if (snapshot.exists()) {
       const data = snapshot.val();
@@ -126,12 +142,23 @@ export const getAllTableBookings = async () => {
     else {
       console.log("No data available");
     }
-    console.log(allBookings)
+    // console.log(allBookings)
     return allBookings;
   }).catch((error) => {
     console.error(error);
   });
 };
+
+export const getTableBookings = async (tableId) => {
+    return get(child(dbRef, `floorplan/data/objects/`)).then((snapshot) => {
+          if (snapshot.exists()) {
+            const data = snapshot.val();
+            // console.log(data[tableId]);
+            return [data[tableId]["bookings"]];
+          }
+        }
+    )
+  };
 
 export const getUserRoomBookings = async (userID) => {
   get(child(dbRef, `rooms/`)).then((snapshot) => {
@@ -251,7 +278,7 @@ export const deleteRoomBooking = async (tableBookingID) => {
 const generateID = () => {
   // probably bad but just need a way of generating IDs
   let result           = '';
-  const characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789;';
+  const characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   const charactersLength = characters.length;
   for ( var i = 0; i < 6; i++ ) {
     result += characters.charAt(Math.floor(Math.random() *
@@ -261,3 +288,44 @@ const generateID = () => {
 };
 
 
+const isAvailable = (startDate, endDate, tableId) => {
+    // check availability for given table
+
+    let avail = true
+
+    return getTableBookings(tableId).then(allCurrentBookings => {
+        allCurrentBookings.forEach(bookingsForTable => {
+            for (let key in bookingsForTable) {
+                if (bookingsForTable[key] !== undefined) {
+                    let existingBookingStartDate = new Date(bookingsForTable[key].startDate)
+                    let existingBookingEndDate = new Date(bookingsForTable[key].endDate)
+                    existingBookingStartDate.setHours(0,0,0,0)
+                    existingBookingEndDate.setHours(0,0,0,0)
+                    startDate.setHours(0,0,0,0)
+                    endDate.setHours(0,0,0,0)
+
+                    // console.log(existingBookingStartDate)
+                    // console.log(startDate)
+                    // console.log(existingBookingStartDate <= startDate)
+                    // // console.log(startDate <= endDate)
+                    // console.log(endDate <= existingBookingEndDate)
+
+                    if ((existingBookingStartDate <= startDate && endDate <= existingBookingEndDate) ||
+                        (existingBookingStartDate <= startDate && startDate <= existingBookingEndDate) ||
+                        (existingBookingStartDate <= endDate && endDate <= existingBookingEndDate) ||
+                        (endDate < startDate)) {
+                            avail = false
+                    }         
+                }
+            }
+        })
+
+        // prob super scuffed but it doesnt work when i return in the if statement above 🤡
+        if (avail) {
+            return "available"
+        } else {
+            return "unavailable"
+        }
+    })
+
+}

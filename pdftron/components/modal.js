@@ -14,7 +14,7 @@ const Modal = ({ tableID, roomID, team, toggle }) => {
     const submitBooking = () => {
         // change 1 to userID whenever sessions are implemented
         // console.log(startDate, endDate, tableID, team);
-        createTableBooking(tableID, startDate, endDate, 1).then(r => console.log("succesfully created booking"))
+        createTableBooking(tableID, startDate, endDate, 1).then(message => console.log(message))
     };
 
     const checkKey = (e) => {
