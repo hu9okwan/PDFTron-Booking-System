@@ -5,7 +5,12 @@ import styles from "../styles/Book.module.css"
 import Modal from "../components/modal";
 // const jsonObj = require('../public/tempJSON.json');
 import { getFloorPlan } from "../database/databaseCRUD";
+const jsonObj = require('../public/tempJSON.json');
+import  { useSession }  from 'next-auth/react';
 
+console.log(session.user.email); // ty ty
+console.log(session.user.name) // ok sure thing ty ty
+// and this is it right for book. ok ty
 
 /**
 Low Priority:
@@ -23,7 +28,7 @@ Low Priority:
 
 
  export default function Book() {
-
+    const { data: session } = useSession()
     const [state, setState] = useState ({
         seen: false
     });
@@ -189,3 +194,4 @@ Low Priority:
 
     );
 }
+Book.auth = true

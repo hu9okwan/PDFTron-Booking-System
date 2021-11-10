@@ -5,6 +5,8 @@ import { NavbarBS } from '../components/NavbarBS';
 import * as read from "../database/databaseCRUD"
 import 'bootstrap/dist/css/bootstrap.css'
 
+// ok i think something here is wack
+
 export default function Home() {
     return (
         <>
