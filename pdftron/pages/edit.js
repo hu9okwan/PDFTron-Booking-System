@@ -208,15 +208,36 @@ export default function Edit() {
         });
 
         if (isAddTable) {
-            rect["tableID"] = canvas._objects.length - 1
+            rect["tableID"] = findNextAvailableID(canvas, isAddTable)
         } else {
-            rect["roomID"] = canvas._objects.length - 1
+            rect["roomID"] = findNextAvailableID(canvas, isAddTable)
         }
 
         canvas.add(rect);
         canvas.centerObject(rect);
         canvas.renderAll();
     }
+
+    const findNextAvailableID = (canvas, isTable) => {
+        // finds next lowest available id for a table or room
+        let rectID
+        if (isTable) {
+            rectID = `tableID`          
+        } else {
+            rectID = `roomID`
+        }
+
+        let id_list = [];
+        for (let obj of canvas._objects) {
+            id_list.push(obj[rectID])
+        }
+        const set = new Set(id_list);
+        let id = 1;
+        while (set.has(id)) { id++ }
+
+        return id
+    }
+
 
     const removeTable = (canvas) => {
         // removes all selected tables
