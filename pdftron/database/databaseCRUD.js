@@ -12,7 +12,7 @@ export const createTableBooking = async (tableId, startDate, endDate, userID) =>
   // /reservations/4 (4 needs to be uniquely generated)
 
   console.log(tableId, startDate, endDate, userID);
-  await set(ref(db, 'tables/' + tableId + '/bookings/' + 'bookId_' + generateID()), {
+  await set(ref(db, 'floorplan/data/objects/' + tableId + '/bookings/' + 'bookId_' + generateID()), {
     startDate: startDate.toString(),
     endDate: endDate.toString(),
     userId: userID
