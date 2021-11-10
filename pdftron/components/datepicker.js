@@ -10,7 +10,7 @@ import {getMaxDays} from "../database/databaseCRUD";
 // also, https://retool.com/blog/how-to-use-react-datepicker-to-build-better-internal-apps/
 
 // TODO:
-// - enforce constraints
+// - enforce constraints (should be fixed with minSelectedStart function, need to test)
 //      - bug when booking between 11:30PM - 12 AM, all current day times become available
 // - implement hours for rooms
 
@@ -54,6 +54,20 @@ export default function TableDatePicker(props) {
     }, [props.startDate, props.endDate]);
 
 
+    const minSelectedStart = useMemo(() => {
+        
+        const todayDate = new Date();
+
+        if(todayDate.getHours() === 23 && todayDate.getMinutes() >= 30) {
+            console.log("yes")
+            let tomorrowDate = new Date()
+            tomorrowDate.setDate(tomorrowDate.getDate() + 1)
+            tomorrowDate.setHours(0,0,0,0)
+            return tomorrowDate
+        }
+        return props.startDate
+    })
+
     const minSelected = useMemo(() => {
         // changes selected end datetime to be after the selected start datetime if start datetime is after end datetime
 
@@ -73,11 +87,11 @@ export default function TableDatePicker(props) {
         <div className={styles.datePickerContainer}>
             <DatePicker
                 className={styles.datePicker}
-                showTimeSelect
+                showTimeSelect={props.timeSelect}
                 dateFormat="MMM d, yyyy"
-                selected={props.startDate}
+                selected={minSelectedStart}
                 selectsStart
-                minDate={new Date()}
+                minDate={minSelectedStart}
                 minTime={minTimeStart}
                 maxTime={new Date(0, 0, 0, 23, 30)}
                 startDate={props.startDate}
@@ -86,7 +100,7 @@ export default function TableDatePicker(props) {
             />
             <DatePicker
                 className={styles.datePicker}
-                showTimeSelect
+                showTimeSelect={props.timeSelect}
                 dateFormat="MMM d, yyyy"
                 selected={minSelected}
                 selectsEnd

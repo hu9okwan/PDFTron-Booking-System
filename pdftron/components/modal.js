@@ -35,7 +35,8 @@ const Modal = ({ tableID, roomID, team, toggle }) => {
                 &times;
             </span>
             <div className={styles.selectContainer}>
-                <TableDatePicker startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate}></TableDatePicker>
+                <TableDatePicker startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate} 
+                    timeSelect={tableID ? false : true}></TableDatePicker>
             </div>
             <div>
                 {tableID ? `Table ID: ${tableID}` : `Room ID: ${roomID}`}
