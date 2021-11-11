@@ -185,7 +185,7 @@ import  { useSession }  from 'next-auth/react';
 
     return (
         <div>
-            <NavbarBS isLoggedin={true} />
+            <NavbarBS isLoggedin={true} username={session.user.name} />
             <div className={styles.flexContainer}>
                 <canvas id="canvas"></canvas>
                 <span id="toolTip" className={styles.toolTip}></span>
