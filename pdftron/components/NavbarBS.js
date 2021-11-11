@@ -1,12 +1,12 @@
 import {Navbar, Nav, NavDropdown} from 'react-bootstrap';
+import { signOut } from "next-auth/react"
 
-export const NavbarBS = ({isLoggedin}) => {
+export const NavbarBS = ({isLoggedin, username}) => {
 
     // should pass in user object ^ as a prop
     // isLoggedin is just a T/F value rn to disable some links on index.js
 
     //default values
-    let name = "Profile" 
     let isAdmin = false
     // if (user) {
     //     // checks if user is logged in and their role
@@ -14,17 +14,17 @@ export const NavbarBS = ({isLoggedin}) => {
     //     let isAdmin = user.admin
     // }
 
+
     // placeholder tests
-    name = "Williard"
+    let name = username
     isAdmin = true
 
     return (
 
         <Navbar collapseOnSelect expand="lg">
-        <Navbar.Brand href="#home">
+        <Navbar.Brand href="/">
             <img src="pdftron-icons/pdftron-logo-blue.png" className="d-inline-block align-top ms-5" alt="PDFTron Icon"/>
         </Navbar.Brand>
-
         {isLoggedin && <Navbar.Toggle aria-controls="responsive-navbar-nav" className="me-5" /> }
         {isLoggedin && <Navbar.Collapse id="responsive-navbar-nav" className="me-5">
             <Nav className="ms-auto">
@@ -39,7 +39,7 @@ export const NavbarBS = ({isLoggedin}) => {
                 {isLoggedin && <NavDropdown title={name} align="end" id="basic-nav-dropdown">
                     <NavDropdown.Item href="#">Settings</NavDropdown.Item>
                     <NavDropdown.Divider />
-                    <NavDropdown.Item href="#">Logout</NavDropdown.Item>
+                    <NavDropdown.Item onClick={() => signOut({ callbackUrl: 'http://localhost:3000/' })}>Logout</NavDropdown.Item>
                 </NavDropdown>}
             </Nav>
         </Navbar.Collapse> }

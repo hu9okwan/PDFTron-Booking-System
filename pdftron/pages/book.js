@@ -222,7 +222,7 @@ import TableDatePicker from "../components/datepicker";
 
     return (
         <div>
-            <NavbarBS isLoggedin={true} />
+            <NavbarBS isLoggedin={true} username={session.user.name} />
             <div className={styles.flexContainer}>
                 <TableDatePicker isModal={false} startDate={selectedDate} setStartDate={setSelectedDate} timeSelect={false} onChange={updateMap(selectedDate, canvas)} bookedTables={[]}/>
                 <canvas id="canvas"></canvas>
