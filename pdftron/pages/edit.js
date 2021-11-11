@@ -269,7 +269,7 @@ export default function Edit() {
     return (
         <div>
             <NavbarBS isLoggedin={true} />
-            <div className={styles2.flexContainer}>
+            <div className={styles2.flexContainer2}>
                 <canvas id="canvas"></canvas>
                 <span id="toolTip" className={styles2.toolTip}></span>
 

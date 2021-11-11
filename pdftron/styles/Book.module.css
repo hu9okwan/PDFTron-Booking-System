@@ -65,4 +65,14 @@
     padding-top: 50px;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    gap: 25px;
 }
+
+.flexContainer2 {
+    display: flex;
+    padding-top: 50px;
+    align-items: center;
+    justify-content: center;
+}
+

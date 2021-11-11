@@ -7,6 +7,8 @@ import Modal from "../components/modal";
 import { getFloorPlan, isAdmin, getAllTableBookings } from "../database/databaseCRUD";
 const jsonObj = require('../public/tempJSON.json');
 import  { useSession }  from 'next-auth/react';
+import TableDatePicker from "../components/datepicker";
+
 
 // console.log(useSession.user.email); // ty ty
 // and this is it right for book. ok ty
@@ -48,23 +50,26 @@ import  { useSession }  from 'next-auth/react';
     )
 
     const [bookedTables, setBookedTables] = useState()
-    useEffect(() => {    
-        let active = true;
-        load()
-        return () => { active = false }
+    // useEffect(() => {    
+    //     let active = true;
+    //     load()
+    //     return () => { active = false }
     
-        async function load() {
-            const res = await Promise.resolve(getAllTableBookings());
-            if (!active) { return }
-            setBookedTables(res);
-        }
-    }, [])
+    //     async function load() {
+    //         const res = await Promise.resolve(getAllTableBookings());
+    //         if (!active) { return }
+    //         setBookedTables(res);
+    //     }
+    // }, [])
 
+
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    
 
     useEffect(() => {
         if (canvas) {
-            // loadFromSVG(canvas);
-            loadMap(canvas);
+            // loadMap(canvas).then(() => updateMap(selectedDate, canvas))
+            loadMap(canvas)
             canvas.hoverCursor = 'pointer';
             clickTable(canvas);
             hoverTable(canvas);
@@ -73,12 +78,15 @@ import  { useSession }  from 'next-auth/react';
 
 
     const loadMap = async (canvas) => {
-        getFloorPlan().then( floorPlan =>
+        getFloorPlan().then( floorPlan => {
             canvas.loadFromJSON(floorPlan, canvas.renderAll.bind(canvas), function (o, object) {
                 object.set("selectable", false);
             })
-        )
-
+            return canvas
+        }).then(async () => {
+            const res = await Promise.resolve(getAllTableBookings());
+            setBookedTables(res);
+        })
     }
 
 
@@ -141,45 +149,74 @@ import  { useSession }  from 'next-auth/react';
     )}
 
     function updateMap(selectedDate, canvas) {
-        // find data for tables with selected date and updates their status
-        let tables = canvas._objects
-        if (tables !== undefined) { // change to async await so dont have to check here for initial load
-            for (let table of tables) {
-                // console.log(table.tableId)
+        // compare booked date with selected date for tables and updates their status/colour
 
-                table["reserved"] = false;
-                let fillColour;
-                if (table["team"] === "General") {
-                    fillColour = "#C7E4A7"
-                } else if (table["team"] === "Web") {
-                    fillColour = "#7D99E8"
-                } else if (table["team"] === "Unavailable") {
-                    fillColour = "#D3D3D3"
-                }
+        let selectedDateCopy = new Date(selectedDate)
+        selectedDateCopy.setHours(0,0,0,0)
 
-                table.set("fill", fillColour)
+        if (bookedTables !== undefined) { 
+            let bookedTableIDs = filterBookingDate(selectedDateCopy)
 
-                for (let booking in dummyData.TableBooking) {
+            let tables = canvas._objects
 
-                    // it should call function from api to check if table is booked on selected date
-                    let bookingDate = dummyData.TableBooking[booking]["startDate"]
-                    let bookingTableID = dummyData.TableBooking[booking]["tableID"]
-                    let date = `${selectedDate.getMonth()}/${selectedDate.getDate()}/${selectedDate.getFullYear()}`
-                    let date2 = bookingDate
-                    console.log("selected date:", date)
-                    console.log(date2)
-
-                    if (date === date2 && bookingTableID === table.tableId) {
-                        console.log("yes")
-                        table.set("reserved", true)
-                        table.set("fill", "#CD5C5C")
+            if (tables !== undefined) {
+                for (let table of tables) {
+        
+                    // grab from database instead
+                    let fillColour;
+                    if (bookedTableIDs.includes(table["tableID"])){
+                        fillColour = "#FF5C5B"
+                    } else if (table["team"] === "General") {
+                        fillColour = "#C7E4A7"
+                    } else if (table["team"] === "Web") {
+                        fillColour = "#7D99E8"
+                    } else if (table["team"] === "Unavailable") {
+                        fillColour = "#D3D3D3"
                     }
-
+        
+                    table.set("fill", fillColour)
                 }
-
             }
             canvas.renderAll()
         }
+    }
+
+    function filterBookingDate(date) {
+        let tableIDArray =  []
+
+        for (let bookings of bookedTables) {
+            for (let booking in bookings) {
+                if (bookings[booking] !== undefined) {
+
+                    let bookingStartDate = new Date(bookings[booking]["startDate"])
+                    bookingStartDate.setHours(0,0,0,0)                    
+                    let bookingEndDate = new Date(bookings[booking]["endDate"])
+                    bookingEndDate.setHours(0,0,0,0)
+
+                    let dateRangeArr = dateRange(bookingStartDate, bookingEndDate)
+
+                    if (dateRangeArr.includes(date.getTime())) {
+                        tableIDArray.push(bookings[booking]["tableId"])
+                        console.log(bookings[booking]["tableId"])
+                    }
+                }
+            }
+        }
+        return tableIDArray
+    }
+
+    const dateRange = (startDate, endDate, steps = 1) => {
+        const dateArray = [];
+        let currentDate = new Date(startDate);
+      
+        while (currentDate <= new Date(endDate)) {
+            let dateEpoch = new Date(currentDate).getTime()
+            dateArray.push(dateEpoch);
+            // Use UTC date to prevent problems with time zones and DST
+            currentDate.setUTCDate(currentDate.getUTCDate() + steps);
+        }
+      
+        return dateArray;
     }
 
 
@@ -187,6 +224,7 @@ import  { useSession }  from 'next-auth/react';
         <div>
             <NavbarBS isLoggedin={true} />
             <div className={styles.flexContainer}>
+                <TableDatePicker isModal={false} startDate={selectedDate} setStartDate={setSelectedDate} timeSelect={false} onChange={updateMap(selectedDate, canvas)} bookedTables={[]}/>
                 <canvas id="canvas"></canvas>
                 <span id="toolTip" className={styles.toolTip}></span>
                 {state.seen ? <Modal tableID={rectData.tableID} roomID={rectData.roomID} team={rectData.team} bookedTables={bookedTables} toggle={togglePop}/> : null}

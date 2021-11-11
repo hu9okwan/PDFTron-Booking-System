@@ -126,7 +126,7 @@ export default function TableDatePicker(props) {
                 className={styles.datePicker}
                 showTimeSelect={props.timeSelect}
                 dateFormat="MMM d, yyyy"
-                excludeDates={excludeBookedDates}
+                excludeDates={props.isModal && excludeBookedDates}
                 selected={props.startDate}
                 selectsStart
                 minDate={minSelectedStart}
@@ -141,11 +141,12 @@ export default function TableDatePicker(props) {
                     }
                 }}
             />
+            {props.isModal &&
             <DatePicker
                 className={styles.datePicker}
                 showTimeSelect={props.timeSelect}
                 dateFormat="MMM d, yyyy"
-                excludeDates={excludeBookedDates}
+                excludeDates={props.isModal && excludeBookedDates}
                 selected={minSelectedEnd}
                 selectsEnd
                 minTime={minTimeEnd}
@@ -155,6 +156,7 @@ export default function TableDatePicker(props) {
                 minDate={props.startDate}
                 onChange={date => props.setEndDate(date)}
             />
+            }
         </div>
     );
 }
