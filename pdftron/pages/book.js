@@ -227,7 +227,10 @@ import TableDatePicker from "../components/datepicker";
                 <TableDatePicker isModal={false} startDate={selectedDate} setStartDate={setSelectedDate} timeSelect={false} onChange={updateMap(selectedDate, canvas)} bookedTables={[]}/>
                 <canvas id="canvas"></canvas>
                 <span id="toolTip" className={styles.toolTip}></span>
-                {state.seen ? <Modal tableID={rectData.tableID} roomID={rectData.roomID} team={rectData.team} bookedTables={bookedTables} toggle={togglePop}/> : null}
+                {state.seen ? <Modal tableID={rectData.tableID} roomID={rectData.roomID} team={rectData.team} bookedTables={bookedTables} toggle={togglePop}>
+
+
+                </Modal> : null}
             </div>
         </div>
 

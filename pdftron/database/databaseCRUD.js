@@ -11,7 +11,11 @@ const dbRef = ref(getDatabase());
 export const createTableBooking = async (tableId, startDate, endDate, userID) => {
   // /reservations/4 (4 needs to be uniquely generated)
 
-  console.log(tableId, startDate, endDate, userID);
+    console.log(tableId, startDate, endDate, userID);
+
+    if (endDate === null) {
+        endDate = startDate
+    }
 
     return isAvailable(startDate, endDate, tableId).then(async (status) => {
         console.log(status)
@@ -20,13 +24,14 @@ export const createTableBooking = async (tableId, startDate, endDate, userID) =>
             let startDateTimestamp = startDate.getTime()
             let endDateTimestamp = endDate.getTime()
 
-            await set(ref(db, 'floorplan/data/objects/' + tableId + '/bookings/' + 'bookId_' + generateID()), {
+            let bookingId = generateID()
+            await set(ref(db, 'floorplan/data/objects/' + tableId + '/bookings/' + 'bookId_' + bookingId), {
                 tableId: tableId,
                 startDate: startDateTimestamp,
                 endDate: endDateTimestamp,
                 userId: userID
             });
-            // console.log("Booked table")
+            console.log(`booking id: ${bookingId}`)
             return("Booked table")
         } else if (status === "unavailable") {
             // console.log("sucks to suck")
@@ -344,6 +349,7 @@ const isAvailable = (startDate, endDate, tableId) => {
                     if ((existingBookingStartDate <= startDate && endDate <= existingBookingEndDate) ||
                         (existingBookingStartDate <= startDate && startDate <= existingBookingEndDate) ||
                         (existingBookingStartDate <= endDate && endDate <= existingBookingEndDate) ||
+                        (startDate <= existingBookingStartDate && existingBookingEndDate <= endDate) ||
                         (endDate < startDate)) {
                             avail = false
                     }

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useRef, useEffect} from "react";
 import TableDatePicker from "./datepicker";
 import styles from "../styles/Book.module.css"
 import {createTableBooking} from "../database/databaseCRUD";
@@ -25,26 +25,54 @@ const Modal = ({ tableID, roomID, team, toggle, bookedTables }) => {
     }
     document.addEventListener('keydown', checkKey)
 
+
+    // click outside modal to close 
+    const modal = useRef(null);
+    useEffect(() => {
+        window.onclick = function(event) {
+            if (event.target == modal.current) {
+              closeModal()
+            }
+        }
+    })
+
+
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
 
+
     return (
 
-        <div className={styles.modal}>
-            <span className={styles.close} onClick={closeModal}>
-                &times;
-            </span>
-            <div className={styles.selectContainer}>
-                <TableDatePicker isModal={true} startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate} tableID={tableID} bookedTables={bookedTables} 
-                    timeSelect={tableID ? false : true}></TableDatePicker>
-            </div>
-            <div>
-                {tableID ? `Table ID: ${tableID}` : `Room ID: ${roomID}`}
-                </div>
-            <div>{team}</div>
+        <div className={styles.modal} ref={modal}>
+            <div className={styles.modalContent}>
+                <span className={styles.close} onClick={closeModal}>
+                    &times;
+                </span>
 
-            <Button className={styles.bookButton}
-                    onClick={submitBooking}>Book</Button>
+                <div className={styles.selectContainer}>
+                    <TableDatePicker isModal={true} startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate} tableID={tableID} bookedTables={bookedTables} 
+                        timeSelect={tableID ? false : true} />
+                    <div className={styles.tableInfo}>
+                        <h3 style={{textAlign: "center"}}>
+                            {tableID ? `${team} Table ${tableID}` : `${team} Room ${roomID}`}
+                        </h3>
+                        &nbsp;
+                        <div>{startDate.toDateString()}</div>
+                        to
+                        <div>{endDate ? endDate.toDateString() : startDate.toDateString()}</div>
+                        &nbsp;
+                        <Button className={styles.bookButton}
+                            onClick={submitBooking}>Book</Button>
+                    </div>
+                </div>
+                
+
+                {/* <div className={styles.buttonContainer}>
+                    <Button className={styles.bookButton}
+                            onClick={submitBooking}>Book</Button>
+                </div> */}
+
+            </div>
         </div>
     );
 
