@@ -5,6 +5,8 @@ import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import BootstrapTable from "react-bootstrap-table-next";
 import { Button, ButtonGroup, Stack } from "@chakra-ui/react"
 import {NavbarBS} from "../components/NavbarBS";
+import {getUserTableBookings, getUserRoomBookings} from "../database/databaseCRUD";
+import  { useSession }  from 'next-auth/react';
 
 const tables = [
   { table: "#2", startDate: "October 27, 2021", endDate: "October 27, 2021", type: "General" },
@@ -110,6 +112,7 @@ const roomColumns = [
 ];
 
 export default function App() {
+  const { data: session } = useSession()
   return (
     <>
       {/* <div className={styles.loginContainer}> */}
@@ -144,3 +147,4 @@ export default function App() {
     </>
   );
 }
+App.auth = true;

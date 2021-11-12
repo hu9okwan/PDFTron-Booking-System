@@ -7,8 +7,8 @@ import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import { Button, ButtonGroup, Stack } from "@chakra-ui/react"
 import { NavbarBS } from "../components/NavbarBS";
 
-const height = "300px"
-const width = "300px"
+const height = "300px";
+const width = "300px";
 
 export default function AdminDashboard() {
     return (
