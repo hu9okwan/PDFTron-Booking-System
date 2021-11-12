@@ -120,7 +120,7 @@
 
 .datePicker {
     border-style: none;
-    border-bottom: solid 2px black;
+    border-bottom: solid 1px grey;
     cursor: pointer;
     width: fit-content;
 }

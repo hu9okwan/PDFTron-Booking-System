@@ -28,8 +28,8 @@
 
 html, body {
     height: 100%;
-    margin: 0;
-    padding: 0;
+    /* margin: 0;
+    padding: 0; */
 }
 
 body {
@@ -41,12 +41,12 @@ body {
     font-size: 1em;
 }
 
-nav {
+/* nav {
     position: absolute;
     top: 8px;
     left: 1px;
     color: var(--blue);
-}
+} */
 
 nav img {
     width: 200px;
@@ -82,4 +82,24 @@ button {
 button:hover,
 button:focus {
     background-color: #00a3e4af;
+}
+
+
+
+::-webkit-scrollbar{
+	width: 8px;
+}
+
+::-webkit-scrollbar-thumb{
+	/* background-color: #CBCBCB; */
+	background-color: #00a5e4;
+	/* outline: 2px solid #FFF; */
+	outline-offset: -2px;
+	/* border: .1px solid #B7B7B7; */
+    border-radius: 20px;
+    
+}
+
+::-webkit-scrollbar-thumb:hover{
+	background-color: #909090;
 }
