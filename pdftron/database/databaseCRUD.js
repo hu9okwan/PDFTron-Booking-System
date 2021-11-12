@@ -32,13 +32,12 @@ export const createTableBooking = async (tableId, startDate, endDate, userID) =>
                 userId: userID
             });
             console.log(`booking id: ${bookingId}`)
-            return("Booked table")
+            return("The table has been booked.")
         } else if (status === "unavailable") {
             // console.log("sucks to suck")
-            return("sucks to suck")
+            return("Selected date(s) are unavailable or the table just got booked by another user. \n\nPlease choose another date.")
         }
     })
-
 };
 
 export const saveToDatabase = async (tableData) => {

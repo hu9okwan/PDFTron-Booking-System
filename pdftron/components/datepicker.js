@@ -59,7 +59,6 @@ export default function TableDatePicker(props) {
         const todayDate = new Date();
 
         if(todayDate.getHours() === 23 && todayDate.getMinutes() >= 30) {
-            console.log("yes")
             let tomorrowDate = new Date()
             tomorrowDate.setDate(tomorrowDate.getDate() + 1)
             tomorrowDate.setHours(0,0,0,0)
@@ -122,7 +121,9 @@ export default function TableDatePicker(props) {
     
 
     const onChange = (dates) => {
+        console.log(dates)
         const [start, end] = dates;
+        console.log(start)
         props.setStartDate(start);
         props.setEndDate(end);
     }
@@ -133,6 +134,13 @@ export default function TableDatePicker(props) {
             props.setEndDate(date)
         }
     }
+
+    const onChangeRoom = date => {
+        console.log("yap")
+        console.log(date)
+        props.setStartDate(date)
+    }
+
 
     return (
         <div className={styles.datePickerContainer}>
@@ -160,7 +168,7 @@ export default function TableDatePicker(props) {
             <DatePicker
                 className={styles.datePicker}
                 showTimeSelect={props.timeSelect}
-                dateFormat="MMMM d, yyyy"
+                dateFormat={"     MMMM d, yyyy"}
                 excludeDates={props.isModal && excludeBookedDates}
                 selected={props.startDate}
                 // selectsStart
@@ -170,8 +178,9 @@ export default function TableDatePicker(props) {
                 startDate={props.startDate}
                 endDate={props.endDate}
                 inline={props.isModal}
-                selectsRange={props.isModal}
-                onChange={(props.isModal && onChange) || onChange2}
+                selectsRange={props.isModal && props.tableID}
+                todayButton={!props.isModal && "Today"}
+                onChange={(props.isModal && props.roomID && onChangeRoom) || (props.isModal && onChange) || onChange2}
             />
 
             {/* {props.isModal &&

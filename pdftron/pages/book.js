@@ -141,7 +141,7 @@ import TableDatePicker from "../components/datepicker";
                     team: e.target.team,
                     }
                 setRectData(selectedRectData)
-                console.log(selectedRectData)
+                // console.log(selectedRectData)
                 togglePop()
 
             }
@@ -197,7 +197,7 @@ import TableDatePicker from "../components/datepicker";
 
                     if (dateRangeArr.includes(date.getTime())) {
                         tableIDArray.push(bookings[booking]["tableId"])
-                        console.log(bookings[booking]["tableId"])
+                        // console.log(bookings[booking]["tableId"])
                     }
                 }
             }
@@ -227,7 +227,7 @@ import TableDatePicker from "../components/datepicker";
                 <TableDatePicker isModal={false} startDate={selectedDate} setStartDate={setSelectedDate} timeSelect={false} onChange={updateMap(selectedDate, canvas)} bookedTables={[]}/>
                 <canvas id="canvas"></canvas>
                 <span id="toolTip" className={styles.toolTip}></span>
-                {state.seen ? <Modal tableID={rectData.tableID} roomID={rectData.roomID} team={rectData.team} bookedTables={bookedTables} toggle={togglePop}>
+                {state.seen ? <Modal tableID={rectData.tableID} roomID={rectData.roomID} team={rectData.team} bookedTables={bookedTables} toggle={togglePop} setBookedTables={setBookedTables}>
 
 
                 </Modal> : null}
