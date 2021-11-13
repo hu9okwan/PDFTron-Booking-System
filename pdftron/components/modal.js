@@ -6,7 +6,7 @@ import { Button } from "@chakra-ui/react"
 import { set } from "@firebase/database";
 
 
-const Modal = ({ tableID, roomID, team, toggle, bookedTables, setBookedTables }) => {
+const Modal = ({ tableID, roomID, team, toggle, bookedTables, bookedRoomTimes, setBookedTables }) => {
     const closeModal = () => {
         toggle();
     };
@@ -123,7 +123,7 @@ const Modal = ({ tableID, roomID, team, toggle, bookedTables, setBookedTables })
                 </span>
 
                 <div className={styles.selectContainer}>
-                    <TableDatePicker isModal={true} startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate} tableID={tableID} roomID={roomID} bookedTables={bookedTables} 
+                    <TableDatePicker isModal={true} startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate} tableID={tableID} roomID={roomID} bookedTables={bookedTables} bookedRoomTimes={bookedRoomTimes}
                         timeSelect={tableID ? false : true} />
                     <div className={styles.tableInfo}>
                         <h3 style={{textAlign: "center"}}>

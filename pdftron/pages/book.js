@@ -4,7 +4,7 @@ import { NavbarBS } from '../components/NavbarBS';
 import styles from "../styles/Book.module.css"
 import Modal from "../components/modal";
 // const jsonObj = require('../public/tempJSON.json');
-import { getFloorPlan, isAdmin, getAllTableBookings } from "../database/databaseCRUD";
+import { getFloorPlan, isAdmin, getAllTableBookings, getAllRoomBookings } from "../database/databaseCRUD";
 const jsonObj = require('../public/tempJSON.json');
 import  { useSession }  from 'next-auth/react';
 import TableDatePicker from "../components/datepicker";
@@ -62,6 +62,8 @@ import TableDatePicker from "../components/datepicker";
     //     }
     // }, [])
 
+    const [bookedRoomTimes, setBookedRoomTimes] = useState()
+
 
     const [selectedDate, setSelectedDate] = useState(new Date());
     
@@ -86,6 +88,10 @@ import TableDatePicker from "../components/datepicker";
         }).then(async () => {
             const res = await Promise.resolve(getAllTableBookings());
             setBookedTables(res);
+            const res2 = await Promise.resolve(getAllRoomBookings());
+            setBookedRoomTimes(res2);
+            console.log(res)
+            console.log(res2)
         })
     }
 
@@ -243,7 +249,7 @@ import TableDatePicker from "../components/datepicker";
                 </div>
                 <canvas id="canvas"></canvas>
                 <span id="toolTip" className={styles.toolTip}></span>
-                {state.seen ? <Modal tableID={rectData.tableID} roomID={rectData.roomID} team={rectData.team} bookedTables={bookedTables} toggle={togglePop} setBookedTables={setBookedTables}>
+                {state.seen ? <Modal tableID={rectData.tableID} roomID={rectData.roomID} team={rectData.team} bookedTables={bookedTables} bookedRoomTimes={bookedRoomTimes} toggle={togglePop} setBookedTables={setBookedTables}>
 
 
                 </Modal> : null}

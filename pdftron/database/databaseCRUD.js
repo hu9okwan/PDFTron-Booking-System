@@ -193,15 +193,17 @@ export const getAllTableBookings = async () => {
         }
         else {
           try {
-            for (let booking of data[key]["bookings"]) {
-              booking["table"] = data[key]["name"];
+            if (data[key]["tableID"] !== undefined) {
+                for (let booking of data[key]["bookings"]) {
+                // booking["table"] = data[key]["name"];
 
-              allBookings.push(booking)
+                allBookings.push(booking)
+                }
             }
           }
           catch(err) {
             // object is not iterable
-            data[key]["bookings"]["table"] = data[key]["name"];
+            // data[key]["bookings"]["table"] = data[key]["name"];
             allBookings.push(data[key]["bookings"])
           }
         }
@@ -268,20 +270,30 @@ export const getUserRoomBookings = async (userID) => {
 };
 
 export const getAllRoomBookings = async () => {
-
-  return get(child(dbRef, `rooms/`)).then((snapshot) => {
+  let allBookings = [];
+  return get(child(dbRef, `floorplan/data/objects`)).then((snapshot) => {
 
     if (snapshot.exists()) {
       const data = snapshot.val();
-      let allBookings = [];
 
       for (let key in data) {
-        for (let booking of table.bookings) {
-          let ans = {table: table.id, startDate: booking.startDate, endDate: booking.endDate, teamId: table.teamId}
-          allBookings.push(ans);
+        if (data[key]["bookings"] === undefined){
+
+        } else {
+            try {
+                if (data[key]["roomID"] !== undefined) {
+                    for (let booking of data[key]["bookings"]) {
+                        // booking["room"] = data[key]["name"];
+
+                        allBookings.push(booking)
+                    }
+                }
+            } catch(err) {
+                // data[key]["bookings"]["room"] = data[key]["name"];
+                allBookings.push(data[key]["bookings"])
+            }
         }
       }
-      return allBookings;
     }
     else {
       console.log("No data available");
@@ -428,8 +440,10 @@ const isRoomAvailable = (startDate, roomId) => {
                     // console.log(existingBookingStartDateEpoch, "existing")
                     // console.log(startDateEpoch,"current")
                     // console.log(existingBookingStartDateEpoch === startDateEpoch)
+                    let rightNow = new Date().getTime()
 
-                    if (existingBookingStartDateEpoch === startDateEpoch) {
+                    if (existingBookingStartDateEpoch === startDateEpoch ||
+                        startDateEpoch <= rightNow) {
                         avail = false
                     }
                 }

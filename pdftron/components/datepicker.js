@@ -118,12 +118,36 @@ export default function TableDatePicker(props) {
         return excludedDates
         
     }, [props.bookedTables])
+
+
+    const excludeBookedTimes = useMemo(() => {
+        console.log(props.bookedRoomTimes)
+        let excludedTimes = []
+        if (props.bookedRoomTimes !== undefined) {
+
+            for (let bookings of props.bookedRoomTimes) {
+
+                for (let key in bookings) {
+                    
+                    let existingStartDate = new Date(bookings[key]["startDate"])
+                    if (bookings[key] !== undefined && bookings[key]["roomId"] === props.roomID && props.startDate && existingStartDate !== undefined) {
+                        // console.log(props.startDate, "*****")
+                        if (existingStartDate.toDateString() === props.startDate.toDateString()) {
+                            excludedTimes.push(startDate);
+                        }
+                    }
+                }
+            }
+        }
+
+        return excludedTimes
+    }, [props.bookedRoomTimes])
     
 
     const onChange = (dates) => {
-        console.log(dates)
+        // console.log(dates)
         const [start, end] = dates;
-        console.log(start)
+        // console.log(start)
         props.setStartDate(start);
         props.setEndDate(end);
     }
@@ -136,8 +160,8 @@ export default function TableDatePicker(props) {
     }
 
     const onChangeRoom = date => {
-        console.log("yap")
-        console.log(date)
+        // console.log("yap")
+        // console.log(date)
         props.setStartDate(date)
     }
 
@@ -169,7 +193,8 @@ export default function TableDatePicker(props) {
                 className={styles.datePicker}
                 showTimeSelect={props.timeSelect}
                 dateFormat={"     MMMM d, yyyy"}
-                excludeDates={props.isModal && excludeBookedDates}
+                excludeDates={props.isModal && props.tableID && excludeBookedDates}
+                excludeTimes={props.isModal && props.roomID && excludeBookedTimes}
                 selected={props.startDate}
                 // selectsStart
                 minDate={minSelectedStart}
