@@ -19,9 +19,9 @@ export const createTableBooking = async (tableId, startDate, endDate, userID) =>
     }
 
     return isAvailable(startDate, endDate, tableId).then(async (status) => {
-        console.log(status)
+        // console.log(status)
 
-        if (status === "available") {
+        if (status) {
             let startDateTimestamp = startDate.getTime()
             let endDateTimestamp = endDate.getTime()
 
@@ -36,10 +36,13 @@ export const createTableBooking = async (tableId, startDate, endDate, userID) =>
                 userId: userID
             });
             console.log(`booking id: ${bookingId}`)
-            return("The table has been booked.")
-        } else if (status === "unavailable") {
+            let bookingDateString = startDate === endDate ? `${startDate.toDateString()}` : `${startDate.toDateString()} to ${endDate.toDateString()}`
+            let returnMsg = [status, `The table has been booked for: ${bookingDateString}`] 
+            return(returnMsg)
+        } else {
             // console.log("sucks to suck")
-            return("Selected date(s) are unavailable or the table just got booked by another user. \n\nPlease choose another date.")
+            let returnMsg = [status, "Selected date(s) are unavailable or it just got booked by another user. Please choose another date."] 
+            return(returnMsg)
         }
     })
 };
@@ -52,9 +55,9 @@ export const createRoomBooking = async (roomId, startDate, userID) => {
     startDate.setMilliseconds(0)
   
     return isRoomAvailable(startDate, roomId).then(async (status) => {
-        console.log(status)
+        // console.log(status)
 
-        if (status === "available") {
+        if (status) {
             let startDateTimestamp = startDate.getTime()
 
             let objId = await getObjId("roomID", roomId)
@@ -66,10 +69,12 @@ export const createRoomBooking = async (roomId, startDate, userID) => {
                 userId: userID
             });
             console.log(`booking id: ${bookingIdRoom}`)
-            return("The room has been booked.")
-        } else if (status === "unavailable") {
+            let returnMsg = [status, `The room has been booked for: ${startDate.toDateString()} at ${formatDate(startDate)}`]
+            return(returnMsg)
+        } else {
             // console.log("sucks to suck")
-            return("Selected date & time are unavailable or it just got booked by another user. \n\nPlease choose another date or time.")
+            let returnMsg = [status, "Selected date(s) are unavailable or it just got booked by another user. Please choose another date."] 
+            return(returnMsg)
         }
     })
 };
@@ -418,9 +423,9 @@ const isAvailable = (startDate, endDate, tableId) => {
 
         // prob super scuffed but it doesnt work when i return in the if statement above 🤡
         if (avail) {
-            return "available"
+            return true
         } else {
-            return "unavailable"
+            return false
         }
     })
 
@@ -452,9 +457,9 @@ const isRoomAvailable = (startDate, roomId) => {
 
         // prob super scuffed but it doesnt work when i return in the if statement above 🤡
         if (avail) {
-            return "available"
+            return true
         } else {
-            return "unavailable"
+            return false
         }
     })
 } 
@@ -476,4 +481,15 @@ const getObjId = async (tableIdOrRoomId, id) => {
     }).catch((error) => {
         console.log(error);
     })
+}
+
+const formatDate = (date) => {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
 }

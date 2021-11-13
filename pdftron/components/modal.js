@@ -4,6 +4,8 @@ import styles from "../styles/Book.module.css"
 import {createTableBooking, getAllTableBookings, createRoomBooking} from "../database/databaseCRUD";
 import { Button } from "@chakra-ui/react"
 import { set } from "@firebase/database";
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 
 const Modal = ({ tableID, roomID, team, toggle, bookedTables, bookedRoomTimes, setBookedTables }) => {
@@ -15,24 +17,31 @@ const Modal = ({ tableID, roomID, team, toggle, bookedTables, bookedRoomTimes, s
         // change 1 to userID whenever sessions are implemented
         // console.log(startDate, endDate, tableID, team);
         if (!startDate) {
-            alert("bruh it literally tells u to select a date")
-            reloadTables()
+            let message = "bruh it literally tells u to select a date"
+            errorPopup(message)
         } else if (roomID) {
-            // alert("not implemented yet 😞")
             createRoomBooking(roomID, startDate, 1).then(message => {
-                console.log(message)
-                alert(message)
-                reloadTables()
+                if (message[0]) {
+                    closeModal()
+                    successPopup(message[1])
+                } else {
+                    errorPopup(message[1])
+                }
+
             })
         } else if (tableID) {
             createTableBooking(tableID, startDate, endDate, 1).then(message => {
-                console.log(message)
-                alert(message)
+                if (message[0]) {
+                    closeModal()
+                    successPopup(message[1])
+                } else {
+                    errorPopup(message[1])
+                }
                 setStartDate(false)
                 setEndDate(false)
-                reloadTables()
             })
         }
+        reloadTables()
     };
 
     const reloadTables = async () => {
@@ -112,7 +121,44 @@ const Modal = ({ tableID, roomID, team, toggle, bookedTables, bookedRoomTimes, s
         minutes = minutes < 10 ? '0'+minutes : minutes;
         var strTime = hours + ':' + minutes + ' ' + ampm;
         return strTime;
-      }
+    }
+
+    const MySwal = withReactContent(Swal)
+   
+    const successPopup = async (message) => {
+        await MySwal.fire({
+            title: <strong>Booked!</strong>,
+            html: <i>{message}</i>,
+            icon: "success",
+            confirmButtonText: "Yessir",
+            confirmButtonColor: "#00a5e4",
+            showCancelButton: true,
+            cancelButtonText: 'My Bookings',
+            width: "650px",
+        }).then((value) => {
+            if (value.isDismissed) {
+                // go to bookings page
+            }
+        })
+    }
+    
+    const errorPopup = async (message) => {
+        await MySwal.fire({
+            title: <strong>Error</strong>,
+            html: <i>{message}</i>,
+            icon: 'error',
+            confirmButtonText: "Sorry",
+            confirmButtonColor: "#00a5e4",
+            width: "650px",
+        }).then((value) => {
+            if (value.isConfirmed) {
+
+            }
+        })
+    }
+    
+
+
 
     return (
 

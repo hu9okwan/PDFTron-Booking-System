@@ -128,20 +128,22 @@ export default function TableDatePicker(props) {
             for (let bookings of props.bookedRoomTimes) {
 
                 for (let key in bookings) {
-                    
+
                     let existingStartDate = new Date(bookings[key]["startDate"])
                     if (bookings[key] !== undefined && bookings[key]["roomId"] === props.roomID && props.startDate && existingStartDate !== undefined) {
-                        // console.log(props.startDate, "*****")
+                        console.log(props.startDate, "*****")
                         if (existingStartDate.toDateString() === props.startDate.toDateString()) {
-                            excludedTimes.push(startDate);
+                            console.log("yap")
+                            excludedTimes.push(existingStartDate);
                         }
                     }
                 }
             }
         }
 
+        console.log(excludedTimes)
         return excludedTimes
-    }, [props.bookedRoomTimes])
+    }, [props.bookedRoomTimes, props.startDate])
     
 
     const onChange = (dates) => {
@@ -161,7 +163,7 @@ export default function TableDatePicker(props) {
 
     const onChangeRoom = date => {
         // console.log("yap")
-        // console.log(date)
+        console.log(date)
         props.setStartDate(date)
     }
 
@@ -194,9 +196,8 @@ export default function TableDatePicker(props) {
                 showTimeSelect={props.timeSelect}
                 dateFormat={"     MMMM d, yyyy"}
                 excludeDates={props.isModal && props.tableID && excludeBookedDates}
-                excludeTimes={props.isModal && props.roomID && excludeBookedTimes}
+                excludeTimes={props.isModal && excludeBookedTimes}
                 selected={props.startDate}
-                // selectsStart
                 minDate={minSelectedStart}
                 minTime={props.isModal && props.roomID && minTimeStart}
                 maxTime={new Date(0, 0, 0, 23, 30)}
