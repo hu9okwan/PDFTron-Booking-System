@@ -6,7 +6,7 @@ import styles2 from "../styles/Book.module.css"
 import { Heading, Button, Select } from "@chakra-ui/react"
 import {saveToDatabase, getFloorPlan} from "../database/databaseCRUD";
 import  { useSession }  from 'next-auth/react';
-const jsonObj = require('../public/tempJSON.json');
+
 
 export default function Edit() {
     const { data: session } = useSession()
@@ -33,7 +33,6 @@ export default function Edit() {
             hoverTable(canvas);
         }
     }, [canvas]);
-
 
 
 
@@ -251,9 +250,13 @@ export default function Edit() {
     }
 
 
-    const saveToDatabase = (canvas) => {
-        const canvasJson = canvas.toJSON(["bookings", "tableID", "roomID", "team"]);
-        saveToDatabase(canvasJson).then(r => console.log("saved floor plan"));
+    const saveMap = (canvas) => {
+        console.log(canvas)
+        const canvasJson = canvas.toJSON(["bookings", "tableID", "roomID", "team"])
+        saveToDatabase(canvasJson).then(r => {
+            console.log("saved floor plan")
+            alert("Your changes has been saved.")}
+        );
     };
 
 
@@ -287,7 +290,7 @@ export default function Edit() {
                         <Button className={styles.pointer} onClick={() => addRect(canvas, true)}>Add Table</Button>
                         <Button className={styles.pointer} onClick={() => addRect(canvas, false)}>Add Room</Button>
                         <Button className={styles.pointer} onClick={() => removeTable(canvas)}>Remove Selected</Button>
-                        <Button className={styles.pointer} onClick={() => saveToDatabase(canvas)}>Save Changes</Button>
+                        <Button className={styles.pointer} onClick={() => saveMap(canvas)}>Save Changes</Button>
                     </div>
 
                 </div>

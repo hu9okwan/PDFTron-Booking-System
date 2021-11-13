@@ -218,13 +218,29 @@ import TableDatePicker from "../components/datepicker";
       
         return dateArray;
     }
+    
+
+    const changeDate = move => {
+        const date = new Date()
+        if (move === "prev") {
+            date.setDate(selectedDate.getDate() - 1)
+            setSelectedDate(date)
+        } else if (move === "next") {
+            date.setDate(selectedDate.getDate() + 1)
+            setSelectedDate(date)
+        }
+    }
 
 
     return (
         <div>
             <NavbarBS isLoggedin={true} username={session.user.name} />
             <div className={styles.flexContainer}>
-                <TableDatePicker isModal={false} startDate={selectedDate} setStartDate={setSelectedDate} timeSelect={false} onChange={updateMap(selectedDate, canvas)} bookedTables={[]}/>
+                <div className={styles.prevNextContainer}>
+                    <button style={{all: "unset", cursor: "pointer", transform: `rotate(180deg)`}} onClick={() => changeDate("prev")}><img src="../next.png" height="40px" width="40px" /></button>
+                    <TableDatePicker isModal={false} startDate={selectedDate} setStartDate={setSelectedDate} timeSelect={false} onChange={updateMap(selectedDate, canvas)} bookedTables={[]}/>
+                    <button style={{all: "unset", cursor: "pointer"}} onClick={() => changeDate("next")}><img src="../next.png" height="40px" width="40px" /></button>
+                </div>
                 <canvas id="canvas"></canvas>
                 <span id="toolTip" className={styles.toolTip}></span>
                 {state.seen ? <Modal tableID={rectData.tableID} roomID={rectData.roomID} team={rectData.team} bookedTables={bookedTables} toggle={togglePop} setBookedTables={setBookedTables}>

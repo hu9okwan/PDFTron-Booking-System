@@ -23,17 +23,17 @@ export default function TableDatePicker(props) {
     // const [startDate, setStartDate] = useState(new Date());
     // const [endDate, setEndDate] = useState(new Date());
 
-    // const minTimeStart = useMemo(() => {
-    //     // restrcts selectable start datetime to current day with time rounded to next 30 min interval
+    const minTimeStart = useMemo(() => {
+        // restrcts selectable start datetime to current day with time rounded to next 30 min interval
 
-    //     const todayDate = new Date();
-    //     const selectedDate = new Date(props.startDate); // create a copy before modifying
-    //     // When current date is selected, set minTime to next nearest 30 mins
-    //     if(selectedDate.setHours(0,0,0,0) === todayDate.setHours(0,0,0,0)) {
-    //         return new Date();
-    //     }
-    //     return new Date(0, 0, 0, 24);
-    // }, [props.startDate]);
+        const todayDate = new Date();
+        const selectedDate = new Date(props.startDate); // create a copy before modifying
+        // When current date is selected, set minTime to next nearest 30 mins
+        if(selectedDate.setHours(0,0,0,0) === todayDate.setHours(0,0,0,0)) {
+            return new Date();
+        }
+        return new Date(0, 0, 0, 24);
+    }, [props.startDate]);
 
 
     // const minTimeEnd = useMemo(() => {
@@ -173,8 +173,8 @@ export default function TableDatePicker(props) {
                 selected={props.startDate}
                 // selectsStart
                 minDate={minSelectedStart}
-                // minTime={minTimeStart}
-                // maxTime={new Date(0, 0, 0, 23, 30)}
+                minTime={props.isModal && props.roomID && minTimeStart}
+                maxTime={new Date(0, 0, 0, 23, 30)}
                 startDate={props.startDate}
                 endDate={props.endDate}
                 inline={props.isModal}

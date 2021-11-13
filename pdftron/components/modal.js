@@ -1,10 +1,9 @@
 import React, {useState, useRef, useEffect} from "react";
 import TableDatePicker from "./datepicker";
 import styles from "../styles/Book.module.css"
-import {createTableBooking, getAllTableBookings} from "../database/databaseCRUD";
+import {createTableBooking, getAllTableBookings, createRoomBooking} from "../database/databaseCRUD";
 import { Button } from "@chakra-ui/react"
 import { set } from "@firebase/database";
-
 
 
 const Modal = ({ tableID, roomID, team, toggle, bookedTables, setBookedTables }) => {
@@ -19,7 +18,12 @@ const Modal = ({ tableID, roomID, team, toggle, bookedTables, setBookedTables })
             alert("bruh it literally tells u to select a date")
             reloadTables()
         } else if (roomID) {
-            alert("not implemented yet 😞")
+            // alert("not implemented yet 😞")
+            createRoomBooking(roomID, startDate, 1).then(message => {
+                console.log(message)
+                alert(message)
+                reloadTables()
+            })
         } else if (tableID) {
             createTableBooking(tableID, startDate, endDate, 1).then(message => {
                 console.log(message)
@@ -137,13 +141,10 @@ const Modal = ({ tableID, roomID, team, toggle, bookedTables, setBookedTables })
                     </div>
                 </div>
                 
-
-                {/* <div className={styles.buttonContainer}>
-                    <Button className={styles.bookButton}
-                            onClick={submitBooking}>Book</Button>
-                </div> */}
-
             </div>
+
+
+
         </div>
     );
 

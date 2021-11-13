@@ -103,7 +103,7 @@
 
 .flexContainer {
     display: flex;
-    padding-top: 50px;
+    padding-top: 30px;
     align-items: center;
     justify-content: center;
     flex-direction: column;
@@ -127,4 +127,8 @@
 
 .datePicker:focus {
     outline: none;
+}
+
+.prevNextContainer {
+    display: flex;
 }

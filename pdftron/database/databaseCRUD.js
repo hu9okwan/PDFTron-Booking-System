@@ -1,5 +1,6 @@
 import firebase from "firebase/compat/app";
 import {getDatabase, ref, child, set, onValue, get, update } from 'firebase/database'
+import { snapshotViewportBox } from "framer-motion";
 import initFirebase from "./initFirebase"
 
 initFirebase();
@@ -24,8 +25,11 @@ export const createTableBooking = async (tableId, startDate, endDate, userID) =>
             let startDateTimestamp = startDate.getTime()
             let endDateTimestamp = endDate.getTime()
 
+            let objId = await getObjId("tableID", tableId)
+            console.log(objId)
+
             let bookingId = generateID()
-            await set(ref(db, 'floorplan/data/objects/' + tableId + '/bookings/' + 'bookId_' + bookingId), {
+            await set(ref(db, 'floorplan/data/objects/' + objId + '/bookings/' + 'bookId_' + bookingId), {
                 tableId: tableId,
                 startDate: startDateTimestamp,
                 endDate: endDateTimestamp,
@@ -40,7 +44,38 @@ export const createTableBooking = async (tableId, startDate, endDate, userID) =>
     })
 };
 
+export const createRoomBooking = async (roomId, startDate, userID) => {
+    // /reservations/4 (4 needs to be uniquely generated)
+  
+    console.log(roomId, startDate, userID);
+    startDate.setSeconds(0)
+    startDate.setMilliseconds(0)
+  
+    return isRoomAvailable(startDate, roomId).then(async (status) => {
+        console.log(status)
+
+        if (status === "available") {
+            let startDateTimestamp = startDate.getTime()
+
+            let objId = await getObjId("roomID", roomId)
+
+            let bookingIdRoom = generateID()
+            await set(ref(db, 'floorplan/data/objects/' + objId + '/bookings/' + 'bookId_' + bookingIdRoom), {
+                roomId: roomId,
+                startDate: startDateTimestamp,
+                userId: userID
+            });
+            console.log(`booking id: ${bookingIdRoom}`)
+            return("The room has been booked.")
+        } else if (status === "unavailable") {
+            // console.log("sucks to suck")
+            return("Selected date & time are unavailable or it just got booked by another user. \n\nPlease choose another date or time.")
+        }
+    })
+};
+
 export const saveToDatabase = async (tableData) => {
+    // need to make a helper function that compares if any bookings were made during editing and to deal with it
   await set(ref(db, 'floorplan/'), {
     data: tableData
   });
@@ -183,15 +218,28 @@ export const getAllTableBookings = async () => {
 };
 
 export const getTableBookings = async (tableId) => {
-    return get(child(dbRef, `floorplan/data/objects/`)).then((snapshot) => {
-          if (snapshot.exists()) {
+    return get(child(dbRef, `floorplan/data/objects/`)).then( async (snapshot) => {
+        if (snapshot.exists()) {
+            let objId = await getObjId("tableID", tableId)
             const data = snapshot.val();
             // console.log(data[tableId]);
-            return [data[tableId]["bookings"]];
-          }
+            return [data[objId]["bookings"]];
+          
         }
-    )
-  };
+    })
+};
+
+export const getRoomBookings = async (roomId) => {
+    return get(child(dbRef, `floorplan/data/objects/`)).then( async (snapshot) => {
+        if (snapshot.exists()) {
+            let objId = await getObjId("roomID", roomId)
+            const data = snapshot.val();
+            // console.log(data[roomId]);
+            return [data[objId]["bookings"]];
+            
+        }
+    })
+};
 
 export const getUserRoomBookings = async (userID) => {
   return get(child(dbRef, `rooms/`)).then((snapshot) => {
@@ -364,4 +412,54 @@ const isAvailable = (startDate, endDate, tableId) => {
         }
     })
 
+}
+
+
+const isRoomAvailable = (startDate, roomId) => {
+    let avail = true
+
+    return getRoomBookings(roomId).then(allCurrentBookings => {
+        allCurrentBookings.forEach(bookingsForRoom => {
+            for (let key in bookingsForRoom) {
+                if (bookingsForRoom[key] !== undefined) {
+                    let existingBookingStartDateEpoch = bookingsForRoom[key].startDate
+                    let startDateEpoch = startDate.getTime()
+
+                    // console.log(existingBookingStartDateEpoch, "existing")
+                    // console.log(startDateEpoch,"current")
+                    // console.log(existingBookingStartDateEpoch === startDateEpoch)
+
+                    if (existingBookingStartDateEpoch === startDateEpoch) {
+                        avail = false
+                    }
+                }
+            }
+        })
+
+        // prob super scuffed but it doesnt work when i return in the if statement above 🤡
+        if (avail) {
+            return "available"
+        } else {
+            return "unavailable"
+        }
+    })
+} 
+
+
+const getObjId = async (tableIdOrRoomId, id) => {
+    // gets the object key of firebase b/c the id of room or table does not always equal the object key
+    return get(child(dbRef, `floorplan/data/objects`)).then((snapshot) => {
+        if (snapshot.exists()) {
+            const data = snapshot.val();
+            for (let objId in data) {
+                if (data[objId][tableIdOrRoomId] === id) {
+                    return objId
+                }
+            }
+        } else {
+            console.log("No data available");
+        }
+    }).catch((error) => {
+        console.log(error);
+    })
 }
