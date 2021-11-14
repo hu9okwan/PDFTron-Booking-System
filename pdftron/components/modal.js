@@ -1,52 +1,76 @@
 import React, {useState, useRef, useEffect} from "react";
 import TableDatePicker from "./datepicker";
 import styles from "../styles/Book.module.css"
-import {createTableBooking, getAllTableBookings, createRoomBooking} from "../database/databaseCRUD";
+import {createTableBooking, getAllTableBookings, createRoomBooking, getAllRoomBookings} from "../database/databaseCRUD";
 import { Button } from "@chakra-ui/react"
 import { set } from "@firebase/database";
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
+import { css } from "@emotion/react";
+import { SyncLoader, ClipLoader } from 'react-spinners';
 
-
-const Modal = ({ tableID, roomID, team, toggle, bookedTables, bookedRoomTimes, setBookedTables }) => {
+const Modal = ({ tableID, roomID, team, toggle, bookedTables, bookedRoomTimes, setBookedTables, setBookedRoomTimes }) => {
     const closeModal = () => {
         toggle();
     };
+
+    let [loading, setLoading] = useState(false);
+    const override = css`
+    display: flex;
+    margin: 0 auto;
+    justify-content: center;
+    `;
+
     //tableId, startDate, endDate, userID
     const submitBooking = () => {
         // change 1 to userID whenever sessions are implemented
         // console.log(startDate, endDate, tableID, team);
+        setLoading(true)
+        console.log(loading)
         if (!startDate) {
-            let message = "bruh it literally tells u to select a date"
-            errorPopup(message)
+            return
         } else if (roomID) {
             createRoomBooking(roomID, startDate, 1).then(message => {
                 if (message[0]) {
-                    closeModal()
-                    successPopup(message[1])
+                    setSuccessStatus(true)
+                    setLoading(false)
                 } else {
-                    errorPopup(message[1])
+                    setSuccessStatus(false)
+                    setErrorStatus(true)
+                    setLoading(false)
                 }
-
+                reloadRooms()
             })
         } else if (tableID) {
             createTableBooking(tableID, startDate, endDate, 1).then(message => {
                 if (message[0]) {
-                    closeModal()
-                    successPopup(message[1])
+                    setSuccessStatus(true)
+                    console.log(message)
+                    setBookedDates({
+                        bookedStartDate: message[2],
+                        bookedEndDate: message[3],
+                        message: message[1]
+                    })
+                    setLoading(false)
                 } else {
-                    errorPopup(message[1])
+                    setSuccessStatus(false)
+                    setErrorStatus(true)
+                    setLoading(false)
                 }
                 setStartDate(false)
                 setEndDate(false)
+                reloadTables()
             })
         }
-        reloadTables()
     };
 
     const reloadTables = async () => {
         const res = await Promise.resolve(getAllTableBookings());
         setBookedTables(res);
+    }
+
+    const reloadRooms = async () => {
+        const res = await Promise.resolve(getAllRoomBookings());
+        setBookedRoomTimes(res);
+
     }
       
 
@@ -74,42 +98,114 @@ const Modal = ({ tableID, roomID, team, toggle, bookedTables, bookedRoomTimes, s
     const [endDate, setEndDate] = useState(false);
 
 
-    const StartDateRender = () => {
-        if (startDate && tableID) {
-            return (
-            `${startDate.toDateString()}`
-            )
+    const [successStatus, setSuccessStatus] = useState(false);
+    const [errorStatus, setErrorStatus] = useState(false);
+    const [bookedDates, setBookedDates] = useState({});
+ 
+
+    const InfoRender = () => {
+
+        let html
+
+        if (successStatus) {
+            let startingDate
+            let endingDate
+
+            if (bookedDates.bookedStartDate) {
+                startingDate = bookedDates.bookedStartDate.toDateString()
+            }
+            if (bookedDates.bookedEndDate) {
+                endingDate = bookedDates.bookedEndDate.toDateString()
+            }
+
+            if (tableID) {
+                html =  <div className={styles.dateInfoContainer}>
+                            <div><strong>Booked for:</strong></div>
+                            <div>
+                                {startingDate}
+                            </div>
+                            { startingDate === endingDate ? <> </> :
+                            <>
+                            <div>
+                                to
+                            </div>
+                            <div>
+                                {endingDate}
+                            </div> 
+                            </>
+                            }
+                        </div>
+            } else if (roomID) {
+                html = <div className={styles.dateInfoContainer}>
+                            <div><strong>Booked for:</strong></div>
+                            <div>
+                                {startDate.toDateString()}
+                            </div>
+                            <div>
+                                {formatDate(startDate)}
+                            </div>
+                        </div>
+            }
+        } else if (errorStatus) {
+            html =  <div className={styles.dateInfoContainer}>
+                        ⚠️ Selected date(s) are unavailable.
+                    </div>
+        } else if (endDate && tableID) {
+            html =  <div className={styles.dateInfoContainer}>
+                        <div>
+                            {startDate.toDateString()}
+                        </div>
+                        <div>
+                            to
+                        </div>
+                        <div>
+                            {endDate.toDateString()}
+                        </div>
+                    </div>
+
         } else if (startDate && roomID) {
-            return (
-            `${startDate.toDateString()}`
-            )
+            html =  <div className={styles.dateInfoContainer}>
+                        <div>
+                            {startDate.toDateString()}
+                        </div>
+                        <div>
+                            {formatDate(startDate)}
+                        </div>
+                    </div>
+        } else if (startDate && tableID) {
+            
+            html =  <div className={styles.dateInfoContainer}>
+                        {startDate.toDateString()}
+                    </div>
         } else {
-            return (
-            `📆 Select a date 📆`
-            )
-        }
+            html =  <div className={styles.dateInfoContainer}>
+                        📆 Select a date
+                    </div>
+        } 
+
+        return html
     }
 
-    const EndDateRender = () => {
-        if (endDate && tableID) {
+    const ButtonRender = () => {
+        if (successStatus) {
             return (
-                <>
-                <div>to</div>
-                <div>{endDate.toDateString()}</div>
-                </>
+                <svg className={styles.checkmark} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                    <circle className={styles.checkmark__circle} cx="26" cy="26" r="25" fill="none"/>
+                    <path className={styles.checkmark__check} fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                </svg>
             )
-        } else if (startDate && roomID) {
+        } else if (loading) {
             return (
-                <>
-                <div>{formatDate(startDate)}</div>
-                <br/>
-                </>
+                // <SyncLoader color={"#00a5e4"} css={override} size={10} margin={5}/>
+                <ClipLoader color={"#00a5e4"} css={override} size={40}/>
+                
+
             )
         } else {
             return (
-                <><br/><br/></>
+                <Button className={styles.bookButton} disabled={!startDate} onClick={submitBooking}>Book</Button>
             )
-        }
+        } 
     }
 
     function formatDate(date) {
@@ -123,41 +219,6 @@ const Modal = ({ tableID, roomID, team, toggle, bookedTables, bookedRoomTimes, s
         return strTime;
     }
 
-    const MySwal = withReactContent(Swal)
-   
-    const successPopup = async (message) => {
-        await MySwal.fire({
-            title: <strong>Booked!</strong>,
-            html: <i>{message}</i>,
-            icon: "success",
-            confirmButtonText: "Yessir",
-            confirmButtonColor: "#00a5e4",
-            showCancelButton: true,
-            cancelButtonText: 'My Bookings',
-            width: "650px",
-        }).then((value) => {
-            if (value.isDismissed) {
-                // go to bookings page
-            }
-        })
-    }
-    
-    const errorPopup = async (message) => {
-        await MySwal.fire({
-            title: <strong>Error</strong>,
-            html: <i>{message}</i>,
-            icon: 'error',
-            confirmButtonText: "Sorry",
-            confirmButtonColor: "#00a5e4",
-            width: "650px",
-        }).then((value) => {
-            if (value.isConfirmed) {
-
-            }
-        })
-    }
-    
-
 
 
     return (
@@ -170,27 +231,21 @@ const Modal = ({ tableID, roomID, team, toggle, bookedTables, bookedRoomTimes, s
 
                 <div className={styles.selectContainer}>
                     <TableDatePicker isModal={true} startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate} tableID={tableID} roomID={roomID} bookedTables={bookedTables} bookedRoomTimes={bookedRoomTimes}
-                        timeSelect={tableID ? false : true} />
+                        timeSelect={tableID ? false : true} 
+                        setSuccessStatus={setSuccessStatus}
+                        />
                     <div className={styles.tableInfo}>
                         <h3 style={{textAlign: "center"}}>
                             {tableID ? `${team} Table ${tableID}` : `${team} Room ${roomID}`}
                         </h3>
-                        &nbsp;
-                        <div>
-                        <StartDateRender />
+
+                        <InfoRender />
+                        <div className={styles.modalBtnContainer}>
+                        <ButtonRender />
                         </div>
-                        <EndDateRender />
-                        
-                        &nbsp;
-                        <Button className={styles.bookButton}
-                            onClick={submitBooking}>Book</Button>
                     </div>
                 </div>
-                
             </div>
-
-
-
         </div>
     );
 

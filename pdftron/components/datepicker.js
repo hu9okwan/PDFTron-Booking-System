@@ -121,7 +121,7 @@ export default function TableDatePicker(props) {
 
 
     const excludeBookedTimes = useMemo(() => {
-        console.log(props.bookedRoomTimes)
+        // console.log(props.bookedRoomTimes)
         let excludedTimes = []
         if (props.bookedRoomTimes !== undefined) {
 
@@ -141,7 +141,7 @@ export default function TableDatePicker(props) {
             }
         }
 
-        console.log(excludedTimes)
+        // console.log(excludedTimes)
         return excludedTimes
     }, [props.bookedRoomTimes, props.startDate])
     
@@ -150,6 +150,7 @@ export default function TableDatePicker(props) {
         // console.log(dates)
         const [start, end] = dates;
         // console.log(start)
+        props.setSuccessStatus(false)
         props.setStartDate(start);
         props.setEndDate(end);
     }
@@ -163,7 +164,8 @@ export default function TableDatePicker(props) {
 
     const onChangeRoom = date => {
         // console.log("yap")
-        console.log(date)
+        // console.log(date)
+        props.setSuccessStatus(false)
         props.setStartDate(date)
     }
 

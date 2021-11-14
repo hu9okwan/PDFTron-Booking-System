@@ -37,11 +37,11 @@ export const createTableBooking = async (tableId, startDate, endDate, userID) =>
             });
             console.log(`booking id: ${bookingId}`)
             let bookingDateString = startDate === endDate ? `${startDate.toDateString()}` : `${startDate.toDateString()} to ${endDate.toDateString()}`
-            let returnMsg = [status, `The table has been booked for: ${bookingDateString}`] 
+            let returnMsg = [status, `The table has been booked for: ${bookingDateString}`, startDate, endDate] 
             return(returnMsg)
         } else {
             // console.log("sucks to suck")
-            let returnMsg = [status, "Selected date(s) are unavailable or it just got booked by another user. Please choose another date."] 
+            let returnMsg = [status, "Selected date(s) are unavailable or it just got booked by another user. Please choose another date.", startDate, endDate] 
             return(returnMsg)
         }
     })
@@ -69,11 +69,11 @@ export const createRoomBooking = async (roomId, startDate, userID) => {
                 userId: userID
             });
             console.log(`booking id: ${bookingIdRoom}`)
-            let returnMsg = [status, `The room has been booked for: ${startDate.toDateString()} at ${formatDate(startDate)}`]
+            let returnMsg = [status, `The room has been booked for: ${startDate.toDateString()} at ${formatDate(startDate)}`, startDate]
             return(returnMsg)
         } else {
             // console.log("sucks to suck")
-            let returnMsg = [status, "Selected date(s) are unavailable or it just got booked by another user. Please choose another date."] 
+            let returnMsg = [status, "Selected date(s) are unavailable or it just got booked by another user. Please choose another date.", startDate] 
             return(returnMsg)
         }
     })
@@ -160,30 +160,56 @@ export const getMaxHours = async () => {
 
 
 
+// export const getUserTableBookings = async (userID) => {
+//   return get(child(dbRef, `tables/`)).then((snapshot) => {
+//     let curBookings = [];
+//     if (snapshot.exists()) {
+//       const data = snapshot.val();
+
+
+//       for (let table of data) {
+//         for (let booking of table.bookings) {
+//           if (booking.userId === userID) {
+//             let ans = {table: table.id, startDate: booking.startDate, endDate: booking.endDate, teamId: table.teamId}
+//             console.log(ans);
+//             curBookings.push(ans);
+//           }
+//         }
+//       }
+//     } else {
+//       console.log("No data available");
+//     }
+//     return curBookings;
+
+//   }).catch((error) => {
+//     console.error(error);
+//   });
+// };
+
+
 export const getUserTableBookings = async (userID) => {
-  return get(child(dbRef, `tables/`)).then((snapshot) => {
     let curBookings = [];
-    if (snapshot.exists()) {
-      const data = snapshot.val();
+    return get(child(dbRef, `floorplan/data/objects`)).then((snapshot) => {
+        if (snapshot.exists()) {
+            const data = snapshot.val();
+            for (let key in data) {
 
-
-      for (let table of data) {
-        for (let booking of table.bookings) {
-          if (booking.userId === userID) {
-            let ans = {table: table.id, startDate: booking.startDate, endDate: booking.endDate, teamId: table.teamId}
-            console.log(ans);
-            curBookings.push(ans);
-          }
-        }
-      }
-    } else {
-      console.log("No data available");
-    }
-    return curBookings;
-
-  }).catch((error) => {
-    console.error(error);
-  });
+                try {
+                    if (data[key]["tableID"] !== undefined) {
+                        for (let booking of data[key]["bookings"]) {
+                            curBookings.push(booking)
+                        }
+                    }
+                }
+                catch(err) {
+                    // object is not iterable
+                    curBookings.push(data[key]["bookings"])
+                }
+            }
+        }      
+    }).catch((error) => {
+        console.error(error);
+    });
 };
 
 export const getAllTableBookings = async () => {
@@ -248,30 +274,55 @@ export const getRoomBookings = async (roomId) => {
     })
 };
 
+// export const getUserRoomBookings = async (userID) => {
+//   return get(child(dbRef, `rooms/`)).then((snapshot) => {
+//     let curBookings = [];
+//     if (snapshot.exists()) {
+//       const data = snapshot.val();
+
+
+//       for (let table of data) {
+//         for (let booking of table.bookings) {
+//           if (booking.userId === userID) {
+//             let ans = {table: table.id, startDate: booking.startDate, endDate: booking.endDate, teamId: table.teamId}
+//             console.log(ans);
+//             curBookings.push(ans);
+//           }
+//         }
+//       }
+//     } else {
+//       console.log("No data available");
+//     }
+//     return curBookings;
+
+//   }).catch((error) => {
+//     console.error(error);
+//   });
+// };
+
 export const getUserRoomBookings = async (userID) => {
-  return get(child(dbRef, `rooms/`)).then((snapshot) => {
     let curBookings = [];
-    if (snapshot.exists()) {
-      const data = snapshot.val();
+    return get(child(dbRef, `floorplan/data/objects`)).then((snapshot) => {
+        if (snapshot.exists()) {
+            const data = snapshot.val();
+            for (let key in data) {
 
-
-      for (let table of data) {
-        for (let booking of table.bookings) {
-          if (booking.userId === userID) {
-            let ans = {table: table.id, startDate: booking.startDate, endDate: booking.endDate, teamId: table.teamId}
-            console.log(ans);
-            curBookings.push(ans);
-          }
-        }
-      }
-    } else {
-      console.log("No data available");
-    }
-    return curBookings;
-
-  }).catch((error) => {
-    console.error(error);
-  });
+                try {
+                    if (data[key]["roomID"] !== undefined) {
+                        for (let booking of data[key]["bookings"]) {
+                            curBookings.push(booking)
+                        }
+                    }
+                }
+                catch(err) {
+                    // object is not iterable
+                    curBookings.push(data[key]["bookings"])
+                }
+            }
+        }    
+    }).catch((error) => {
+        console.error(error);
+    });
 };
 
 export const getAllRoomBookings = async () => {
