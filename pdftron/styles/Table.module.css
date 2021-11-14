@@ -21,3 +21,15 @@
 .section {
     padding-block: 1rem;
 }
+
+
+.tableContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 80px;
+    width: 80%;
+    /* justify-content: center; */
+    margin:auto;
+    flex: 1;
+}
+

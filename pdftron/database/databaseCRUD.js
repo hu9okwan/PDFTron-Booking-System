@@ -1,5 +1,5 @@
 import firebase from "firebase/compat/app";
-import {getDatabase, ref, child, set, onValue, get, update } from 'firebase/database'
+import {getDatabase, ref, child, set, onValue, get, update, remove } from 'firebase/database'
 import { snapshotViewportBox } from "framer-motion";
 import initFirebase from "./initFirebase"
 
@@ -238,6 +238,9 @@ export const getMaxHours = async () => {
 
 export const getUserTableBookings = async (userID) => {
     let curBookings = [];
+    if (!userID) {
+        return curBookings
+    } 
     return get(child(dbRef, `floorplan/data/objects`)).then((snapshot) => {
         if (snapshot.exists()) {
             const data = snapshot.val();
@@ -245,16 +248,20 @@ export const getUserTableBookings = async (userID) => {
 
                 try {
                     if (data[key]["tableID"] !== undefined) {
-                        for (let booking of data[key]["bookings"]) {
-                            curBookings.push(booking)
+                        for (let bookingId in data[key]["bookings"]) {
+                            if (data[key]["bookings"][bookingId]["userId"] === userID) {
+                                let bookingObj = {[bookingId]: data[key]["bookings"][bookingId]}
+                                curBookings.push(bookingObj)
+                            }
                         }
                     }
                 }
                 catch(err) {
-                    // object is not iterable
-                    curBookings.push(data[key]["bookings"])
+                    console.log(err)
                 }
             }
+            // console.log(curBookings)
+            return curBookings
         }      
     }).catch((error) => {
         console.error(error);
@@ -351,6 +358,9 @@ export const getRoomBookings = async (roomId) => {
 
 export const getUserRoomBookings = async (userID) => {
     let curBookings = [];
+    if (!userID) {
+        return curBookings
+    } 
     return get(child(dbRef, `floorplan/data/objects`)).then((snapshot) => {
         if (snapshot.exists()) {
             const data = snapshot.val();
@@ -358,16 +368,21 @@ export const getUserRoomBookings = async (userID) => {
 
                 try {
                     if (data[key]["roomID"] !== undefined) {
-                        for (let booking of data[key]["bookings"]) {
-                            curBookings.push(booking)
+                        for (let bookingId in data[key]["bookings"]) {
+                            if (data[key]["bookings"][bookingId]["userId"] === userID) {
+                                let bookingObj = {[bookingId]: data[key]["bookings"][bookingId]}
+                                curBookings.push(bookingObj)
+                            }
                         }
                     }
                 }
                 catch(err) {
-                    // object is not iterable
-                    curBookings.push(data[key]["bookings"])
+                    console.log(err)
+
                 }
             }
+
+            return curBookings
         }    
     }).catch((error) => {
         console.error(error);
@@ -464,17 +479,42 @@ export const updateMaxTableDays = async (maxDays) => {
 // ============================ DELETE =======================================
 
 export const deleteTableBooking = async (tableBookingID) => {
-  remove(ref(db, 'tables/booking/' + tableBookingID));
-  console.log("Successfully delete this tableBookingID")
+
+    let path = await findBookingIdPath(tableBookingID)
+    console.log(path)
+    await remove(ref(db, 'floorplan/data/objects/' + path));
+    console.log("Successfully deleted this table booking")
 };
 
-export const deleteRoomBooking = async (tableBookingID) => {
-  remove(ref(db, 'rooms/bookings/' + tableBookingID));
-  console.log("Successfully delete this room Booking")
+export const deleteRoomBooking = async (roomBookingID) => {
+    let path = await findBookingIdPath(roomBookingID)
+    await remove(ref(db, 'rooms/bookings/' + path));
+    console.log("Successfully deleted this room booking")
 };
 
 // ============================ HELPER =======================================
 
+const findBookingIdPath = async (bookingId) => {
+    return get(child(dbRef, `floorplan/data/objects`)).then((snapshot) => {
+        if (snapshot.exists()) {
+            const data = snapshot.val()
+            for (let key in data) {
+                if (data[key]["bookings"] !== undefined) {
+                    for (let bookingIdInDb in data[key]["bookings"]) {
+                        if (bookingIdInDb === bookingId) {
+                            return `${key}/bookings/${bookingId}`
+                        }
+                    }
+                }
+            }
+        } else {
+            console.log("No data available");
+        }
+        }).catch((error) => {
+        console.error(error);
+    });
+};
+    
 const generateID = () => {
   // probably bad but just need a way of generating IDs
   let result           = '';

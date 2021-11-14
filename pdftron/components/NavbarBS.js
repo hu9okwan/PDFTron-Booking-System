@@ -1,7 +1,9 @@
 import {Navbar, Nav, NavDropdown} from 'react-bootstrap';
 import { signOut } from "next-auth/react"
+import { useSession } from 'next-auth/react';
 
 export const NavbarBS = ({isLoggedin, username}) => {
+    const { data: session } = useSession()
 
     // should pass in user object ^ as a prop
     // isLoggedin is just a T/F value rn to disable some links on index.js
@@ -17,7 +19,7 @@ export const NavbarBS = ({isLoggedin, username}) => {
 
     // placeholder tests
     let name = username
-    isAdmin = true
+    isAdmin = session.user.adminpriv
 
     return (
 
@@ -29,7 +31,7 @@ export const NavbarBS = ({isLoggedin, username}) => {
         {isLoggedin && <Navbar.Collapse id="responsive-navbar-nav" className="me-5">
             <Nav className="ms-auto">
                 {isLoggedin && <Nav.Link href="/book">Book</Nav.Link> }
-                {isLoggedin && <Nav.Link href="/mybookings">My Bookings</Nav.Link>}
+                {isLoggedin && <Nav.Link href="/my-bookings">My Bookings</Nav.Link>}
 
                 {isLoggedin && isAdmin && <NavDropdown href="/admindashboard" title="Admin Settings">
                     <NavDropdown.Item href="/usersettings">User Settings</NavDropdown.Item>
