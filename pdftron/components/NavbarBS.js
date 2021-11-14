@@ -19,7 +19,9 @@ export const NavbarBS = ({isLoggedin, username}) => {
 
     // placeholder tests
     let name = username
-    isAdmin = session.user.adminpriv
+    if (session) {
+        isAdmin = session.user.adminpriv
+    }
 
     return (
 
