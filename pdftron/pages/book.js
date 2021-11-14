@@ -90,8 +90,8 @@ import TableDatePicker from "../components/datepicker";
             setBookedTables(res);
             const res2 = await Promise.resolve(getAllRoomBookings());
             setBookedRoomTimes(res2);
-            console.log(res)
-            console.log(res2)
+            // console.log(res)
+            // console.log(res2)
         })
     }
 
@@ -237,7 +237,6 @@ import TableDatePicker from "../components/datepicker";
         }
     }
 
-
     return (
         <div>
             <NavbarBS isLoggedin={true} username={session.user.name} />
@@ -249,7 +248,7 @@ import TableDatePicker from "../components/datepicker";
                 </div>
                 <canvas id="canvas"></canvas>
                 <span id="toolTip" className={styles.toolTip}></span>
-                {state.seen ? <Modal tableID={rectData.tableID} roomID={rectData.roomID} team={rectData.team} bookedTables={bookedTables} bookedRoomTimes={bookedRoomTimes} toggle={togglePop} setBookedTables={setBookedTables} setBookedRoomTimes={setBookedRoomTimes}>
+                {state.seen ? <Modal userID={session.user.id} userEmail={session.user.email} tableID={rectData.tableID} roomID={rectData.roomID} team={rectData.team} bookedTables={bookedTables} bookedRoomTimes={bookedRoomTimes} toggle={togglePop} setBookedTables={setBookedTables} setBookedRoomTimes={setBookedRoomTimes}>
 
 
                 </Modal> : null}

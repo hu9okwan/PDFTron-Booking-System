@@ -7,10 +7,11 @@ import { set } from "@firebase/database";
 import { css } from "@emotion/react";
 import { SyncLoader, ClipLoader } from 'react-spinners';
 
-const Modal = ({ tableID, roomID, team, toggle, bookedTables, bookedRoomTimes, setBookedTables, setBookedRoomTimes }) => {
+const Modal = ({ userID, tableID, roomID, team, toggle, bookedTables, bookedRoomTimes, setBookedTables, setBookedRoomTimes }) => {
     const closeModal = () => {
         toggle();
     };
+
 
     let [loading, setLoading] = useState(false);
     const override = css`
@@ -28,7 +29,7 @@ const Modal = ({ tableID, roomID, team, toggle, bookedTables, bookedRoomTimes, s
         if (!startDate) {
             return
         } else if (roomID) {
-            createRoomBooking(roomID, startDate, 1).then(message => {
+            createRoomBooking(roomID, startDate, userID).then(message => {
                 if (message[0]) {
                     setSuccessStatus(true)
                     setLoading(false)
@@ -40,7 +41,7 @@ const Modal = ({ tableID, roomID, team, toggle, bookedTables, bookedRoomTimes, s
                 reloadRooms()
             })
         } else if (tableID) {
-            createTableBooking(tableID, startDate, endDate, 1).then(message => {
+            createTableBooking(tableID, startDate, endDate, userID).then(message => {
                 if (message[0]) {
                     setSuccessStatus(true)
                     console.log(message)
@@ -197,7 +198,7 @@ const Modal = ({ tableID, roomID, team, toggle, bookedTables, bookedRoomTimes, s
         } else if (loading) {
             return (
                 // <SyncLoader color={"#00a5e4"} css={override} size={10} margin={5}/>
-                <ClipLoader color={"#00a5e4"} css={override} size={40}/>
+                <ClipLoader color={"#00a5e4"} css={override} size={45}/>
                 
 
             )

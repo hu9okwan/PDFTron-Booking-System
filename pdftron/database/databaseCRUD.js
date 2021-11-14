@@ -87,14 +87,63 @@ export const saveToDatabase = async (tableData) => {
 };
 
 export const addUserToDatabase = async (userEmail) => {
-  await set(ref(db, 'users/' + 'user_' + generateID()), {
+    let data = await findNextAvailableUserId()
+    await set(ref(db, 'users/' + data[1]), {
     email: userEmail,
     teamId: 0,
-    isAdmin: false
+    isAdmin: false,
+    id: data[0]
   });
+  return data[0]
 };
 
 // ============================ READ =======================================
+
+export const getAllUsers = async () => {
+    let userArr = []
+    return get(child(dbRef, `users/`)).then((snapshot) => {
+        if (snapshot.exists()) {
+            const data = snapshot.val();
+            for (let key in data) {
+
+                try {
+                    for (let user of data[key]) {
+                        userArr.push(user)
+                    }
+                }
+                catch(err) {
+                    // object is not iterable
+                    userArr.push(data[key])
+                }
+            }
+            return userArr
+        }  
+    }).catch((error) => {
+        console.error(error);
+    });  
+}
+
+
+export const getUserId = async (userEmail) => {
+    return get(child(dbRef, `users/`)).then((snapshot) => {
+        if (snapshot.exists()) {
+            const data = snapshot.val();
+            for (let key in data) {
+                if (data[key]["email"] === userEmail) {
+                    // console.log(data[key]["id"])
+                    return data[key]["id"];
+                }
+            }
+            return false;
+        } else {
+            console.log("No data available");
+            return false;
+        }
+    }).catch((error) => {
+        console.error(error);
+    });
+}
+
 
 export const isAdmin = async (userEmail) => {
   return get(child(dbRef, `users/`)).then((snapshot) => {
@@ -543,4 +592,22 @@ const formatDate = (date) => {
     minutes = minutes < 10 ? '0'+minutes : minutes;
     var strTime = hours + ':' + minutes + ' ' + ampm;
     return strTime;
+}
+
+
+const findNextAvailableUserId = async () => {
+    // finds next lowest available user id 
+
+    let allUsers = await getAllUsers()
+    console.log(allUsers, "********findNextAvailableUserId*")
+
+    let id_list = [];
+    for (let obj of allUsers) {
+        id_list.push(obj["id"])
+    }
+    const set = new Set(id_list);
+    let id = 1;
+    while (set.has(id)) { id++ }
+
+    return [id, allUsers.length]
 }

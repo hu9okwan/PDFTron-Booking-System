@@ -131,7 +131,7 @@ export default function TableDatePicker(props) {
 
                     let existingStartDate = new Date(bookings[key]["startDate"])
                     if (bookings[key] !== undefined && bookings[key]["roomId"] === props.roomID && props.startDate && existingStartDate !== undefined) {
-                        console.log(props.startDate, "*****")
+                        // console.log(props.startDate, "*****")
                         if (existingStartDate.toDateString() === props.startDate.toDateString()) {
                             console.log("yap")
                             excludedTimes.push(existingStartDate);
