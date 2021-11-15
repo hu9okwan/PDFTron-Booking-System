@@ -1,9 +1,5 @@
 import React, { useState, useEffect, forwardRef } from "react";
 import styles from '../styles/Table.module.css'
-import "bootstrap/dist/css/bootstrap.css";
-import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
-import BootstrapTable from "react-bootstrap-table-next";
-// import { Button } from "react-bootstrap"
 import { NavbarBS } from "../components/NavbarBS";
 import { getUserTableBookings, getUserRoomBookings, deleteTableBooking, deleteRoomBooking } from "../database/databaseCRUD";
 import { useSession } from 'next-auth/react';
@@ -185,7 +181,6 @@ export default function App() {
                 components={{
                     Container: props => <Paper {...props} elevation={0}/>
                 }}
-                className={styles.materialTable}
                 title="Table Bookings"
                 columns={columns}
                 data={dataTable}
@@ -215,7 +210,6 @@ export default function App() {
                 components={{
                     Container: props => <Paper {...props} elevation={0}/>
                 }}
-                className={styles.materialTable}
                 title="Room Bookings"
                 columns={columnsRoom}
                 data={dataRoom}

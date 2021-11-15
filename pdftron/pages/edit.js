@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fabric } from 'fabric';
 import { NavbarBS } from '../components/NavbarBS';
-import styles from '../styles/Home.module.css'
-import styles2 from "../styles/Book.module.css"
+import styles from '../styles/Edit.module.css'
 import {saveToDatabase, getFloorPlan} from "../database/databaseCRUD";
 
 
@@ -269,9 +268,9 @@ export default function Edit() {
     return (
         <div>
             <NavbarBS />
-            <div className={styles2.flexContainer2}>
+            <div className={styles.flexContainerButtons}>
                 <canvas id="canvas"></canvas>
-                <span id="toolTip" className={styles2.toolTip}></span>
+                <span id="toolTip" className={styles.toolTip}></span>
 
                 <div>
                     <h1>Modify Floor Plan</h1>
