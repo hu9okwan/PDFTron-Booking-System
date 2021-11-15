@@ -4,15 +4,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import BootstrapTable from "react-bootstrap-table-next";
 import {NavbarBS} from "../components/NavbarBS";
-import {
-    Button,
-    Stack,
-    NumberInput,
-    NumberInputField,
-    NumberInputStepper,
-    NumberIncrementStepper,
-    NumberDecrementStepper
-} from "@chakra-ui/react"
+
 
 let tables = [
     {

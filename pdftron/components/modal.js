@@ -2,7 +2,6 @@ import React, {useState, useRef, useEffect} from "react";
 import TableDatePicker from "./datepicker";
 import styles from "../styles/Book.module.css"
 import {createTableBooking, getAllTableBookings, createRoomBooking, getAllRoomBookings} from "../database/databaseCRUD";
-import { Button } from "@chakra-ui/react"
 import { set } from "@firebase/database";
 import { css } from "@emotion/react";
 import { SyncLoader, ClipLoader } from 'react-spinners';

@@ -4,9 +4,8 @@ import "bootstrap/dist/css/bootstrap.css";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import BootstrapTable from "react-bootstrap-table-next";
 // import { Button } from "react-bootstrap"
-import { Button, ButtonGroup, Stack } from "@chakra-ui/react"
 import { NavbarBS } from "../components/NavbarBS";
-import { getUserTableBookings, getUserRoomBookings, deleteTableBooking, deleteRoomBooking, getUserId } from "../database/databaseCRUD";
+import { getUserTableBookings, getUserRoomBookings, deleteTableBooking, deleteRoomBooking } from "../database/databaseCRUD";
 import { useSession } from 'next-auth/react';
 import MaterialTable from "material-table";
 import { Paper } from '@material-ui/core';
@@ -193,8 +192,8 @@ export default function App() {
                 icons={tableIcons}
                 options={{ 
                     // paging: false, 
+                    filtering: true,
                     actionsColumnIndex: -1, }}
-                // tableLayout="fixed"
                 editable={{
                     onRowDelete: (oldData) =>
                         new Promise(async (resolve) => {
@@ -223,8 +222,8 @@ export default function App() {
                 icons={tableIcons}
                 options={{ 
                     // paging: false, 
+                    filtering: true,
                     actionsColumnIndex: -1, }}
-                // tableLayout="fixed"
                 editable={{
                     onRowDelete: (oldData) =>
                         new Promise(async (resolve) => {

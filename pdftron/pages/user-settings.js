@@ -4,9 +4,8 @@ import "bootstrap/dist/css/bootstrap.css";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import BootstrapTable from "react-bootstrap-table-next";
 // import { Button } from "react-bootstrap"
-import { Button, ButtonGroup, Stack } from "@chakra-ui/react"
 import { NavbarBS } from "../components/NavbarBS";
-import { getUserTableBookings, getUserRoomBookings, deleteTableBooking, deleteRoomBooking, getUserId, getAllUsers } from "../database/databaseCRUD";
+import { getAllUsers } from "../database/databaseCRUD";
 import { useSession } from 'next-auth/react';
 import MaterialTable from "material-table";
 import { Paper } from '@material-ui/core';

@@ -4,9 +4,8 @@ import "bootstrap/dist/css/bootstrap.css";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import BootstrapTable from "react-bootstrap-table-next";
 // import { Button } from "react-bootstrap"
-import { Button, ButtonGroup, Stack } from "@chakra-ui/react"
 import { NavbarBS } from "../components/NavbarBS";
-import { getUserTableBookings, getUserRoomBookings, deleteTableBooking, deleteRoomBooking, getUserId, getAllRoomBookings, getAllTableBookings } from "../database/databaseCRUD";
+import {  deleteTableBooking, deleteRoomBooking, getAllRoomBookings, getAllTableBookings } from "../database/databaseCRUD";
 import { useSession } from 'next-auth/react';
 import MaterialTable from "material-table";
 import { Paper } from '@material-ui/core';
@@ -195,8 +194,8 @@ export default function App() {
                 icons={tableIcons}
                 options={{ 
                     // paging: false, 
+                    filtering: true,
                     actionsColumnIndex: -1, }}
-                // tableLayout="fixed"
                 editable={{
                     onRowDelete: (oldData) =>
                         new Promise(async (resolve) => {
@@ -225,8 +224,8 @@ export default function App() {
                 icons={tableIcons}
                 options={{ 
                     // paging: false, 
+                    filtering: true,
                     actionsColumnIndex: -1, }}
-                // tableLayout="fixed"
                 editable={{
                     onRowDelete: (oldData) =>
                         new Promise(async (resolve) => {
@@ -249,3 +248,28 @@ export default function App() {
 }
 App.auth = true;
 
+function BasicFiltering() {
+    return (
+      <MaterialTable
+        title="Basic Filtering Preview"
+        columns={[
+          { title: 'Name', field: 'name' },
+          { title: 'Surname', field: 'surname' },
+          { title: 'Birth Year', field: 'birthYear', type: 'numeric' },
+          {
+            title: 'Birth Place',
+            field: 'birthCity',
+            lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },
+          },
+        ]}
+        data={[
+          { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
+          { name: 'Zerya Betül', surname: 'Baran', birthYear: 2017, birthCity: 34 },
+        ]}        
+        options={{
+          filtering: true
+        }}
+      />
+    )
+  }
+  
