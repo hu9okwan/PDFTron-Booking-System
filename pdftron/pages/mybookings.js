@@ -7,12 +7,15 @@ import BootstrapTable from "react-bootstrap-table-next";
 import { Button, ButtonGroup, Stack } from "@chakra-ui/react"
 import {NavbarBS} from "../components/NavbarBS";
 import {getUserTableBookings, getUserRoomBookings} from "../database/read";
+import {saveToDatabase, getUserTableBookings, getUserRoomBookings, deleteTableBooking, deleteRoomBooking} from '../database/databaseCRUD.js';
 
+// getUserTableBookings(userID)
+// const tables = [
+//   { table: allBookin, startDate: "October 27, 2021", endDate: "October 27, 2021", type: "General" },
+//   { table: "#3", startDate: "October 25, 2021", endDate: "October 25, 2021", type: "HR" },
+// ];
 
-const tables = [
-  { table: "#2", startDate: "October 27, 2021", endDate: "October 27, 2021", type: "General" },
-  { table: "#3", startDate: "October 25, 2021", endDate: "October 25, 2021", type: "HR" },
-];
+const tables = getUserTableBookings() // put in user ID once we have sessions
 
 const columns = [
   {
@@ -49,10 +52,10 @@ const columns = [
     formatter: () => {
       return (
         <Stack direction="row" spacing={4} justifyContent="center">
-        <Button colorScheme="twitter" variant="outline">
+        <Button colorScheme="twitter" variant="outline" onclick="saveToDatabase()"> 
         Edit
         </Button>
-        <Button colorScheme="red" variant="outline">
+        <Button colorScheme="red" variant="outline" onclick="deleteTableBooking()">
           Delete
       </Button>
       </Stack>
@@ -64,10 +67,12 @@ const columns = [
   }
 ];
 
-const rooms = [
-  { room: "#2", date: "October 27, 2021", time: "11:00 am - 1:00 pm" },
-  { room: "#3", date: "October 25, 2021", time: "11:00 am - 1:00 pm" }
-];
+// const rooms = [
+//   { room: "#2", date: "October 27, 2021", time: "11:00 am - 1:00 pm" },
+//   { room: "#3", date: "October 25, 2021", time: "11:00 am - 1:00 pm" }
+// ];
+
+const rooms = getUserRoomBookings() // add in user ID 
 
 const roomColumns = [
   {
@@ -97,10 +102,10 @@ const roomColumns = [
     formatter: () => {
       return (
         <Stack direction="row" spacing={4} justifyContent="center">
-        <Button colorScheme="twitter" variant="outline">
+        <Button colorScheme="twitter" variant="outline" onclick="saveToDatabase()">
         Edit
         </Button>
-        <Button colorScheme="red" variant="outline">
+        <Button colorScheme="red" variant="outline" onclick="deleteRoomBooking()">
           Delete
         </Button>
         </Stack>

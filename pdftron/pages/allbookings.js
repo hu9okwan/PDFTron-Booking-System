@@ -5,10 +5,15 @@ import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import BootstrapTable from "react-bootstrap-table-next";
 import {NavbarBS} from "../components/NavbarBS";
 import { Button, Stack, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper } from "@chakra-ui/react"
-const tables = [
-  { table: "#2", user: "Diego Felix", startDate: "October 27, 2021", endDate: "October 27, 2021", type: "General" },
-  { table: "#3", user: "Tyler Gordon", startDate: "October 25, 2021", endDate: "October 25, 2021", type: "HR" },
-];
+import {saveToDatabase, getAllTableBookings, getAllRoomBookings, deleteTableBooking, deleteRoomBooking} from '../database/databaseCRUD.js';
+
+
+// const tables = [
+//   { table: "#2", user: "Diego Felix", startDate: "October 27, 2021", endDate: "October 27, 2021", type: "General" },
+//   { table: "#3", user: "Tyler Gordon", startDate: "October 25, 2021", endDate: "October 25, 2021", type: "HR" },
+// ];
+
+const tables = getAllTableBookings()
 
 const columns = [
   {
@@ -52,10 +57,10 @@ const columns = [
     formatter: () => {
       return (
           <Stack direction="row" spacing={4} justifyContent="center">
-            <Button colorScheme="twitter" variant="outline">
+            <Button colorScheme="twitter" variant="outline" onclick="saveToDatabase()">
               Edit
             </Button>
-            <Button colorScheme="red" variant="outline">
+            <Button colorScheme="red" variant="outline"onclick="deleteTableBooking()">
               Delete
             </Button>
           </Stack>
@@ -67,10 +72,12 @@ const columns = [
   }
 ];
 
-const rooms = [
-  { room: "#2", user: "Agnes Ko", date: "October 27, 2021", time: "11:00 am - 1:00 pm" },
-  { room: "#3", user: "Shaniah Nizzar", date: "October 25, 2021", time: "11:00 am - 1:00 pm" }
-];
+// const rooms = [
+//   { room: "#2", user: "Agnes Ko", date: "October 27, 2021", time: "11:00 am - 1:00 pm" },
+//   { room: "#3", user: "Shaniah Nizzar", date: "October 25, 2021", time: "11:00 am - 1:00 pm" }
+// ];
+
+const room = getAllRoomBookings()
 
 const roomColumns = [
   {
@@ -107,10 +114,10 @@ const roomColumns = [
     formatter: () => {
       return (
           <Stack direction="row" spacing={4} justifyContent="center">
-            <Button colorScheme="twitter" variant="outline">
+            <Button colorScheme="twitter" variant="outline" onclick="saveToDatabase()">
               Edit
             </Button>
-            <Button colorScheme="red" variant="outline">
+            <Button colorScheme="red" variant="outline" onclick="deleteRoomBooking()">
               Delete
             </Button>
           </Stack>
