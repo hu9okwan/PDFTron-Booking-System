@@ -37,7 +37,7 @@ export const NavbarBS = ({isLoggedin, username}) => {
 
                 {isLoggedin && isAdmin && <NavDropdown href="/admindashboard" title="Admin Settings">
                     <NavDropdown.Item href="/user-settings">User Settings</NavDropdown.Item>
-                    <NavDropdown.Item href="/allbookings">See All Bookings</NavDropdown.Item>
+                    <NavDropdown.Item href="/all-bookings">See All Bookings</NavDropdown.Item>
                     <NavDropdown.Item href="/edit">Edit Map</NavDropdown.Item>
                     </NavDropdown>}
                 {isLoggedin && <NavDropdown title={name} align="end" id="basic-nav-dropdown">
