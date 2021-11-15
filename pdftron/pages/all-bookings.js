@@ -190,7 +190,9 @@ export default function App() {
                 options={{ 
                     // paging: false, 
                     filtering: true,
-                    actionsColumnIndex: -1, }}
+                    actionsColumnIndex: -1, 
+                    pageSize: 10
+                }}
                 editable={{
                     onRowDelete: (oldData) =>
                         new Promise(async (resolve) => {
@@ -219,7 +221,9 @@ export default function App() {
                 options={{ 
                     // paging: false, 
                     filtering: true,
-                    actionsColumnIndex: -1, }}
+                    actionsColumnIndex: -1, 
+                    pageSize: 10
+                }}
                 editable={{
                     onRowDelete: (oldData) =>
                         new Promise(async (resolve) => {

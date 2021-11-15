@@ -108,7 +108,9 @@ export default function App() {
                 icons={tableIcons}
                 options={{ 
                     // paging: false, 
-                    actionsColumnIndex: -1, }}
+                    actionsColumnIndex: -1, 
+                    pageSize: 10
+                }}
                 // tableLayout="fixed"
                 editable={{
                     onRowUpdate: (newData, oldData) =>
