@@ -1,0 +1,40 @@
+.flexContainer {
+    display: flex;
+}
+
+.buttonsContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+
+.toolTip{
+    position: absolute;
+    z-index: 1;
+    background: black;
+    border-radius: 5px;
+    height: fit-content;
+    width: fit-content;
+    padding: 8px;
+    font-size: 13px;
+    color: #fff;
+    visibility: hidden;
+}
+
+.table {
+    cursor: pointer;
+}
+
+
+
+
+.flexContainerButtons {
+    display: flex;
+    padding-top: 50px;
+    align-items: center;
+    justify-content: center;
+}

@@ -1,50 +1,20 @@
-@import url("https://fonts.googleapis.com/css?family=Nunito+Sans");
 
-.tableBody {
+.tableContainer {
+    display: flex;
+    gap: 80px;
+    width: 80%;
+    margin:auto;
+}
+
+.userTableContainer {
     display: flex;
     flex-direction: column;
-    font-family: "Nunito sans", sans-serif;
-    width: 100vw;
-    padding-inline: 2rem;
-    background-color: #e9ecef;
-    font-weight: bold;
-    padding-top: 4rem;
+    width: 80%;
+    margin:auto;
 }
 
-.navbar {
-    display: flex;
-    /* flex-direction: row; */
-    margin-top: -150px;
-    /* position: sticky; */
-    /* top: 0; */
-    padding: 0;
-    margin-inline: auto;
-    width: 99.9%;
-    background-color: white;
-}
-
-.navbar ul {
-    display: flex;
-    align-items: center;
-    /* box-shadow: 0px 0px 1px; */
-    /* background: white; */
-    margin: 0;
-}
-
-.navbar li {
-    list-style: none;
-    margin-inline: auto;
-}
-
-.navbar img {
-    max-width: 20vw;
-}
-
-.tableBody h1 {
-    font-size: 2rem;
-    padding-bottom: 1.5rem;
-}
-
-.section {
-    padding-block: 1rem;
+@media only screen and (max-width: 1450px) {
+    .tableContainer {
+        flex-direction: column;
+    }
 }
