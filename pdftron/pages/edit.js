@@ -3,11 +3,9 @@ import { fabric } from 'fabric';
 import { NavbarBS } from '../components/NavbarBS';
 import styles from '../styles/Edit.module.css'
 import {saveToDatabase, getFloorPlan} from "../database/databaseCRUD";
-import  { useSession }  from 'next-auth/react';
 
 
 export default function Edit() {
-    const { data: session } = useSession()
     const [canvas, setCanvas] = useState('');
     useEffect(() => {
         setCanvas(initCanvas());
@@ -269,7 +267,7 @@ export default function Edit() {
 
     return (
         <div>
-            <NavbarBS isLoggedin={true} />
+            <NavbarBS />
             <div className={styles.flexContainerButtons}>
                 <canvas id="canvas"></canvas>
                 <span id="toolTip" className={styles.toolTip}></span>

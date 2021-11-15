@@ -95,7 +95,7 @@ export default function App() {
 
     return (
         <>
-            <NavbarBS isLoggedin={true} username={session.user.name}/>
+            <NavbarBS />
 
             <div className={styles.tableContainer, styles.userTableContainer}>
             <MaterialTable

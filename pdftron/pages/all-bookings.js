@@ -2,7 +2,6 @@ import React, { useState, useEffect, forwardRef } from "react";
 import styles from '../styles/Table.module.css'
 import { NavbarBS } from "../components/NavbarBS";
 import {  deleteTableBooking, deleteRoomBooking, getAllRoomBookings, getAllTableBookings } from "../database/databaseCRUD";
-import { useSession } from 'next-auth/react';
 import MaterialTable from "material-table";
 import { Paper } from '@material-ui/core';
 
@@ -46,7 +45,6 @@ const tableIcons = {
 
 
 export default function App() {
-    const { data: session } = useSession()
 
 
     var columns = [
@@ -176,7 +174,7 @@ export default function App() {
 
     return (
         <>
-            <NavbarBS isLoggedin={true} username={session.user.name}/>
+            <NavbarBS />
 
             <div className={styles.tableContainer}>
             <MaterialTable
