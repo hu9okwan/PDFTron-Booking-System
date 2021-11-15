@@ -1,9 +1,5 @@
 import React, { useState, useEffect, forwardRef } from "react";
 import styles from '../styles/Table.module.css'
-import "bootstrap/dist/css/bootstrap.css";
-import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
-import BootstrapTable from "react-bootstrap-table-next";
-// import { Button } from "react-bootstrap"
 import { NavbarBS } from "../components/NavbarBS";
 import { getAllUsers } from "../database/databaseCRUD";
 import { useSession } from 'next-auth/react';
@@ -101,12 +97,11 @@ export default function App() {
         <>
             <NavbarBS isLoggedin={true} username={session.user.name}/>
 
-            <div className={styles.tableContainer}>
+            <div className={styles.tableContainer, styles.userTableContainer}>
             <MaterialTable
                 components={{
                     Container: props => <Paper {...props} elevation={0}/>
                 }}
-                className={styles.materialTable}
                 title="All Users"
                 columns={columns}
                 data={dataUsers}

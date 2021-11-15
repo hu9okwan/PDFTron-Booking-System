@@ -48,6 +48,8 @@ function Auth({ children }) {
 
 
 
+    // somewhat scuffed, when clicking to another tab and back, the added properties to the session disappear
+
     if (isUser) {
 
         // console.log(gotId, "gotid")

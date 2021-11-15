@@ -203,7 +203,7 @@ const Modal = ({ userID, tableID, roomID, team, toggle, bookedTables, bookedRoom
             )
         } else {
             return (
-                <Button className={styles.bookBtn} disabled={!startDate} onClick={submitBooking}>Book</Button>
+                <button className={styles.bookBtn} disabled={!startDate} onClick={submitBooking}>Book</button>
             )
         } 
     }
