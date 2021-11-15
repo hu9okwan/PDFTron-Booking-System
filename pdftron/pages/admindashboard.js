@@ -4,7 +4,6 @@ import "bootstrap/dist/css/bootstrap.css";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 
 // import { Button } from "react-bootstrap"
-import { Button, ButtonGroup, Stack } from "@chakra-ui/react"
 import { NavbarBS } from "../components/NavbarBS";
 
 const height = "300px";
@@ -13,7 +12,7 @@ const width = "300px";
 export default function AdminDashboard() {
     return (
         <>
-            <NavbarBS isLoggedin={true} />
+            <NavbarBS />
             <div className={styles.body}>
                 <div className={styles.flexContainer}>
                     <a href="/allbookings">
@@ -44,3 +43,4 @@ export default function AdminDashboard() {
         </>
     );
 }
+AdminDashboard.auth = true

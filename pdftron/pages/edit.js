@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { fabric } from 'fabric';
 import { NavbarBS } from '../components/NavbarBS';
-import styles from '../styles/Home.module.css'
-import styles2 from "../styles/Book.module.css"
-import { Heading, Button, Select } from "@chakra-ui/react"
-import {saveToDatabase} from "../database/databaseCRUD";
-import {getFloorPlan} from "../database/read";
+import styles from '../styles/Edit.module.css'
+import {saveToDatabase, getFloorPlan} from "../database/databaseCRUD";
 
-const jsonObj = require('../public/tempJSON.json');
 
 export default function Edit() {
-
     const [canvas, setCanvas] = useState('');
     useEffect(() => {
         setCanvas(initCanvas());
@@ -27,14 +22,13 @@ export default function Edit() {
 
     useEffect(() => {
         if (canvas) {
-            loadJson(canvas);
+            loadMap(canvas);
             preventObjOut(canvas);
             limitRotation(canvas);
             hotkeys(canvas);
             hoverTable(canvas);
         }
     }, [canvas]);
-
 
 
 
@@ -208,15 +202,36 @@ export default function Edit() {
         });
 
         if (isAddTable) {
-            rect["tableID"] = canvas._objects.length - 1
+            rect["tableID"] = findNextAvailableID(canvas, isAddTable)
         } else {
-            rect["roomID"] = canvas._objects.length - 1
+            rect["roomID"] = findNextAvailableID(canvas, isAddTable)
         }
 
         canvas.add(rect);
         canvas.centerObject(rect);
         canvas.renderAll();
     }
+
+    const findNextAvailableID = (canvas, isTable) => {
+        // finds next lowest available id for a table or room
+        let rectID
+        if (isTable) {
+            rectID = `tableID`
+        } else {
+            rectID = `roomID`
+        }
+
+        let id_list = [];
+        for (let obj of canvas._objects) {
+            id_list.push(obj[rectID])
+        }
+        const set = new Set(id_list);
+        let id = 1;
+        while (set.has(id)) { id++ }
+
+        return id
+    }
+
 
     const removeTable = (canvas) => {
         // removes all selected tables
@@ -231,44 +246,47 @@ export default function Edit() {
     }
 
 
-    const saveToJson = (canvas) => {
-        const canvasJson = canvas.toJSON(["bookings", "tableID", "roomID", "team"]);
-        saveToDatabase(canvasJson).then(r => console.log("saved floor plan"));
+    const saveMap = (canvas) => {
+        console.log(canvas)
+        const canvasJson = canvas.toJSON(["bookings", "tableID", "roomID", "team"])
+        saveToDatabase(canvasJson).then(r => {
+            console.log("saved floor plan")
+            alert("Your changes has been saved.")}
+        );
     };
 
 
 
-    const loadJson = (canvas) => {
-        const jsonString = JSON.stringify(jsonObj)
-        console.log(jsonObj)
-        // console.log(jsonString)
-        canvas.loadFromJSON(jsonObj, canvas.renderAll.bind(canvas))
+    const loadMap = (canvas) => {
+        getFloorPlan().then(floorPlan =>
+            canvas.loadFromJSON(floorPlan, canvas.renderAll.bind(canvas))
+        )
     };
 
 
 
     return (
         <div>
-            <NavbarBS isLoggedin={true} />
-            <div className={styles2.flexContainer}>
+            <NavbarBS />
+            <div className={styles.flexContainerButtons}>
                 <canvas id="canvas"></canvas>
-                <span id="toolTip" className={styles2.toolTip}></span>
+                <span id="toolTip" className={styles.toolTip}></span>
 
                 <div>
-                    <Heading>Modify Floor Plan</Heading>
+                    <h1>Modify Floor Plan</h1>
                     <div className={styles.buttonsContainer}>
                         Team:
                         <div className="dropdown">
-                            <Select name="tableTeam" id="tableTeam" onChange={changeTeam}>
+                            <select name="tableTeam" id="tableTeam" onChange={changeTeam}>
                                 <option value="General">General</option>
                                 <option value="Web">Web</option>
                                 <option value="Unavailable">Unavailable</option>
-                            </Select>
+                            </select>
                         </div>
-                        <Button className={styles.pointer} onClick={() => addRect(canvas, true)}>Add Table</Button>
-                        <Button className={styles.pointer} onClick={() => addRect(canvas, false)}>Add Room</Button>
-                        <Button className={styles.pointer} onClick={() => removeTable(canvas)}>Remove Selected</Button>
-                        <Button className={styles.pointer} onClick={() => saveToJson(canvas)}>Save Changes</Button>
+                        <button className={styles.pointer} onClick={() => addRect(canvas, true)}>Add Table</button>
+                        <button className={styles.pointer} onClick={() => addRect(canvas, false)}>Add Room</button>
+                        <button className={styles.pointer} onClick={() => removeTable(canvas)}>Remove Selected</button>
+                        <button className={styles.pointer} onClick={() => saveMap(canvas)}>Save Changes</button>
                     </div>
 
                 </div>
@@ -279,3 +297,4 @@ export default function Edit() {
 
     );
 }
+Edit.auth = true;
