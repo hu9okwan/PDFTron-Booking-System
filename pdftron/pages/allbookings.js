@@ -162,7 +162,7 @@ const roomColumns = [
 export default function App() {
     return (
         <>
-            <NavbarBS isLoggedin={true}/>
+            <NavbarBS />
             <div className={styles.tableBody}>
                 <h1 style={{
                     fontWeight: 'bold',
@@ -207,3 +207,4 @@ export default function App() {
         </>
     );
 }
+App.auth = true

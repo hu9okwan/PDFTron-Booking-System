@@ -239,7 +239,7 @@ import TableDatePicker from "../components/datepicker";
 
     return (
         <div>
-            <NavbarBS isLoggedin={true} username={session.user.name} />
+            <NavbarBS />
             <div className={styles.flexContainer}>
                 <div className={styles.prevNextContainer}>
                     <button style={{all: "unset", cursor: "pointer", transform: `rotate(180deg)`}} onClick={() => changeDate("prev")}><img src="../next.png" height="40px" width="40px" /></button>

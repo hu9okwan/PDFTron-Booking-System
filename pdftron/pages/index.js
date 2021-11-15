@@ -11,7 +11,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 export default function Home() {
     return (
         <>
-            <NavbarBS isLoggedIn={false} />
+            <NavbarBS />
             <div className={styles.loginContainer}>
                 <main className={styles.mainContainer}>
                     <section className={styles.section}>

@@ -2,7 +2,7 @@ import {Navbar, Nav, NavDropdown} from 'react-bootstrap';
 import { signOut } from "next-auth/react"
 import { useSession } from 'next-auth/react';
 
-export const NavbarBS = ({isLoggedin, username}) => {
+export const NavbarBS = () => {
     const { data: session } = useSession()
 
     // should pass in user object ^ as a prop
@@ -10,6 +10,8 @@ export const NavbarBS = ({isLoggedin, username}) => {
 
     //default values
     let isAdmin = false
+    let name = ""
+    let isLoggedin = false
     // if (user) {
     //     // checks if user is logged in and their role
     //     let name = user.name
@@ -18,9 +20,10 @@ export const NavbarBS = ({isLoggedin, username}) => {
 
 
     // placeholder tests
-    let name = username
     if (session) {
         isAdmin = session.user.adminpriv
+        name = session.user.name
+        isLoggedin = true
     }
 
     return (

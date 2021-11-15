@@ -12,7 +12,7 @@ const width = "300px";
 export default function AdminDashboard() {
     return (
         <>
-            <NavbarBS isLoggedin={true} />
+            <NavbarBS />
             <div className={styles.body}>
                 <div className={styles.flexContainer}>
                     <a href="/allbookings">
@@ -43,3 +43,4 @@ export default function AdminDashboard() {
         </>
     );
 }
+AdminDashboard.auth = true

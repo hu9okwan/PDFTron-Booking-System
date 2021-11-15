@@ -112,13 +112,12 @@ const roomColumns = [
 ];
 
 export default function App() {
-  const { data: session } = useSession()
   return (
     <>
       {/* <div className={styles.loginContainer}> */}
       {/* <header className={styles.navbar}>
     </header> */}
-      <NavbarBS isLoggedin={true} />
+      <NavbarBS />
       <div className={styles.flexContainer}>
       <div className={styles.tableBody}>
       <h1 style={{fontWeight: 'bold', fontSize: '4rem', textAlign: 'left'}}>My Bookings</h1>

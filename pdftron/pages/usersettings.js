@@ -54,7 +54,7 @@ const columns = [
 export default function App() {
   return (
     <>
-      <NavbarBS isLoggedin={true} />
+      <NavbarBS />
       <div className={styles.tableBody}>
         <section className={styles.section}>
           <h1>User Settings</h1>
@@ -71,3 +71,4 @@ export default function App() {
     </>
   );
 }
+App.auth = true
