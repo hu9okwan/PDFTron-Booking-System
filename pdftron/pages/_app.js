@@ -56,7 +56,7 @@ function Auth({ children }) {
                     })
                     session.user["id"] = id
                 } else {
-                    addUserToDatabase(userEmail).then(id => {
+                    addUserToDatabase(session).then(id => {
                         session.user["id"] = id
                     })
                 }

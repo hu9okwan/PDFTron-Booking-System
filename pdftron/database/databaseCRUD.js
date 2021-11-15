@@ -86,9 +86,12 @@ export const saveToDatabase = async (tableData) => {
   });
 };
 
-export const addUserToDatabase = async (userEmail) => {
+export const addUserToDatabase = async (session) => {
+    let name = session.user.name
+    let userEmail = session.user.email
     let data = await findNextAvailableUserId()
     await set(ref(db, 'users/' + data[1]), {
+    name: name,
     email: userEmail,
     teamId: 0,
     isAdmin: false,
