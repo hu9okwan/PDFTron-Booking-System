@@ -177,67 +177,72 @@ export default function App() {
             <NavbarBS />
 
             <div className={styles.tableContainer}>
-            <MaterialTable
-                components={{
-                    Container: props => <Paper {...props} elevation={0}/>
-                }}
-                title="Table Bookings"
-                columns={columns}
-                data={dataTable}
-                icons={tableIcons}
-                options={{ 
-                    // paging: false, 
-                    // filtering: true,
-                    actionsColumnIndex: -1, 
-                    pageSize: 10
-                }}
-                editable={{
-                    onRowDelete: (oldData) =>
-                        new Promise(async (resolve) => {
-                            console.log(oldData.bookingId)
-                            await deleteTableBooking(oldData.bookingId)
-                            removeFromRendered(oldData.bookingId, "table")
-                            resolve()
-                        }),
-                }}
-                localization={{ body: { 
-                    editRow: { deleteText: 'Are you sure you want to delete this booking?' } ,
-                    emptyDataSourceMessage: "You currently have no table bookings"
-                } 
-            }}
+                <div className={styles.materialTable}>
+                    <MaterialTable
+                        components={{
+                            Container: props => <Paper {...props} elevation={0}/>
+                        }}
+                        className={styles.materialTable}
+                        title="Table Bookings"
+                        columns={columns}
+                        data={dataTable}
+                        icons={tableIcons}
+                        options={{ 
+                            // paging: false, 
+                            // filtering: true,
+                            actionsColumnIndex: -1, 
+                            pageSize: 10
+                        }}
+                        editable={{
+                            onRowDelete: (oldData) =>
+                                new Promise(async (resolve) => {
+                                    console.log(oldData.bookingId)
+                                    await deleteTableBooking(oldData.bookingId)
+                                    removeFromRendered(oldData.bookingId, "table")
+                                    resolve()
+                                }),
+                        }}
+                        localization={{ body: { 
+                            editRow: { deleteText: 'Are you sure you want to delete this booking?' } ,
+                            emptyDataSourceMessage: "You currently have no table bookings"
+                        } 
+                    }}
 
-            />
+                    />
+                </div>
 
-            <MaterialTable
-                components={{
-                    Container: props => <Paper {...props} elevation={0}/>
-                }}
-                title="Room Bookings"
-                columns={columnsRoom}
-                data={dataRoom}
-                icons={tableIcons}
-                options={{ 
-                    // paging: false, 
-                    // filtering: true,
-                    actionsColumnIndex: -1,
-                    pageSize: 10
-                }}
-                editable={{
-                    onRowDelete: (oldData) =>
-                        new Promise(async (resolve) => {
-                            console.log(oldData.bookingId)
-                            await deleteRoomBooking(oldData.bookingId)
-                            removeFromRendered(oldData.bookingId, "room")
-                            resolve()
-                        }),
-                }}
-                localization={{ body: { 
-                                    editRow: { deleteText: 'Are you sure you want to delete this booking?' } ,
-                                    emptyDataSourceMessage: "You currently have no room bookings"
-                                } 
-                            }}
+                <div className={styles.materialTable}>
+                    <MaterialTable
+                        components={{
+                            Container: props => <Paper {...props} elevation={0}/>
+                        }}
+                        title="Room Bookings"
+                        columns={columnsRoom}
+                        data={dataRoom}
+                        icons={tableIcons}
+                        options={{ 
+                            // paging: false, 
+                            // filtering: true,
+                            actionsColumnIndex: -1,
+                            pageSize: 10
+                        }}
+                        editable={{
+                            onRowDelete: (oldData) =>
+                                new Promise(async (resolve) => {
+                                    console.log(oldData.bookingId)
+                                    await deleteRoomBooking(oldData.bookingId)
+                                    removeFromRendered(oldData.bookingId, "room")
+                                    resolve()
+                                }),
+                        }}
+                        localization={{ body: { 
+                                            editRow: { deleteText: 'Are you sure you want to delete this booking?' } ,
+                                            emptyDataSourceMessage: "You currently have no room bookings"
+                                        } 
+                                    }}
 
-            />
+                    />
+                </div>
             </div>
         </>
     );
