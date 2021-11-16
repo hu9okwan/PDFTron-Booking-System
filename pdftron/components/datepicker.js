@@ -36,22 +36,22 @@ export default function TableDatePicker(props) {
     }, [props.startDate]);
 
 
-    const minTimeEnd = useMemo(() => {
-        // changes selectable end datetime to the set minBookTime you can book a room
+    // const minTimeEnd = useMemo(() => {
+    //     // changes selectable end datetime to the set minBookTime you can book a room
 
-        const minBookTime = 30 // in 30 minute invervals (30, 60, 90)
+    //     const minBookTime = 30 // in 30 minute invervals (30, 60, 90)
 
-        const todayDate = new Date();
-        const selectedDateStart = new Date(props.startDate);
-        const selectedDateEnd = new Date(props.endDate);
-        if(selectedDateEnd.setHours(0,0,0,0) === todayDate.setHours(0,0,0,0)
-            || selectedDateEnd.setHours(0,0,0,0) === selectedDateStart.setHours(0,0,0,0)) {
-            let date = new Date(props.startDate)
-            date.setMinutes(props.startDate.getMinutes() + minBookTime)
-            return date;
-        }
-        return new Date(0, 0, 0, 24);
-    }, [props.startDate, props.endDate]);
+    //     const todayDate = new Date();
+    //     const selectedDateStart = new Date(props.startDate);
+    //     const selectedDateEnd = new Date(props.endDate);
+    //     if(selectedDateEnd.setHours(0,0,0,0) === todayDate.setHours(0,0,0,0)
+    //         || selectedDateEnd.setHours(0,0,0,0) === selectedDateStart.setHours(0,0,0,0)) {
+    //         let date = new Date(props.startDate)
+    //         date.setMinutes(props.startDate.getMinutes() + minBookTime)
+    //         return date;
+    //     }
+    //     return new Date(0, 0, 0, 24);
+    // }, [props.startDate, props.endDate]);
 
 
     const minSelectedStart = useMemo(() => {
@@ -59,7 +59,6 @@ export default function TableDatePicker(props) {
         const todayDate = new Date();
 
         if(todayDate.getHours() === 23 && todayDate.getMinutes() >= 30) {
-            console.log("yes")
             let tomorrowDate = new Date()
             tomorrowDate.setDate(tomorrowDate.getDate() + 1)
             tomorrowDate.setHours(0,0,0,0)
@@ -68,27 +67,116 @@ export default function TableDatePicker(props) {
         return new Date()
     })
 
-    const minSelectedEnd = useMemo(() => {
-        // changes selected end datetime to be after the selected start datetime if start datetime is after end datetime
+    // const minSelectedEnd = useMemo(() => {
+    //     // changes selected end datetime to be after the selected start datetime if start datetime is after end datetime
 
-        const selectedDateStart = new Date(props.startDate);
-        const selectedDateEnd = new Date(props.endDate);
+    //     const selectedDateStart = new Date(props.startDate);
+    //     const selectedDateEnd = new Date(props.endDate);
 
-        if (selectedDateStart.getTime() >= selectedDateEnd.getTime()) {
-            let date = new Date(props.startDate)
-            date.setMinutes(props.startDate.getMinutes() + 30)
-            return date;
+    //     if (selectedDateStart.getTime() >= selectedDateEnd.getTime()) {
+    //         let date = new Date(props.startDate)
+    //         date.setMinutes(props.startDate.getMinutes() + 30)
+    //         return date;
+    //     }
+    //     return props.endDate
+    // }, [props.startDate, props.endDate])
+
+    const dateRange = (startDate, endDate, steps = 1) => {
+        const dateArray = [];
+        let currentDate = new Date(startDate);
+      
+        while (currentDate <= new Date(endDate)) {
+          dateArray.push(new Date(currentDate));
+          // Use UTC date to prevent problems with time zones and DST
+          currentDate.setUTCDate(currentDate.getUTCDate() + steps);
         }
-        return props.endDate
-    }, [props.startDate, props.endDate])
+      
+        return dateArray;
+    }
+
+    const excludeBookedDates = useMemo(() => {
+        let excludedDates = []
+
+        for (let bookings of props.bookedTables) {
+
+            for (let key in bookings) {
+                if (bookings[key] !== undefined && bookings[key]["tableId"] === props.tableID) {
+
+                    let startDate = new Date(bookings[key]["startDate"])
+                    let endDate = new Date(bookings[key]["endDate"])
+                    
+                    startDate.setHours(0,0,0,0)
+                    endDate.setHours(0,0,0,0)
+
+                    let dateRangeArray = dateRange(startDate, endDate)
+
+                    excludedDates = [...new Set([...excludedDates,...dateRangeArray])];
+                }
+            }
+        }
+
+        return excludedDates
+        
+    }, [props.bookedTables])
+
+
+    const excludeBookedTimes = useMemo(() => {
+        // console.log(props.bookedRoomTimes)
+        let excludedTimes = []
+        if (props.bookedRoomTimes !== undefined) {
+
+            for (let bookings of props.bookedRoomTimes) {
+
+                for (let key in bookings) {
+
+                    let existingStartDate = new Date(bookings[key]["startDate"])
+                    if (bookings[key] !== undefined && bookings[key]["roomId"] === props.roomID && props.startDate && existingStartDate !== undefined) {
+                        // console.log(props.startDate, "*****")
+                        if (existingStartDate.toDateString() === props.startDate.toDateString()) {
+                            console.log("yap")
+                            excludedTimes.push(existingStartDate);
+                        }
+                    }
+                }
+            }
+        }
+
+        // console.log(excludedTimes)
+        return excludedTimes
+    }, [props.bookedRoomTimes, props.startDate])
+    
+
+    const onChange = (dates) => {
+        // console.log(dates)
+        const [start, end] = dates;
+        // console.log(start)
+        props.setSuccessStatus(false)
+        props.setStartDate(start);
+        props.setEndDate(end);
+    }
+
+    const onChange2 = date => {
+        props.setStartDate(date)
+        if (props.endDate <= date) {
+            props.setEndDate(date)
+        }
+    }
+
+    const onChangeRoom = date => {
+        // console.log("yap")
+        // console.log(date)
+        props.setSuccessStatus(false)
+        props.setStartDate(date)
+    }
 
 
     return (
         <div className={styles.datePickerContainer}>
-            <DatePicker
+            {/* <DatePicker
                 className={styles.datePicker}
                 showTimeSelect={props.timeSelect}
-                dateFormat="MMM d, yyyy"
+                dateFormat="MMMM d, yyyy"
+                excludeDates={props.isModal && excludeBookedDates}
                 selected={props.startDate}
                 selectsStart
                 minDate={minSelectedStart}
@@ -96,17 +184,39 @@ export default function TableDatePicker(props) {
                 maxTime={new Date(0, 0, 0, 23, 30)}
                 startDate={props.startDate}
                 endDate={props.endDate}
+                
                 onChange={date => {
                     props.setStartDate(date)
                     if (props.endDate <= date) {
                         props.setEndDate(date)
                     }
                 }}
-            />
+            /> */}
+
             <DatePicker
                 className={styles.datePicker}
                 showTimeSelect={props.timeSelect}
-                dateFormat="MMM d, yyyy"
+                dateFormat={"     MMMM d, yyyy"}
+                excludeDates={props.isModal && props.tableID && excludeBookedDates}
+                excludeTimes={props.isModal && excludeBookedTimes}
+                selected={props.startDate}
+                minDate={minSelectedStart}
+                minTime={props.isModal && props.roomID && minTimeStart}
+                maxTime={new Date(0, 0, 0, 23, 30)}
+                startDate={props.startDate}
+                endDate={props.endDate}
+                inline={props.isModal}
+                selectsRange={props.isModal && props.tableID}
+                todayButton={!props.isModal && "Today"}
+                onChange={(props.isModal && props.roomID && onChangeRoom) || (props.isModal && onChange) || onChange2}
+            />
+
+            {/* {props.isModal &&
+            <DatePicker
+                className={styles.datePicker}
+                showTimeSelect={props.timeSelect}
+                dateFormat="MMMM d, yyyy"
+                excludeDates={props.isModal && excludeBookedDates}
                 selected={minSelectedEnd}
                 selectsEnd
                 minTime={minTimeEnd}
@@ -114,8 +224,12 @@ export default function TableDatePicker(props) {
                 startDate={props.startDate}
                 endDate={props.endDate}
                 minDate={props.startDate}
+                
                 onChange={date => props.setEndDate(date)}
             />
+            } */}
+
+
         </div>
     );
 }

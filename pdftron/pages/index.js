@@ -1,28 +1,16 @@
 import styles from '../styles/Home.module.css'
 import Login from '../components/Login'
-// import Logout from '../components/Logout'
 import { NavbarBS } from '../components/NavbarBS';
-import * as read from "../database/databaseCRUD"
 import 'bootstrap/dist/css/bootstrap.css'
 
 // ok i think something here is wack
+// ur wack
 
 export default function Home() {
     return (
         <>
-            <NavbarBS isLoggedIn={false} />
+            <NavbarBS />
             <div className={styles.loginContainer}>
-                <header className={styles.navbar}>
-                    <nav >
-                        <ul>
-                            <li>
-                                <a href="https://www.pdftron.com">
-                                    {/*<img src="pdftron-icons/pdftron-logo-blue.png" alt="PDFTron Icon"/>*/}
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </header>
                 <main className={styles.mainContainer}>
                     <section className={styles.section}>
                         <h1>Booking Portal</h1>

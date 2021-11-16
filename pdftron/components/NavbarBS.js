@@ -1,13 +1,17 @@
 import {Navbar, Nav, NavDropdown} from 'react-bootstrap';
 import { signOut } from "next-auth/react"
+import { useSession } from 'next-auth/react';
 
-export const NavbarBS = ({isLoggedin, username}) => {
+export const NavbarBS = () => {
+    const { data: session } = useSession()
 
     // should pass in user object ^ as a prop
     // isLoggedin is just a T/F value rn to disable some links on index.js
 
     //default values
     let isAdmin = false
+    let name = ""
+    let isLoggedin = false
     // if (user) {
     //     // checks if user is logged in and their role
     //     let name = user.name
@@ -16,8 +20,11 @@ export const NavbarBS = ({isLoggedin, username}) => {
 
 
     // placeholder tests
-    let name = username
-    isAdmin = true
+    if (session) {
+        isAdmin = session.user.adminpriv
+        name = session.user.name
+        isLoggedin = true
+    }
 
     return (
 
@@ -29,11 +36,11 @@ export const NavbarBS = ({isLoggedin, username}) => {
         {isLoggedin && <Navbar.Collapse id="responsive-navbar-nav" className="me-5">
             <Nav className="ms-auto">
                 {isLoggedin && <Nav.Link href="/book">Book</Nav.Link> }
-                {isLoggedin && <Nav.Link href="/mybookings">My Bookings</Nav.Link>}
+                {isLoggedin && <Nav.Link href="/my-bookings">My Bookings</Nav.Link>}
 
                 {isLoggedin && isAdmin && <NavDropdown href="/admindashboard" title="Admin Settings">
-                    <NavDropdown.Item href="/usersettings">User Settings</NavDropdown.Item>
-                    <NavDropdown.Item href="/allbookings">See All Bookings</NavDropdown.Item>
+                    <NavDropdown.Item href="/user-settings">User Settings</NavDropdown.Item>
+                    <NavDropdown.Item href="/all-bookings">See All Bookings</NavDropdown.Item>
                     <NavDropdown.Item href="/edit">Edit Map</NavDropdown.Item>
                     </NavDropdown>}
                 {isLoggedin && <NavDropdown title={name} align="end" id="basic-nav-dropdown">
