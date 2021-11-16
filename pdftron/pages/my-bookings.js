@@ -187,7 +187,7 @@ export default function App() {
                 icons={tableIcons}
                 options={{ 
                     // paging: false, 
-                    filtering: true,
+                    // filtering: true,
                     actionsColumnIndex: -1, 
                     pageSize: 10
                 }}
@@ -218,7 +218,7 @@ export default function App() {
                 icons={tableIcons}
                 options={{ 
                     // paging: false, 
-                    filtering: true,
+                    // filtering: true,
                     actionsColumnIndex: -1,
                     pageSize: 10
                 }}
