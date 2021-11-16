@@ -44,13 +44,10 @@ const columns = [
   },
   {
     dataField: "",
-    text: "Edit/Delete",
+    text: "Delete",
     formatter: () => {
       return (
         <Stack direction="row" spacing={4} justifyContent="center">
-        <Button colorScheme="twitter" variant="outline">
-        Edit
-        </Button>
         <Button colorScheme="red" variant="outline">
           Delete
       </Button>
@@ -92,13 +89,10 @@ const roomColumns = [
   },
   {
     dataField: "",
-    text: "Edit/Delete",
+    text: "Delete",
     formatter: () => {
       return (
         <Stack direction="row" spacing={4} justifyContent="center">
-        <Button colorScheme="twitter" variant="outline">
-        Edit
-        </Button>
         <Button colorScheme="red" variant="outline">
           Delete
         </Button>
@@ -120,9 +114,10 @@ export default function App() {
     </header> */}
       <NavbarBS isLoggedin={true} />
       <div className={styles.tableBody}>
-        <section className={styles.section}>
+        <div className={styles.section1}>
           <h1>Table Bookings</h1>
-          <div className="App" style={{backgroundColor: 'white' }}>
+          {/* <div className="App" style={{backgroundColor: '#edf2fb' }}> */}
+          <div className="App" style={{backgroundImage: 'linear-gradient(to right, rgb(202, 240, 248, 0), rgb(202, 240, 248, 1))' }}>
             <BootstrapTable
               bootstrap4
               keyField="id"
@@ -130,10 +125,10 @@ export default function App() {
               columns={columns}
             />
           </div>
-        </section>
-        <section className={styles.section}>
+        </div>
+        <div className={styles.section2}>
           <h1>Room Bookings</h1>
-          <div className="App" style={{backgroundColor: 'white'}}>
+          <div className="App" style={{backgroundColor: '#caf0f8'}}>
             <BootstrapTable
               bootstrap4
               keyField="id"
@@ -141,7 +136,7 @@ export default function App() {
               columns={roomColumns}
             />
           </div>
-        </section>
+        </div>
         {/* </div> */}
       </div>
     </>

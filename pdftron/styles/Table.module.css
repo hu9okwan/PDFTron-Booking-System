@@ -2,22 +2,34 @@
 
 .tableBody {
     display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
+    align-items: center;
+    justify-content: center;
     flex-direction: column;
     font-family: "Nunito sans", sans-serif;
-    padding-inline: 5rem;
-    background-color: #e9ecef;
+    padding-inline: 20px;
+    background-color: #ffff;
     font-weight: bold;
     padding-top: 4rem;
-
+    
 }
 
 .tableBody h1 {
     font-size: 2rem;
     padding-bottom: 1.5rem;
+    
 }
 
-.section {
-    padding-block: 1rem;
+.section1 {
+    padding: 1rem;
+    width: 100%;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.section2 {
+    padding: 1rem;
+    width: 100%;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-top: 20px;
 }

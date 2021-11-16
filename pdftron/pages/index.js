@@ -1,6 +1,6 @@
 import styles from '../styles/Home.module.css'
 import Login from '../components/Login'
-import Logout from '../components/Logout'
+// import Logout from '../components/Logout'
 import { NavbarBS } from '../components/NavbarBS';
 import * as read from "../database/databaseCRUD"
 import 'bootstrap/dist/css/bootstrap.css'
