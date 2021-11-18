@@ -179,17 +179,22 @@ export default function App() {
             <div className={styles.tableContainer}>
             <MaterialTable
                 components={{
-                    Container: props => <Paper {...props} elevation={0}/>
+                    Container: props => <Paper {...props} elevation={1}/>
                 }}
                 title="Table Bookings"
                 columns={columns}
                 data={dataTable}
                 icons={tableIcons}
+                style={{backgroundImage: 'linear-gradient(rgba(0,0,0,0), rgba(235, 246, 253, 1))'}}
                 options={{ 
                     // paging: false, 
-                    filtering: true,
+                    // filtering: true,
                     actionsColumnIndex: -1, 
-                    pageSize: 10
+                    pageSize: 10,
+                    headerStyle: {
+                        backgroundColor: 'rgba(0,165,228,0.25)',
+                        fontWeight: 'bold',
+                    }
                 }}
                 editable={{
                     onRowDelete: (oldData) =>
@@ -210,17 +215,22 @@ export default function App() {
 
             <MaterialTable
                 components={{
-                    Container: props => <Paper {...props} elevation={0}/>
+                    Container: props => <Paper {...props} elevation={1}/>
                 }}
                 title="Room Bookings"
                 columns={columnsRoom}
                 data={dataRoom}
                 icons={tableIcons}
+                style={{backgroundImage: 'linear-gradient(rgba(0,0,0,0), rgba(235, 246, 253, 1))'}}
                 options={{ 
                     // paging: false, 
-                    filtering: true,
+                    // filtering: true,
                     actionsColumnIndex: -1,
-                    pageSize: 10
+                    pageSize: 10,
+                    headerStyle: {
+                        backgroundColor: 'rgba(0,165,228,0.25)',
+                        fontWeight: 'bold',
+                    }
                 }}
                 editable={{
                     onRowDelete: (oldData) =>
