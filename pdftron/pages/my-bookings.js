@@ -50,13 +50,13 @@ export default function App() {
 
 
     var columns = [
-        { title: "Table", field: "tableId", },
+        { title: "Table", field: "tableId",},
         { title: "Start Date", field: "startDate",},
         { title: "End Date", field: "endDate", },
     ]
 
     var columnsRoom = [
-        { title: "Room", field: "roomId", },
+        { title: "Room", field: "roomId"},
         { title: "Start Date", field: "startDate",},
         { title: "Time", field: "time", },
     ]
