@@ -479,6 +479,18 @@ export const updateMaxTableDays = async (maxDays) => {
   console.log("Successfully updated max days")
 };
 
+
+export const updateUserInfo = async (userNewInfo) => {
+    let userObjId = await getUserObjId(userNewInfo.id)
+    await update(ref(db, 'users/' + userObjId ), {
+        name: userNewInfo.name,
+        email: userNewInfo.email,
+        isAdmin: userNewInfo.isAdmin,
+        teamId: userNewInfo.teamId
+    });
+    console.log("Successfully updated user")
+};
+
 // ============================ DELETE =======================================
 
 export const deleteTableBooking = async (tableBookingID) => {
@@ -615,6 +627,26 @@ const getObjId = async (tableIdOrRoomId, id) => {
             const data = snapshot.val();
             for (let objId in data) {
                 if (data[objId][tableIdOrRoomId] === id) {
+                    return objId
+                }
+            }
+        } else {
+            console.log("No data available");
+        }
+    }).catch((error) => {
+        console.log(error);
+    })
+}
+
+const getUserObjId = async (id) => {
+    // gets the object key of firebase b/c the id of room or table does not always equal the object key
+    return get(child(dbRef, `users`)).then((snapshot) => {
+        if (snapshot.exists()) {
+            const data = snapshot.val();
+            console.log(data)
+            for (let objId in data) {
+                
+                if (data[objId]["id"] === id) {
                     return objId
                 }
             }

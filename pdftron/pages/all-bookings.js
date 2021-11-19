@@ -1,7 +1,7 @@
 import React, { useState, useEffect, forwardRef } from "react";
 import styles from '../styles/Table.module.css'
 import { NavbarBS } from "../components/NavbarBS";
-import {  deleteTableBooking, deleteRoomBooking, getAllRoomBookings, getAllTableBookings } from "../database/databaseCRUD";
+import {  deleteTableBooking, deleteRoomBooking, getAllRoomBookings, getAllTableBookings, getAllUsers } from "../database/databaseCRUD";
 import MaterialTable from "material-table";
 import { Paper } from '@material-ui/core';
 
@@ -48,17 +48,19 @@ export default function App() {
 
 
     var columns = [
-        { title: "Table", field: "tableId", },
-        { title: "User ID", field: "userId"},
-        { title: "Start Date", field: "startDate",},
-        { title: "End Date", field: "endDate", },
+        { title: "Table", field: "tableId", width: '10%'},
+        // { title: "User ID", field: "userId", },
+        { title: "Name", field: "name", width: '30%'},
+        { title: "Start Date", field: "startDate", type: "date", defaultSort: "asc", width: '30%'},
+        { title: "End Date", field: "endDate", type: "date", width: '30%'},
     ]
 
     var columnsRoom = [
-        { title: "Room", field: "roomId", },
-        { title: "User ID", field: "userId"},
-        { title: "Start Date", field: "startDate",},
-        { title: "Time", field: "time", },
+        { title: "Room", field: "roomId", width: '10%'},
+        // { title: "User ID", field: "userId"},
+        { title: "Name", field: "name", width: '30%'},
+        { title: "Start Date", field: "startDate", type: "date", defaultSort: "asc", width: '30%'},
+        { title: "Time", field: "time", type: "time", width: '30%'},
     ]
 
     const [dataTable, setDataTable] = useState([]); // table data
@@ -68,36 +70,44 @@ export default function App() {
     const [iserror, setIserror] = useState(false)
     const [errorMessages, setErrorMessage] = useState([])
 
+
     useEffect(() => {
-        getAllTableBookings()
-            .then(res => {
-                console.log(res)
+        getAllUsers().then(userData => {
+            getAllTableBookings()
+                .then(res => {
+                    console.log(res)
 
-                let formattedData = []
-                for (let bookings of res) {
-                    // console.log(bookings)
-                    for (let booking in bookings) {
-                        let startDate = new Date(bookings[booking]["startDate"])
-                        let endDate = new Date(bookings[booking]["endDate"])
+                    let formattedData = []
+                    for (let bookings of res) {
+                        // console.log(bookings)
+                        for (let booking in bookings) {
+                            let startDate = new Date(bookings[booking]["startDate"])
+                            let endDate = new Date(bookings[booking]["endDate"])
 
-                        bookings[booking]["startDate"] = startDate.toDateString()
-                        bookings[booking]["endDate"] = endDate.toDateString()
-                        bookings[booking]["bookingId"] = booking
-                        formattedData.push(bookings[booking])
+                            bookings[booking]["startDate"] = startDate
+                            bookings[booking]["endDate"] = endDate
+                            bookings[booking]["bookingId"] = booking
+
+                            for (let user of userData) {
+                                if (bookings[booking]["userId"] === user.id) {
+                                    bookings[booking]["name"] = user.name
+                                    bookings[booking]["email"] = user.email
+                                }
+                            }
+
+                            formattedData.push(bookings[booking])
+                        }
                     }
-                }
-                setDataTable(formattedData)
-                // console.log(formattedData)
-            })
-            .catch(error => {
-                console.log(error)
-                setErrorMessage(["Cannot load user data"])
-                setIserror(true)
-            })
-    }, [])
 
-    useEffect(() => {
-        getAllRoomBookings()
+                    setDataTable(formattedData)
+                })
+                .catch(error => {
+                    console.log(error)
+                    setErrorMessage(["Cannot load user data"])
+                    setIserror(true)
+                })
+
+            getAllRoomBookings()
             .then(res => {
                 console.log(res)
 
@@ -109,9 +119,16 @@ export default function App() {
                         let startDate = new Date(bookings[booking]["startDate"])
                         let strTime = formatDate(startDate)
 
-                        bookings[booking]["startDate"] = startDate.toDateString()
+                        bookings[booking]["startDate"] = startDate
                         bookings[booking]["time"] = strTime
                         bookings[booking]["bookingId"] = booking
+
+                        for (let user of userData) {
+                            if (bookings[booking]["userId"] === user.id) {
+                                bookings[booking]["name"] = user.name
+                                bookings[booking]["email"] = user.email
+                            }
+                        }
 
                         formattedData.push(bookings[booking])
                     }
@@ -124,7 +141,12 @@ export default function App() {
                 setErrorMessage(["Cannot load user data"])
                 setIserror(true)
             })
+
+        })
+
     }, [])
+
+
 
     const formatDate = (date) => {
 
@@ -256,29 +278,4 @@ export default function App() {
     );
 }
 App.auth = true;
-
-function BasicFiltering() {
-    return (
-      <MaterialTable
-        title="Basic Filtering Preview"
-        columns={[
-          { title: 'Name', field: 'name' },
-          { title: 'Surname', field: 'surname' },
-          { title: 'Birth Year', field: 'birthYear', type: 'numeric' },
-          {
-            title: 'Birth Place',
-            field: 'birthCity',
-            lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },
-          },
-        ]}
-        data={[
-          { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-          { name: 'Zerya Betül', surname: 'Baran', birthYear: 2017, birthCity: 34 },
-        ]}        
-        options={{
-          filtering: true
-        }}
-      />
-    )
-  }
   
