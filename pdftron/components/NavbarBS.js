@@ -29,7 +29,7 @@ export const NavbarBS = () => {
     return (
 
         <Navbar collapseOnSelect expand="lg">
-        <Navbar.Brand href="/">
+        <Navbar.Brand href="/book">
             <img src="pdftron-icons/pdftron-logo-blue.png" className="d-inline-block align-top ms-5" alt="PDFTron Icon"/>
         </Navbar.Brand>
         {isLoggedin && <Navbar.Toggle aria-controls="responsive-navbar-nav" className="me-5" /> }

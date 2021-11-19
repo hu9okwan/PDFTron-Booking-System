@@ -4,6 +4,8 @@
     gap: 80px;
     width: 80%;
     margin:auto;
+    /* align-items: center; */
+    justify-content: center;
 }
 
 .userTableContainer {

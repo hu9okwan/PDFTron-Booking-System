@@ -185,7 +185,7 @@ export default function App() {
                 columns={columns}
                 data={dataTable}
                 icons={tableIcons}
-                style={{backgroundImage: 'linear-gradient(rgba(0,0,0,0), rgba(235, 246, 253, 1))'}}
+                style={{backgroundImage: 'linear-gradient(rgba(0,0,0,0), rgba(235, 246, 253, 1))', width: '100%'}}
                 options={{ 
                     // paging: false, 
                     // filtering: true,
@@ -194,7 +194,7 @@ export default function App() {
                     headerStyle: {
                         backgroundColor: 'rgba(0,165,228,0.25)',
                         fontWeight: 'bold',
-                    }
+                    },
                 }}
                 editable={{
                     onRowDelete: (oldData) =>
@@ -221,7 +221,7 @@ export default function App() {
                 columns={columnsRoom}
                 data={dataRoom}
                 icons={tableIcons}
-                style={{backgroundImage: 'linear-gradient(rgba(0,0,0,0), rgba(235, 246, 253, 1))'}}
+                style={{backgroundImage: 'linear-gradient(rgba(0,0,0,0), rgba(235, 246, 253, 1))', width: '100%'}}
                 options={{ 
                     // paging: false, 
                     // filtering: true,
