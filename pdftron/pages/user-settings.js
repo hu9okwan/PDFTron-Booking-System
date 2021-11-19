@@ -1,7 +1,7 @@
 import React, { useState, useEffect, forwardRef } from "react";
 import styles from '../styles/Table.module.css'
 import { NavbarBS } from "../components/NavbarBS";
-import { getAllUsers } from "../database/databaseCRUD";
+import { getAllUsers, getAllTeams } from "../database/databaseCRUD";
 import { useSession } from 'next-auth/react';
 import MaterialTable from "material-table";
 import { Paper } from '@material-ui/core';
@@ -53,7 +53,8 @@ export default function App() {
         { title: "User ID", field: "id", editable: "never"},
         { title: "Name", field: "name", },
         { title: "Email", field: "email",},
-        { title: "Team", field: "teamId", },
+        // { title: "Team ID", field: "teamId", },
+        { title: "Team", field: "teamName", },
         { title: "Admin Privileges", field: "isAdmin", type: "boolean"},
 
     ]
@@ -66,20 +67,29 @@ export default function App() {
 
     useEffect(() => {
         getAllUsers()
-            .then(res => {
-                console.log(res)
+            .then(allUsers => {
+                // console.log(allUsers)
 
-                let formattedData = []
-                for (let user of res) {
-                    formattedData.push(user)
-                }
-                setDataUsers(formattedData)
-                // console.log(formattedData)
-            })
-            .catch(error => {
-                console.log(error)
-                setErrorMessage(["Cannot load user data"])
-                setIserror(true)
+                getAllTeams().then(allTeams => {
+
+                    let formattedData = []
+                    for (let user of allUsers) {
+
+                        for (let team of allTeams) {
+                            if (team.id === user["teamId"]) {
+                                user["teamName"] = team.name
+                            }
+                        }
+                        formattedData.push(user)
+                    }
+                    setDataUsers(formattedData)
+                    // console.log(formattedData)
+                })
+                .catch(error => {
+                    console.log(error)
+                    setErrorMessage(["Cannot load user data"])
+                    setIserror(true)
+                })
             })
     }, [])
 
