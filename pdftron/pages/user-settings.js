@@ -54,7 +54,7 @@ export default function App() {
         { title: "Name", field: "name", },
         { title: "Email", field: "email",},
         { title: "Team", field: "teamId", },
-        { title: "Admin Privileges", field: "isAdmin", },
+        { title: "Admin Privileges", field: "isAdmin", type: "boolean"},
 
     ]
 

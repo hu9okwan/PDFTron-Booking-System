@@ -51,14 +51,14 @@ export default function App() {
 
     var columns = [
         { title: "Table", field: "tableId", },
-        { title: "Start Date", field: "startDate",},
-        { title: "End Date", field: "endDate", },
+        { title: "Start Date", field: "startDate", type: "date", defaultSort: "asc"},
+        { title: "End Date", field: "endDate", type: "date" },
     ]
 
     var columnsRoom = [
         { title: "Room", field: "roomId", },
-        { title: "Start Date", field: "startDate",},
-        { title: "Time", field: "time", },
+        { title: "Start Date", field: "startDate", type: "date", defaultSort: "asc"},
+        { title: "Time", field: "time", type: "time"},
     ]
 
     const [dataTable, setDataTable] = useState([]); // table data
@@ -80,8 +80,8 @@ export default function App() {
                         let startDate = new Date(bookings[booking]["startDate"])
                         let endDate = new Date(bookings[booking]["endDate"])
 
-                        bookings[booking]["startDate"] = startDate.toDateString()
-                        bookings[booking]["endDate"] = endDate.toDateString()
+                        bookings[booking]["startDate"] = startDate
+                        bookings[booking]["endDate"] = endDate
                         bookings[booking]["bookingId"] = booking
                         formattedData.push(bookings[booking])
                     }
@@ -109,7 +109,7 @@ export default function App() {
                         let startDate = new Date(bookings[booking]["startDate"])
                         let strTime = formatDate(startDate)
 
-                        bookings[booking]["startDate"] = startDate.toDateString()
+                        bookings[booking]["startDate"] = startDate
                         bookings[booking]["time"] = strTime
                         bookings[booking]["bookingId"] = booking
 
