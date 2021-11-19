@@ -72,32 +72,76 @@
 * [Firebase](https://firebase.google.com/?gclid=Cj0KCQjwrJOMBhCZARIsAGEd4VHElX6FhflVBHMX-HGMIwcXjhdiBFUMDbC6oZmP1Vc3pvhQyLgb3tcaAtSmEALw_wcB&gclsrc=aw.ds)
 * [Node](https://nodejs.org/en/)
 * [Bootstrap](https://getbootstrap.com/)
+* [Jest](https://jestjs.io/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
 
 <!-- GETTING STARTED -->
-## Getting Started
+## Set up the project
 
-To get a local copy of this running, follow these steps:
+
+**Step 1:**
+
+```shell
+git clone https://github.com/ericchanko/PDFTron-Internal-Booking
+```
+
+**Step 2:**
+
+```shell
+cd pdftron
+```
+```shell
+npm install
+```
+
+**Step 3: Setting up Database**
 <ol>
-  <li>git clone https://github.com/ericchanko/PDFTron-Internal-Booking.git</li>
-  <li> cd into pdftron directory (e.g. cd PDFTron-Intenal-Booking/pdftron)</li>
-  <li> npm install </li>
-  <li> npm run dev </li>
+  <li>Go to https://firebase.google.com/</li>
+  <li>Select Add Project (Note: You can just use the default settings)</li>
+  <li>Name your project whatever you want</li>
+  <li>Go to project settings</li>
+  <li>Press Add App and select "Also set up firebase hosting" 
+</li>
+  <li>Copy and paste the generated code into the .env file 
+</li>
 </ol>
+
+![image](https://user-images.githubusercontent.com/72037665/142508814-59ab0995-69dd-4576-a8d0-801cfaa15977.png)
+![image](https://user-images.githubusercontent.com/72037665/142509052-f2e62394-dd49-472a-9f8b-284ccee9a820.png)
+
+
+**Step 4: Creating the database**
+
+ <ol>
+  <li>Select realtime database on the left navbar </li> 
+  <li>Create it using the default settings</li>
+  <li>Press import JSON</li>
+  <li>select example.json in pdftron/public</li>
+  <li>add your own email and put as a value, put isAdmin="True" as seen in example.json</li>
+</ol>
+ 
+ ![Uploading image.png…]()
+
+**Step 4: Running the app**
+```shell
+npm run dev
+```
+Go to localhost:3000 to get started!
+
 
 ### Prerequisites
 
 Need nodejs installed. To get started: https://nodejs.org/en/download/
 
-### Installation
+<!-- ### Installation
 
 Currently, all pages are static but we are currently working on connecting firebase with Nextjs 
 such that users will be able to upload maps, edit them, and save the newly made changes on the 
 database. Once most pages have been made dynamic, this section will detail how to set up a layout
-for office spaces.
+for office spaces. -->
 
 
 <!-- USAGE EXAMPLES -->
@@ -118,21 +162,6 @@ To view them: go to
 ```sh
 localhost:3000/book
 ```
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-<!-- ROADMAP -->
-## Roadmap
-//TODO 
-- [] Feature 1
-- [] Feature 2
-- [] Feature 3
-    - [] Nested Feature
-
-
-<p align="right">(<a href="#top">back to top</a>)</p>
 
 
 

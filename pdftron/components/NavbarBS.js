@@ -1,30 +1,32 @@
 import {Navbar, Nav, NavDropdown} from 'react-bootstrap';
 import { signOut } from "next-auth/react"
 import { useSession } from 'next-auth/react';
+import {isAdmin as getAdminPriv } from "../database/databaseCRUD"
+import {useState , useEffect} from 'react';
 
 export const NavbarBS = () => {
     const { data: session } = useSession()
 
-    // should pass in user object ^ as a prop
-    // isLoggedin is just a T/F value rn to disable some links on index.js
+    const [isLoggedin, setIsLoggedin] = useState(false)
+    const [isAdmin, setIsAdmin] = useState(false)
+    const [name, setName] = useState("")
+    
+    useEffect(() => {    
+        let active = true;
+        load()
+        return () => { active = false }
+    
+        async function load() {
+            if (session) {
+                setIsLoggedin(true)
+                setName(session.user.name)
+                const res = await Promise.resolve(getAdminPriv(session.user.email));
+                if (!active) { return }
+                setIsAdmin(res);
+            }
+        }
+    }, [])
 
-    //default values
-    let isAdmin = false
-    let name = ""
-    let isLoggedin = false
-    // if (user) {
-    //     // checks if user is logged in and their role
-    //     let name = user.name
-    //     let isAdmin = user.admin
-    // }
-
-
-    // placeholder tests
-    if (session) {
-        isAdmin = session.user.adminpriv
-        name = session.user.name
-        isLoggedin = true
-    }
 
     return (
 

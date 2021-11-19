@@ -4,7 +4,7 @@ import { NavbarBS } from '../components/NavbarBS';
 import styles from "../styles/Book.module.css"
 import Modal from "../components/modal";
 // const jsonObj = require('../public/tempJSON.json');
-import { getFloorPlan, isAdmin, getAllTableBookings, getAllRoomBookings } from "../database/databaseCRUD";
+import { getFloorPlan, getAllTableBookings, getAllRoomBookings, getUserId } from "../database/databaseCRUD";
 const jsonObj = require('../public/tempJSON.json');
 import  { useSession }  from 'next-auth/react';
 import TableDatePicker from "../components/datepicker";
@@ -17,6 +17,25 @@ import TableDatePicker from "../components/datepicker";
 
  export default function Book() {
     const { data: session } = useSession()
+
+
+    // // get userId this way if getting it from session doesnt work from _app.js
+    // const [userId, setUserId] = useState()
+
+    // useEffect(() => {    
+    //     let active = true;
+    //     load()
+    //     return () => { active = false }
+    
+    //     async function load() {
+    //         if (session) {
+    //             const res = await Promise.resolve(getUserId(session.user.email));
+    //             if (!active) { return }
+    //             setUserId(res);
+    //         }
+    //     }
+    // }, [])
+
     const [state, setState] = useState ({
         seen: false
     });

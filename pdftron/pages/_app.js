@@ -43,37 +43,38 @@ function Auth({ children }) {
 
     }, [isUser, status])
 
-    const [gotId, setGotId] = useState(false);
+    
+    
     const [isLoading, setLoading] = useState(true);
-
-
-
-    // somewhat scuffed, when clicking to another tab and back, the added properties to the session disappear
+    const [userId, setUserId] = useState()
+    // const [adminPriv, setAdminPriv] = useState(false)
 
     if (isUser) {
 
-        // console.log(gotId, "gotid")
-        if (!gotId) {
+        if (!userId) {
             let userEmail = session.user.email
             getUserId(userEmail).then(id => {
                 // console.log(id)
                 if (id) {
-                    isAdmin(userEmail).then(bool => {
-                        session.user["adminpriv"] = bool
-                    })
-                    session.user["id"] = id
+                    setUserId(id)
+                    // isAdmin(userEmail).then(bool => {
+                    //     console.log("again")
+                    //     setAdminPriv(bool)
+                    // })
                 } else {
                     addUserToDatabase(session).then(id => {
-                        session.user["id"] = id
+                        setUserId(id)
                     })
                 }
-                setGotId(true)
                 setLoading(false)
             })
 
         }
 
-        // console.log(session)
+        session.user["id"] = userId
+        // session.user["adminPriv"] = adminPriv
+
+        console.log(session)
         if (isLoading){
             return <Loader />
         }
