@@ -1,7 +1,7 @@
 import React, { useState, useEffect, forwardRef } from "react";
 import styles from '../styles/Table.module.css'
 import { NavbarBS } from "../components/NavbarBS";
-import { getAllUsers, getAllTeams } from "../database/databaseCRUD";
+import { getAllUsers, getAllTeams, updateUserInfo } from "../database/databaseCRUD";
 import { useSession } from 'next-auth/react';
 import MaterialTable from "material-table";
 import { Paper } from '@material-ui/core';
@@ -48,50 +48,65 @@ const tableIcons = {
 export default function App() {
     const { data: session } = useSession()
 
+    let test = {0: 'Web'}
 
-    var columns = [
-        { title: "User ID", field: "id", editable: "never"},
-        { title: "Name", field: "name", },
-        { title: "Email", field: "email",},
-        // { title: "Team ID", field: "teamId", },
-        { title: "Team", field: "teamName", },
-        { title: "Admin Privileges", field: "isAdmin", type: "boolean"},
 
-    ]
 
     const [dataUsers, setDataUsers] = useState([]); // table data
+    const [dataTeams, setDataTeams] = useState({});
 
     //for error handling
     const [iserror, setIserror] = useState(false)
     const [errorMessages, setErrorMessage] = useState([])
 
     useEffect(() => {
-        getAllUsers()
-            .then(allUsers => {
-                // console.log(allUsers)
-
-                getAllTeams().then(allTeams => {
-
-                    let formattedData = []
-                    for (let user of allUsers) {
-
-                        for (let team of allTeams) {
-                            if (team.id === user["teamId"]) {
-                                user["teamName"] = team.name
-                            }
-                        }
-                        formattedData.push(user)
-                    }
-                    setDataUsers(formattedData)
-                    // console.log(formattedData)
-                })
-                .catch(error => {
-                    console.log(error)
-                    setErrorMessage(["Cannot load user data"])
-                    setIserror(true)
-                })
-            })
+        getSetTeams()
+        initializeTableData()
     }, [])
+
+
+
+    const getSetTeams = async () => {
+        // creates a mapping for 'lookup' property in columns {0: "Web", 1: "Finance", ...}
+        const allTeams = await getAllTeams()
+    
+        let teamObj = {}
+        for (let team of allTeams) {
+            teamObj[team.id] = team.name
+        }
+        console.log(teamObj)
+        setDataTeams(teamObj)
+        
+    }
+    
+
+    const initializeTableData = () => {
+        getAllUsers()
+        .then(allUsers => {
+            // console.log(allUsers)
+
+            getAllTeams().then(allTeams => {
+
+                let formattedData = []
+                for (let user of allUsers) {
+
+                    // for (let team of allTeams) {
+                    //     if (team.id === user["teamId"]) {
+                    //         user["teamName"] = team.name
+                    //     }
+                    // }
+                    formattedData.push(user)
+                }
+                setDataUsers(formattedData)
+                // console.log(formattedData)
+            })
+            .catch(error => {
+                console.log(error)
+                setErrorMessage(["Cannot load user data"])
+                setIserror(true)
+            })
+        })
+    }
 
 
     const removeFromRendered = (userId) => {
@@ -102,6 +117,14 @@ export default function App() {
         setDataUsers(dataCopy)
         
     }
+
+    var columns = [
+        { title: "User ID", field: "id", editable: "never", defaultSort: "asc"},
+        { title: "Name", field: "name", },
+        { title: "Email", field: "email",},
+        { title: "Team", field: "teamId", lookup: dataTeams},
+        { title: "Admin Privileges", field: "isAdmin", type: "boolean"},
+    ]
 
     return (
         <>
@@ -124,22 +147,22 @@ export default function App() {
                 // tableLayout="fixed"
                 editable={{
                     onRowUpdate: (newData, oldData) =>
-                        new Promise((resolve) => {
-                            // await updateUser(newData.)
-                            alert("lol doesnt do shit yet")
-                            handleRowUpdate(newData, oldData, resolve);
-                            resolve()
-                    }),
-                    onRowDelete: (oldData) =>
                         new Promise(async (resolve) => {
-                            console.log(oldData.userId)
-                            // await deleteUser(oldData.userId)
-                            removeFromRendered(oldData.userId)
+                            await updateUserInfo(newData)
+                            console.log(newData)
+                            initializeTableData()
                             resolve()
                     }),
+                    // onRowDelete: (oldData) =>
+                    //     new Promise(async (resolve) => {
+                    //         console.log(oldData.userId)
+                    //         // await deleteUser(oldData.userId)
+                    //         removeFromRendered(oldData.userId)
+                    //         resolve()
+                    // }),
                 }}
                 localization={{ body: { 
-                    editRow: { deleteText: 'Are you sure you want to delete this user?' }
+                    editRow: { deleteText: "Are you sure you want to delete this user? WARNING: All their existing bookings will be deleted." }
                 } 
             }}
 
