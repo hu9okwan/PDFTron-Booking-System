@@ -76,6 +76,9 @@
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+### Prerequisites
+
+Need nodejs installed. To get started: https://nodejs.org/en/download/
 
 
 <!-- GETTING STARTED -->
@@ -98,6 +101,11 @@ npm install
 ```
 
 **Step 3: Setting up Database**
+
+#### Note! Firebase has free limits up to 1 GiB. For more information see https://firebase.google.com/pricing
+
+* [Setting Up .env file for database](https://stackoverflow.com/questions/52500573/where-can-i-find-my-firebase-apikey-and-authdomain)
+
 <ol>
   <li>Go to https://firebase.google.com/</li>
   <li>Select Add Project (Note: You can just use the default settings)</li>
@@ -109,8 +117,6 @@ npm install
 </li>
 </ol>
 
-![image](https://user-images.githubusercontent.com/72037665/142508814-59ab0995-69dd-4576-a8d0-801cfaa15977.png)
-![image](https://user-images.githubusercontent.com/72037665/142509052-f2e62394-dd49-472a-9f8b-284ccee9a820.png)
 
 
 **Step 4: Creating the database**
@@ -120,10 +126,10 @@ npm install
   <li>Create it using the default settings</li>
   <li>Press import JSON</li>
   <li>select example.json in pdftron/public</li>
-  <li>add your own email and put as a value, put isAdmin="True" as seen in example.json</li>
+  <li>aselect import</li>
 </ol>
+Your database is now ready to go!
  
- ![Uploading image.png…]()
 
 **Step 4: Running the app**
 ```shell
@@ -131,53 +137,45 @@ npm run dev
 ```
 Go to localhost:3000 to get started!
 
-
-### Prerequisites
-
-Need nodejs installed. To get started: https://nodejs.org/en/download/
-
-<!-- ### Installation
-
-Currently, all pages are static but we are currently working on connecting firebase with Nextjs 
-such that users will be able to upload maps, edit them, and save the newly made changes on the 
-database. Once most pages have been made dynamic, this section will detail how to set up a layout
-for office spaces. -->
-
+## Configuration
+- To upload your own map, have a png of your office outline prepared. Name your png using the name "office-outline.png" and replace the existing png in pdftron/public.
+- To give yourself admin privileges, simply go the the realtime database, select users > 0 > change the email to the one you login to the booking app with.
+- Once logged in as admin, you can go to admin settings where we have the following admin functionalities availble through there. (See (<a href="#admin"> Admin Functionalities </a> below)
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-The connection to the database is currently still a work in progress.
+The current method of logging in is using Google OAuth, that is, a 3rd party method of authenticating users. Sinply login to get started. Using the admin account configured
 
-A few pages this app currently posts:
-<ul>
-  <li>book</li>
-  <li>home</li>
-  <li>edit</li>
-  <li>mybookings</li>
-  <li>AdminDashboard</li>
-</ul>
+# Functionalities
+### Default users
+- See your current bookings
+- Make a Table Booking
+- Make a Room Booking
+- Delete your bookings
+- Authentication
 
-To view them: go to
-```sh
-localhost:3000/book
-```
+<div id="admin"></div>
+### Admin functionalities
+- Edit the current map
+- Add teams with specific colors
+- Remove teams
+- Remove tables
+- Upload new map
+- Make permanent bookings for other users
+- Specify booking constraints
+- See all bookings for all users
+- Change a users team
+- Change a users authorization level
 
 
-
-<!-- CONTRIBUTING -->
-<!-- ## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request -->
+## Future Directions
+- Unit testing for more code coverage
+- Minor bug fixes with Firebase connection (See Issues)
+- Ability to have multiple booking floors
+- Mobile Responsiveness
+- Have admins being able to configure Company Logo
+- Email notifications when room booked/deleted
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
