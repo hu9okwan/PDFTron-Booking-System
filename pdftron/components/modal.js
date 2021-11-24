@@ -6,7 +6,7 @@ import { set } from "@firebase/database";
 import { css } from "@emotion/react";
 import { SyncLoader, ClipLoader } from 'react-spinners';
 
-const Modal = ({ userID, tableID, roomID, userTeamId, team, teamId, toggle, bookedTables, bookedRoomTimes, setBookedTables, setBookedRoomTimes }) => {
+const Modal = ({ userID, tableID, roomID, userTeamId, team, tableTeamId, toggle, bookedTables, bookedRoomTimes, setBookedTables, setBookedRoomTimes }) => {
     const closeModal = () => {
         toggle();
     };
@@ -107,11 +107,18 @@ const Modal = ({ userID, tableID, roomID, userTeamId, team, teamId, toggle, book
 
         let html
 
-        if (teamId === 0) {
+        if (tableTeamId === 0) {
             html =  <div className={styles.dateInfoContainer}>
                         This table is unavailable for booking.
                     </div>
+        } else if (tableTeamId !== userTeamId && tableTeamId !== 1) {
+            console.log(tableTeamId)
+            html =  <div className={styles.dateInfoContainer}>
+                        <div>This table is only bookable for the</div>
+                        <div><strong>{team}</strong> team</div>
+                    </div>
         }
+
         else if (successStatus) {
             let startingDate
             let endingDate
@@ -206,7 +213,7 @@ const Modal = ({ userID, tableID, roomID, userTeamId, team, teamId, toggle, book
                 
 
             )
-        } else if (teamId === 0) {
+        } else if (tableTeamId === 0 || userTeamId !== tableTeamId) {
             return (
                 <></>
             )
