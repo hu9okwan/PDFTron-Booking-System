@@ -102,20 +102,22 @@ const Modal = ({ userID, tableID, roomID, userTeamId, team, tableTeamId, toggle,
     const [errorStatus, setErrorStatus] = useState(false);
     const [bookedDates, setBookedDates] = useState({});
  
+    const [disabled, setDisabled] = useState(false)
 
     const InfoRender = () => {
 
         let html
 
         if (tableTeamId === 0) {
+            setDisabled(true)
             html =  <div className={styles.dateInfoContainer}>
                         This table is unavailable for booking.
                     </div>
         } else if (tableTeamId !== userTeamId && tableTeamId !== 1) {
-            console.log(tableTeamId)
+            setDisabled(true)
             html =  <div className={styles.dateInfoContainer}>
-                        <div>This table is only bookable for the</div>
-                        <div><strong>{team}</strong> team</div>
+                        <div>This table is only bookable for</div>
+                        <div>the <strong>{team}</strong> team</div>
                     </div>
         }
 
@@ -246,7 +248,7 @@ const Modal = ({ userID, tableID, roomID, userTeamId, team, tableTeamId, toggle,
                 </span>
 
                 <div className={styles.selectContainer}>
-                    <TableDatePicker isModal={true} startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate} tableID={tableID} roomID={roomID} bookedTables={bookedTables} bookedRoomTimes={bookedRoomTimes}
+                    <TableDatePicker isModal={true} disabled={disabled} startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate} tableID={tableID} roomID={roomID} bookedTables={bookedTables} bookedRoomTimes={bookedRoomTimes}
                         timeSelect={tableID ? false : true} 
                         setSuccessStatus={setSuccessStatus}
                         />
