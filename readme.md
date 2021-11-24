@@ -13,7 +13,7 @@
 <h3 align="center">Booking System</h3>
 
   <p align="center">
-    This project seeks to provide a systematic way for employees to book table and room space for a physical office. 
+    This project seeks to provide a systematic way for employees to book table and room space for the physical office. This will help prevent any conflicts over workspaces between employees. PDFTron is implementing a system where most employees will not have assigned workspaces and have to reserve them prior to coming into work. Our solution includes a web-based application based on React.js where only PDFTron employees will be able to make reservations or bookings. Employees will be able to see past, future, and current bookings for rooms and tables. Using our stylized booking page and easy-to-use calendars, employees should be able to book with ease!
     <br />
 <!--     <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
     <br />
