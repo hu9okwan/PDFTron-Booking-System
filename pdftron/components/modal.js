@@ -6,7 +6,7 @@ import { set } from "@firebase/database";
 import { css } from "@emotion/react";
 import { SyncLoader, ClipLoader } from 'react-spinners';
 
-const Modal = ({ userID, tableID, roomID, userTeam, team, teamId, toggle, bookedTables, bookedRoomTimes, setBookedTables, setBookedRoomTimes }) => {
+const Modal = ({ userID, tableID, roomID, userTeamId, team, teamId, toggle, bookedTables, bookedRoomTimes, setBookedTables, setBookedRoomTimes }) => {
     const closeModal = () => {
         toggle();
     };

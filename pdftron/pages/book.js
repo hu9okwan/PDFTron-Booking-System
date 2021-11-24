@@ -203,7 +203,6 @@ import TableDatePicker from "../components/datepicker";
     function updateMap(selectedDate, canvas) {
         // compare booked date with selected date for tables and updates their status/colour
 
-        console.log(dataTeamsColours)
         let selectedDateCopy = new Date(selectedDate)
         selectedDateCopy.setHours(0,0,0,0)
 
@@ -302,7 +301,7 @@ import TableDatePicker from "../components/datepicker";
                 </div>
                 <canvas id="canvas"></canvas>
                 <span id="toolTip" className={styles.toolTip}></span>
-                {state.seen ? <Modal userID={session.user.id} userEmail={session.user.email} tableID={rectData.tableID} roomID={rectData.roomID} team={rectData.team} teamId={rectData.teamId} bookedTables={bookedTables} bookedRoomTimes={bookedRoomTimes} toggle={togglePop} setBookedTables={setBookedTables} setBookedRoomTimes={setBookedRoomTimes}>
+                {state.seen ? <Modal userID={session.user.id} userTeamId={session.user.teamId} userEmail={session.user.email} tableID={rectData.tableID} roomID={rectData.roomID} team={rectData.team} teamId={rectData.teamId} bookedTables={bookedTables} bookedRoomTimes={bookedRoomTimes} toggle={togglePop} setBookedTables={setBookedTables} setBookedRoomTimes={setBookedRoomTimes}>
 
 
                 </Modal> : null}

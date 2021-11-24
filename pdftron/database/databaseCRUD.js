@@ -93,7 +93,7 @@ export const addUserToDatabase = async (session) => {
     await set(ref(db, 'users/' + data[1]), {
     name: name,
     email: userEmail,
-    teamId: 0,
+    teamId: 1,
     isAdmin: false,
     id: data[0]
   });
@@ -127,14 +127,17 @@ export const getAllUsers = async () => {
 }
 
 
-export const getUserId = async (userEmail) => {
+export const getUserIdandTeamId = async (userEmail) => {
+    let objIds = {}
     return get(child(dbRef, `users/`)).then((snapshot) => {
         if (snapshot.exists()) {
             const data = snapshot.val();
             for (let key in data) {
                 if (data[key]["email"] === userEmail) {
                     // console.log(data[key]["id"])
-                    return data[key]["id"];
+                    objIds["userId"] = data[key]["id"]
+                    objIds["teamId"] = data[key]["teamId"]
+                    return objIds;
                 }
             }
             return false;
@@ -620,7 +623,7 @@ const findNextAvailableUserId = async () => {
     // finds next lowest available user id 
 
     let allUsers = await getAllUsers()
-    console.log(allUsers, "********findNextAvailableUserId*")
+    // console.log(allUsers, "********findNextAvailableUserId*")
 
     let id_list = [];
     for (let obj of allUsers) {
