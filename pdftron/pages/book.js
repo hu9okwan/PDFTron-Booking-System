@@ -187,7 +187,7 @@ import TableDatePicker from "../components/datepicker";
             if (tables !== undefined) {
                 for (let table of tables) {
         
-                    // grab from database instead
+                    // grab teams and its colours from database instead
                     let fillColour;
                     if (bookedTableIDs.includes(table["tableID"])){
                         fillColour = "#FF5C5B"
@@ -200,7 +200,7 @@ import TableDatePicker from "../components/datepicker";
                         table["reserved"] = false
                     } else if (table["team"] === "Unavailable") {
                         fillColour = "#D3D3D3"
-                        table["reserved"] = false
+                        table["reserved"] = true
 
                     }
         

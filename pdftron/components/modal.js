@@ -107,7 +107,12 @@ const Modal = ({ userID, tableID, roomID, team, toggle, bookedTables, bookedRoom
 
         let html
 
-        if (successStatus) {
+        if (team === "Unavailable") {
+            html =  <div className={styles.dateInfoContainer}>
+                        This table is unavailable for booking.
+                    </div>
+        }
+        else if (successStatus) {
             let startingDate
             let endingDate
 
@@ -200,6 +205,10 @@ const Modal = ({ userID, tableID, roomID, team, toggle, bookedTables, bookedRoom
                 <ClipLoader color={"#00a5e4"} css={override} size={45}/>
                 
 
+            )
+        } else if (team === "Unavailable") {
+            return (
+                <></>
             )
         } else {
             return (
