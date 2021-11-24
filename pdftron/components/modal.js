@@ -213,7 +213,7 @@ const Modal = ({ userID, tableID, roomID, userTeamId, team, tableTeamId, toggle,
                 
 
             )
-        } else if (tableTeamId === 0 || userTeamId !== tableTeamId) {
+        } else if (tableTeamId === 0 || (tableTeamId !== userTeamId && tableTeamId !== 1)) {
             return (
                 <></>
             )
