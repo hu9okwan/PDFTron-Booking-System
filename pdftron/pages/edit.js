@@ -266,8 +266,7 @@ export default function Edit() {
 
 
     return (
-        <div>
-            <NavbarBS />
+        <>
             <div className={styles.flexContainerButtons}>
                 <canvas id="canvas"></canvas>
                 <span id="toolTip" className={styles.toolTip}></span>
@@ -293,7 +292,7 @@ export default function Edit() {
 
             </div>
 
-        </div>
+        </>
 
     );
 }

@@ -174,8 +174,6 @@ export default function App() {
 
     return (
         <>
-            <NavbarBS />
-
             <div className={styles.tableContainer}>
                 <div className={styles.materialTable}>
                     <MaterialTable

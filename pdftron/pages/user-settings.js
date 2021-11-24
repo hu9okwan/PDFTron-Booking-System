@@ -128,8 +128,6 @@ export default function App() {
 
     return (
         <>
-            <NavbarBS />
-
             <div className={styles.tableContainer, styles.userTableContainer}>
             <MaterialTable
                 components={{

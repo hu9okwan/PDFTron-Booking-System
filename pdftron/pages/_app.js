@@ -6,6 +6,7 @@ import { useSession, signIn } from 'next-auth/react';
 import React, {useEffect, useState} from "react";
 import {addUserToDatabase, getUserId, isAdmin} from "../database/databaseCRUD";
 import Loader from "../components/loader"
+import { NavbarBS } from '../components/NavbarBS';
 
 
 
@@ -23,10 +24,14 @@ export default function App({
                 </Head>
             {Component.auth ? (
                 <Auth>
+                    <NavbarBS />
                     <Component {...pageProps} />
                 </Auth>
             ) : (
+                <>
+                <NavbarBS />
                 <Component {...pageProps} />
+                </>
             )}
         </SessionProvider>
     )
