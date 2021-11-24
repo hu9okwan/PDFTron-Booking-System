@@ -211,34 +211,6 @@ export const getMaxHours = async () => {
 };
 
 
-
-// export const getUserTableBookings = async (userID) => {
-//   return get(child(dbRef, `tables/`)).then((snapshot) => {
-//     let curBookings = [];
-//     if (snapshot.exists()) {
-//       const data = snapshot.val();
-
-
-//       for (let table of data) {
-//         for (let booking of table.bookings) {
-//           if (booking.userId === userID) {
-//             let ans = {table: table.id, startDate: booking.startDate, endDate: booking.endDate, teamId: table.teamId}
-//             console.log(ans);
-//             curBookings.push(ans);
-//           }
-//         }
-//       }
-//     } else {
-//       console.log("No data available");
-//     }
-//     return curBookings;
-
-//   }).catch((error) => {
-//     console.error(error);
-//   });
-// };
-
-
 export const getUserTableBookings = async (userID) => {
     let curBookings = [];
     if (!userID) {
@@ -332,32 +304,6 @@ export const getRoomBookings = async (roomId) => {
         }
     })
 };
-
-// export const getUserRoomBookings = async (userID) => {
-//   return get(child(dbRef, `rooms/`)).then((snapshot) => {
-//     let curBookings = [];
-//     if (snapshot.exists()) {
-//       const data = snapshot.val();
-
-
-//       for (let table of data) {
-//         for (let booking of table.bookings) {
-//           if (booking.userId === userID) {
-//             let ans = {table: table.id, startDate: booking.startDate, endDate: booking.endDate, teamId: table.teamId}
-//             console.log(ans);
-//             curBookings.push(ans);
-//           }
-//         }
-//       }
-//     } else {
-//       console.log("No data available");
-//     }
-//     return curBookings;
-
-//   }).catch((error) => {
-//     console.error(error);
-//   });
-// };
 
 export const getUserRoomBookings = async (userID) => {
     let curBookings = [];

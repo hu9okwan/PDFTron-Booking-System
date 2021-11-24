@@ -4,7 +4,7 @@ import { NavbarBS } from '../components/NavbarBS';
 import styles from "../styles/Book.module.css"
 import Modal from "../components/modal";
 // const jsonObj = require('../public/tempJSON.json');
-import { getFloorPlan, getAllTableBookings, getAllRoomBookings, getUserId } from "../database/databaseCRUD";
+import { getFloorPlan, getAllTableBookings, getAllRoomBookings, getUserId , getAllTeams} from "../database/databaseCRUD";
 const jsonObj = require('../public/tempJSON.json');
 import  { useSession }  from 'next-auth/react';
 import TableDatePicker from "../components/datepicker";
@@ -64,7 +64,8 @@ import TableDatePicker from "../components/datepicker";
         {
             tableID: undefined,
             roomID: undefined,
-            team: undefined
+            team: undefined,
+            teamId: undefined
         }
     )
 
@@ -85,17 +86,42 @@ import TableDatePicker from "../components/datepicker";
 
 
     const [selectedDate, setSelectedDate] = useState(new Date());
+
+    const [dataTeams, setDataTeams] = useState({});
+    const [dataTeamsColours, setDataTeamsColours] = useState({});
     
 
     useEffect(() => {
         if (canvas) {
-            // loadMap(canvas).then(() => updateMap(selectedDate, canvas))
-            loadMap(canvas)
-            canvas.hoverCursor = 'pointer';
-            clickTable(canvas);
-            hoverTable(canvas);
+            getSetTeams().then((teamObj) => {
+
+                loadMap(canvas)
+                canvas.hoverCursor = 'pointer';
+                clickTable(canvas, teamObj);
+                hoverTable(canvas, teamObj);
+            })
+
         }
     }, [canvas]);
+
+
+    const getSetTeams = async () => {
+        // creates a mapping {0: "Web", 1: "Finance", ...}
+        const allTeams = await getAllTeams()
+    
+        let teamObj = {}
+        let teamColours = {}
+        for (let team of allTeams) {
+            teamObj[team.id] = team.name
+            teamColours[team.id] = team.colour
+        }
+        // console.log(teamObj)
+        setDataTeams(teamObj)
+        setDataTeamsColours(teamColours)
+
+        return teamObj
+        
+    }
 
 
     const loadMap = async (canvas) => {
@@ -115,7 +141,7 @@ import TableDatePicker from "../components/datepicker";
     }
 
 
-    const hoverTable = (canvas) => {
+    const hoverTable = (canvas, teamObj) => {
         let toolTip = document.getElementById("toolTip");
         let selected_object_opacity = 0.5;
         let original_opacity
@@ -126,7 +152,7 @@ import TableDatePicker from "../components/datepicker";
                 const tableOrRoom = e.target.tableID ? `Table ID: ${e.target.tableID}` : `Room ID: ${e.target.roomID}`
                 toolTip.innerText =
                     `${tableOrRoom}
-                    Team: ${e.target.team}
+                    Team: ${teamObj[e.target.teamId]}
                     Status: ${status}`
 
                 toolTip.style.visibility = 'visible'
@@ -155,7 +181,7 @@ import TableDatePicker from "../components/datepicker";
     }
 
 
-    const clickTable = (canvas) => {
+    const clickTable = (canvas, teamObj) => {
         canvas.on('mouse:up', function(e) {
             //check if user clicked an object
             if (e.target) {
@@ -163,7 +189,8 @@ import TableDatePicker from "../components/datepicker";
                 let selectedRectData = {
                     tableID: e.target.tableID,
                     roomID: e.target.roomID,
-                    team: e.target.team,
+                    team: teamObj[e.target.teamId],
+                    teamId: e.target.teamId
                     }
                 setRectData(selectedRectData)
                 // console.log(selectedRectData)
@@ -176,6 +203,7 @@ import TableDatePicker from "../components/datepicker";
     function updateMap(selectedDate, canvas) {
         // compare booked date with selected date for tables and updates their status/colour
 
+        console.log(dataTeamsColours)
         let selectedDateCopy = new Date(selectedDate)
         selectedDateCopy.setHours(0,0,0,0)
 
@@ -192,16 +220,13 @@ import TableDatePicker from "../components/datepicker";
                     if (bookedTableIDs.includes(table["tableID"])){
                         fillColour = "#FF5C5B"
                         table["reserved"] = true
-                    } else if (table["team"] === "General") {
-                        fillColour = "#C7E4A7"
-                        table["reserved"] = false
-                    } else if (table["team"] === "Web") {
-                        fillColour = "#7D99E8"
-                        table["reserved"] = false
-                    } else if (table["team"] === "Unavailable") {
-                        fillColour = "#D3D3D3"
-                        table["reserved"] = true
-
+                    } else {
+                        fillColour = dataTeamsColours[table["teamId"]]
+                        if (table["teamId"] === 0) {
+                            table["reserved"] = true
+                        } else {
+                            table["reserved"] = false
+                        }
                     }
         
                     table.set("fill", fillColour)
@@ -277,7 +302,7 @@ import TableDatePicker from "../components/datepicker";
                 </div>
                 <canvas id="canvas"></canvas>
                 <span id="toolTip" className={styles.toolTip}></span>
-                {state.seen ? <Modal userID={session.user.id} userEmail={session.user.email} tableID={rectData.tableID} roomID={rectData.roomID} team={rectData.team} bookedTables={bookedTables} bookedRoomTimes={bookedRoomTimes} toggle={togglePop} setBookedTables={setBookedTables} setBookedRoomTimes={setBookedRoomTimes}>
+                {state.seen ? <Modal userID={session.user.id} userEmail={session.user.email} tableID={rectData.tableID} roomID={rectData.roomID} team={rectData.team} teamId={rectData.teamId} bookedTables={bookedTables} bookedRoomTimes={bookedRoomTimes} toggle={togglePop} setBookedTables={setBookedTables} setBookedRoomTimes={setBookedRoomTimes}>
 
 
                 </Modal> : null}
