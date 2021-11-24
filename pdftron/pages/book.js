@@ -191,12 +191,17 @@ import TableDatePicker from "../components/datepicker";
                     let fillColour;
                     if (bookedTableIDs.includes(table["tableID"])){
                         fillColour = "#FF5C5B"
+                        table["reserved"] = true
                     } else if (table["team"] === "General") {
                         fillColour = "#C7E4A7"
+                        table["reserved"] = false
                     } else if (table["team"] === "Web") {
                         fillColour = "#7D99E8"
+                        table["reserved"] = false
                     } else if (table["team"] === "Unavailable") {
                         fillColour = "#D3D3D3"
+                        table["reserved"] = false
+
                     }
         
                     table.set("fill", fillColour)
