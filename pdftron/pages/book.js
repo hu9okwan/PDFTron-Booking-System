@@ -245,8 +245,14 @@ import TableDatePicker from "../components/datepicker";
     }
     
 
-    const changeDate = move => {
+    const changeDate = (move) => {
         const date = new Date()
+        date.setHours(0,0,0,0)
+        selectedDate.setHours(0,0,0,0)
+
+        if (selectedDate.getTime() === date.getTime() && move === "prev") {
+            return
+        }
         if (move === "prev") {
             date.setDate(selectedDate.getDate() - 1)
             setSelectedDate(date)
@@ -258,7 +264,6 @@ import TableDatePicker from "../components/datepicker";
 
     return (
         <div>
-            {/* <NavbarBS /> */}
             <div className={styles.flexContainer}>
                 <div className={styles.prevNextContainer}>
                     <button style={{all: "unset", cursor: "pointer", transform: `rotate(180deg)`}} onClick={() => changeDate("prev")}><img src="../next.png" height="40px" width="40px" /></button>
