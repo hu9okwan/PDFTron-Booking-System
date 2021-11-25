@@ -148,12 +148,12 @@ import TableDatePicker from "../components/datepicker";
         canvas.on('mouse:over', function(e) {
 
             if (e.target) {
-                const status = e.target.reserved ? "Reserved" : "Available"
+                // const status = e.target.reserved ? "Reserved" : "Available"
                 const tableOrRoom = e.target.tableID ? `Table ID: ${e.target.tableID}` : `Room ID: ${e.target.roomID}`
                 toolTip.innerText =
                     `${tableOrRoom}
                     Team: ${teamObj[e.target.teamId]}
-                    Status: ${status}`
+                    Status: ${e.target.status}`
 
                 toolTip.style.visibility = 'visible'
 
@@ -218,13 +218,13 @@ import TableDatePicker from "../components/datepicker";
                     let fillColour;
                     if (bookedTableIDs.includes(table["tableID"])){
                         fillColour = "#FF5C5B"
-                        table["reserved"] = true
+                        table["status"] = "Booked"
                     } else {
                         fillColour = dataTeamsColours[table["teamId"]]
                         if (table["teamId"] === 0) {
-                            table["reserved"] = true
+                            table["status"] = "Reserved"
                         } else {
-                            table["reserved"] = false
+                            table["status"] = "Available"
                         }
                     }
         

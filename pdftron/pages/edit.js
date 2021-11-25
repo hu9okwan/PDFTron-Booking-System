@@ -192,7 +192,7 @@ export default function Edit() {
             // IMPORTANT: make sure to add the key name to the array in saveToJson method if adding new properties
 
             bookings: [],
-            teamId: teamId,
+            teamId: parseInt(teamId),
         });
 
         if (isAddTable) {
