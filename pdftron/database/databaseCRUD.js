@@ -452,7 +452,7 @@ export const deleteTableBooking = async (tableBookingID) => {
 
 export const deleteRoomBooking = async (roomBookingID) => {
     let path = await findBookingIdPath(roomBookingID)
-    await remove(ref(db, 'rooms/bookings/' + path));
+    await remove(ref(db, 'floorplan/data/objects/' + path));
     console.log("Successfully deleted this room booking")
 };
 
