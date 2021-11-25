@@ -6,7 +6,7 @@ import { set } from "@firebase/database";
 import { css } from "@emotion/react";
 import { SyncLoader, ClipLoader } from 'react-spinners';
 
-const Modal = ({ userID, tableID, roomID, team, toggle, bookedTables, bookedRoomTimes, setBookedTables, setBookedRoomTimes }) => {
+const Modal = ({ userID, tableID, roomID, userTeamId, team, tableTeamId, toggle, bookedTables, bookedRoomTimes, setBookedTables, setBookedRoomTimes }) => {
     const closeModal = () => {
         toggle();
     };
@@ -102,12 +102,26 @@ const Modal = ({ userID, tableID, roomID, team, toggle, bookedTables, bookedRoom
     const [errorStatus, setErrorStatus] = useState(false);
     const [bookedDates, setBookedDates] = useState({});
  
+    const [disabled, setDisabled] = useState(false)
 
     const InfoRender = () => {
 
         let html
 
-        if (successStatus) {
+        if (tableTeamId === 0) {
+            setDisabled(true)
+            html =  <div className={styles.dateInfoContainer}>
+                        This table is unavailable for booking.
+                    </div>
+        } else if (tableTeamId !== userTeamId && tableTeamId !== 1) {
+            setDisabled(true)
+            html =  <div className={styles.dateInfoContainer}>
+                        <div>This table is only bookable for</div>
+                        <div>the <strong>{team}</strong> team</div>
+                    </div>
+        }
+
+        else if (successStatus) {
             let startingDate
             let endingDate
 
@@ -201,6 +215,10 @@ const Modal = ({ userID, tableID, roomID, team, toggle, bookedTables, bookedRoom
                 
 
             )
+        } else if (tableTeamId === 0 || (tableTeamId !== userTeamId && tableTeamId !== 1)) {
+            return (
+                <></>
+            )
         } else {
             return (
                 <button className={styles.bookBtn} disabled={!startDate} onClick={submitBooking}>Book</button>
@@ -230,7 +248,7 @@ const Modal = ({ userID, tableID, roomID, team, toggle, bookedTables, bookedRoom
                 </span>
 
                 <div className={styles.selectContainer}>
-                    <TableDatePicker isModal={true} startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate} tableID={tableID} roomID={roomID} bookedTables={bookedTables} bookedRoomTimes={bookedRoomTimes}
+                    <TableDatePicker isModal={true} disabled={disabled} startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate} tableID={tableID} roomID={roomID} bookedTables={bookedTables} bookedRoomTimes={bookedRoomTimes}
                         timeSelect={tableID ? false : true} 
                         setSuccessStatus={setSuccessStatus}
                         />

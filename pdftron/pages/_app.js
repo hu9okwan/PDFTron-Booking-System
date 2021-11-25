@@ -4,8 +4,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { SessionProvider } from "next-auth/react"
 import { useSession, signIn } from 'next-auth/react';
 import React, {useEffect, useState} from "react";
-import {addUserToDatabase, getUserId, isAdmin} from "../database/databaseCRUD";
+import {addUserToDatabase, getUserIdandTeamId, isAdmin} from "../database/databaseCRUD";
 import Loader from "../components/loader"
+import { NavbarBS } from '../components/NavbarBS';
 
 
 
@@ -23,10 +24,14 @@ export default function App({
                 </Head>
             {Component.auth ? (
                 <Auth>
+                    <NavbarBS />
                     <Component {...pageProps} />
                 </Auth>
             ) : (
+                <>
+                <NavbarBS />
                 <Component {...pageProps} />
+                </>
             )}
         </SessionProvider>
     )
@@ -48,15 +53,17 @@ function Auth({ children }) {
     const [isLoading, setLoading] = useState(true);
     const [userId, setUserId] = useState()
     // const [adminPriv, setAdminPriv] = useState(false)
+    const [userTeamId, setUserTeamId] = useState(1)
+
 
     if (isUser) {
-
         if (!userId) {
             let userEmail = session.user.email
-            getUserId(userEmail).then(id => {
-                // console.log(id)
-                if (id) {
-                    setUserId(id)
+            getUserIdandTeamId(userEmail).then(objIds => {
+                if (objIds.userId) {
+                    setUserId(objIds.userId)
+                    setUserTeamId(objIds.teamId)
+
                     // isAdmin(userEmail).then(bool => {
                     //     console.log("again")
                     //     setAdminPriv(bool)
@@ -68,10 +75,10 @@ function Auth({ children }) {
                 }
                 setLoading(false)
             })
-
         }
 
         session.user["id"] = userId
+        session.user["teamId"] = userTeamId
         // session.user["adminPriv"] = adminPriv
 
         console.log(session)

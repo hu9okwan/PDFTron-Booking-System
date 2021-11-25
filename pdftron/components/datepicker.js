@@ -201,6 +201,7 @@ export default function TableDatePicker(props) {
                 excludeTimes={props.isModal && excludeBookedTimes}
                 selected={props.startDate}
                 minDate={minSelectedStart}
+                maxDate={props.isModal && props.disabled && new Date().setDate(new Date().getDate()-1)}
                 minTime={props.isModal && props.roomID && minTimeStart}
                 maxTime={new Date(0, 0, 0, 23, 30)}
                 startDate={props.startDate}

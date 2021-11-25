@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { fabric } from 'fabric';
 import { NavbarBS } from '../components/NavbarBS';
 import styles from '../styles/Edit.module.css'
-import {saveToDatabase, getFloorPlan} from "../database/databaseCRUD";
+import {saveToDatabase, getFloorPlan, getAllTeams} from "../database/databaseCRUD";
 
 
 export default function Edit() {
@@ -20,13 +20,18 @@ export default function Edit() {
         })
     );
 
+    const [dataTeams, setDataTeams] = useState({});
+    const [dataTeamsColours, setDataTeamsColours] = useState({});
+
     useEffect(() => {
         if (canvas) {
-            loadMap(canvas);
-            preventObjOut(canvas);
-            limitRotation(canvas);
-            hotkeys(canvas);
-            hoverTable(canvas);
+            getSetTeams().then((teamObj) => {
+                loadMap(canvas);
+                preventObjOut(canvas);
+                limitRotation(canvas);
+                hotkeys(canvas);
+                hoverTable(canvas, teamObj); 
+            })
         }
     }, [canvas]);
 
@@ -119,7 +124,7 @@ export default function Edit() {
     }
 
 
-    const hoverTable = (canvas) => {
+    const hoverTable = (canvas, teamObj) => {
         let toolTip = document.getElementById("toolTip")
         let selected_object_opacity = 0.5;
         let original_opacity
@@ -128,12 +133,10 @@ export default function Edit() {
                 return
             }
             else if (e.target) {
-                const status = e.target.reserved ? "Reserved" : "Available"
                 const tableOrRoom = e.target.tableID ? `Table ID: ${e.target.tableID}` : `Room ID: ${e.target.roomID}`
                 toolTip.innerText =
                     `${tableOrRoom}
-                    Team: ${e.target.team}
-                    Status: ${status}`
+                    Team: ${teamObj[e.target.teamId]}`
 
                 toolTip.style.visibility = 'visible'
 
@@ -161,7 +164,7 @@ export default function Edit() {
     }
 
 
-    const [tableTeam,setOption] = useState("General")
+    const [teamId,setOption] = useState(0)
     // sets default dropdown to general table
     function changeTeam(event){
         setOption(event.target.value)
@@ -171,15 +174,7 @@ export default function Edit() {
         // creates a new table object
 
         // TODO change ID to assign lowest available ID
-        let colour
-
-        if (tableTeam == "Unavailable") {
-            colour = "#D3D3D3"
-        } else if (tableTeam == "General") {
-            colour = "#C7E4A7"
-        } else if ( tableTeam == "Web") {
-            colour = "#7D99E8"
-        }
+        let colour = dataTeamsColours[teamId]
 
         const rect = new fabric.Rect({
 
@@ -196,9 +191,8 @@ export default function Edit() {
             // custom properties
             // IMPORTANT: make sure to add the key name to the array in saveToJson method if adding new properties
 
-            // tableID:  canvas._objects.length - 1,
             bookings: [],
-            team: tableTeam,
+            teamId: teamId,
         });
 
         if (isAddTable) {
@@ -248,7 +242,7 @@ export default function Edit() {
 
     const saveMap = (canvas) => {
         console.log(canvas)
-        const canvasJson = canvas.toJSON(["bookings", "tableID", "roomID", "team"])
+        const canvasJson = canvas.toJSON(["bookings", "tableID", "roomID", "teamId"])
         saveToDatabase(canvasJson).then(r => {
             console.log("saved floor plan")
             alert("Your changes has been saved.")}
@@ -264,10 +258,27 @@ export default function Edit() {
     };
 
 
+    const getSetTeams = async () => {
+        // creates a mapping {0: "Web", 1: "Finance", ...}
+        const allTeams = await getAllTeams()
+    
+        let teamObj = {}
+        let teamColours = {}
+        for (let team of allTeams) {
+            teamObj[team.id] = team.name
+            teamColours[team.id] = team.colour
+        }
+        // console.log(teamObj)
+        setDataTeams(teamObj)
+        setDataTeamsColours(teamColours)
+
+        return teamObj
+        
+    }
+
 
     return (
-        <div>
-            <NavbarBS />
+        <>
             <div className={styles.flexContainerButtons}>
                 <canvas id="canvas"></canvas>
                 <span id="toolTip" className={styles.toolTip}></span>
@@ -277,10 +288,13 @@ export default function Edit() {
                     <div className={styles.buttonsContainer}>
                         Team:
                         <div className="dropdown">
-                            <select name="tableTeam" id="tableTeam" onChange={changeTeam}>
-                                <option value="General">General</option>
+                            <select name="teamId" id="teamId" onChange={changeTeam}>
+
+                                { Object.entries(dataTeams).map((t,k) => <option key={k} value={t[0]}>{t[1]}</option>) }
+
+                                {/* <option value={}>General</option>s
                                 <option value="Web">Web</option>
-                                <option value="Unavailable">Unavailable</option>
+                                <option value="Unavailable">Unavailable</option> */}
                             </select>
                         </div>
                         <button className={styles.pointer} onClick={() => addRect(canvas, true)}>Add Table</button>
@@ -293,7 +307,7 @@ export default function Edit() {
 
             </div>
 
-        </div>
+        </>
 
     );
 }
