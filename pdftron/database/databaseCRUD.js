@@ -435,7 +435,7 @@ export const updateUserInfo = async (userNewInfo) => {
         name: userNewInfo.name,
         email: userNewInfo.email,
         isAdmin: userNewInfo.isAdmin,
-        teamId: userNewInfo.teamId
+        teamId: parseInt(userNewInfo.teamId)
     });
     console.log("Successfully updated user")
 };
