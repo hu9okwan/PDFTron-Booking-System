@@ -3,6 +3,7 @@ import { fabric } from 'fabric';
 import { NavbarBS } from '../components/NavbarBS';
 import styles from '../styles/Edit.module.css'
 import {saveToDatabase, getFloorPlan, getAllTeams} from "../database/databaseCRUD";
+import {N} from 'react-bootstrap/Button';
 
 
 export default function Edit() {
@@ -297,10 +298,10 @@ export default function Edit() {
                                 <option value="Unavailable">Unavailable</option> */}
                             </select>
                         </div>
-                        <button className={styles.pointer} onClick={() => addRect(canvas, true)}>Add Table</button>
-                        <button className={styles.pointer} onClick={() => addRect(canvas, false)}>Add Room</button>
-                        <button className={styles.pointer} onClick={() => removeTable(canvas)}>Remove Selected</button>
-                        <button className={styles.pointer} onClick={() => saveMap(canvas)}>Save Changes</button>
+                        <button className={styles.buttonPointer} onClick={() => addRect(canvas, true)}>Add Table</button>
+                        <button className={styles.buttonPointer} onClick={() => addRect(canvas, false)}>Add Room</button>
+                        <button className={styles.buttonPointer} onClick={() => removeTable(canvas)}>Remove Selected</button>
+                        <button className={styles.buttonPointer} onClick={() => saveMap(canvas)}>Save Changes</button>
                     </div>
 
                 </div>

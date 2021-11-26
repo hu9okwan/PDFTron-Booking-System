@@ -11,6 +11,16 @@
     cursor: pointer;
 }
 
+.buttonPointer {
+    cursor: pointer;
+    background-color:#00a5e4;
+    color: white;
+    font-size: 15px;
+    padding: 10px 30px;
+    border-radius: 5px;
+    margin: 5px 0px;
+}
+
 
 .toolTip{
     position: absolute;
@@ -37,4 +47,8 @@
     padding-top: 50px;
     align-items: center;
     justify-content: center;
+}
+
+.dropdown {
+    background: transparent;
 }
