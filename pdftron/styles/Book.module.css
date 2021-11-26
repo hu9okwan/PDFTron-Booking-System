@@ -151,6 +151,12 @@
     gap: 25px;
 }
 
+.canvas {
+    display: block;
+    position:absolute;
+    width: 100%;
+}
+
 .flexContainer2 {
     display: flex;
     padding-top: 50px;

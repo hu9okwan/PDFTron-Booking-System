@@ -67,7 +67,6 @@
         display:flex;
         flex-direction: row-reverse;
         width: 100%;
-        /* align-items: flex-end; */
     }
 
     .section {

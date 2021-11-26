@@ -48,19 +48,19 @@ export default function App() {
 
 
     var columns = [
-        { title: "Table", field: "tableId", },
+        { title: "Table", field: "tableId", width: '10%'},
         // { title: "User ID", field: "userId", },
-        { title: "Name", field: "name"},
-        { title: "Start Date", field: "startDate", type: "date", defaultSort: "asc"},
-        { title: "End Date", field: "endDate", type: "date"},
+        { title: "Name", field: "name", width: '30%'},
+        { title: "Start Date", field: "startDate", type: "date", defaultSort: "asc", width: '30%'},
+        { title: "End Date", field: "endDate", type: "date", width: '30%'},
     ]
 
     var columnsRoom = [
-        { title: "Room", field: "roomId", },
+        { title: "Room", field: "roomId", width: '10%'},
         // { title: "User ID", field: "userId"},
-        { title: "Name", field: "name"},
-        { title: "Start Date", field: "startDate", type: "date", defaultSort: "asc"},
-        { title: "Time", field: "time", type: "time"},
+        { title: "Name", field: "name", width: '30%'},
+        { title: "Start Date", field: "startDate", type: "date", defaultSort: "asc", width: '30%'},
+        { title: "Time", field: "time", type: "time", width: '30%'},
     ]
 
     const [dataTable, setDataTable] = useState([]); // table data
@@ -200,17 +200,22 @@ export default function App() {
                 <div className={styles.materialTable}>
                     <MaterialTable
                         components={{
-                            Container: props => <Paper {...props} elevation={0}/>
+                            Container: props => <Paper {...props} elevation={1}/>
                         }}
                         title="Table Bookings"
                         columns={columns}
                         data={dataTable}
                         icons={tableIcons}
+                        style={{backgroundImage: 'linear-gradient(rgba(0,0,0,0), rgba(235, 246, 253, 1))'}}
                         options={{ 
                             // paging: false, 
                             // filtering: true,
                             actionsColumnIndex: -1, 
-                            pageSize: 10
+                            pageSize: 10,
+                            headerStyle: {
+                                backgroundColor: 'rgba(0,165,228,0.25)',
+                                fontWeight: 'bold',
+                            }
                         }}
                         editable={{
                             onRowDelete: (oldData) =>
@@ -232,17 +237,22 @@ export default function App() {
                 <div className={styles.materialTable}>
                     <MaterialTable
                         components={{
-                            Container: props => <Paper {...props} elevation={0}/>
+                            Container: props => <Paper {...props} elevation={1}/>
                         }}
                         title="Room Bookings"
                         columns={columnsRoom}
                         data={dataRoom}
                         icons={tableIcons}
+                        style={{backgroundImage: 'linear-gradient(rgba(0,0,0,0), rgba(235, 246, 253, 1))'}}
                         options={{ 
                             // paging: false, 
                             // filtering: true,
                             actionsColumnIndex: -1, 
-                            pageSize: 10
+                            pageSize: 10,
+                            headerStyle: {
+                                backgroundColor: 'rgba(0,165,228,0.25)',
+                                fontWeight: 'bold',
+                            }
                         }}
                         editable={{
                             onRowDelete: (oldData) =>
