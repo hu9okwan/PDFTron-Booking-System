@@ -117,8 +117,6 @@ npm install
 </li>
 </ol>
 
-
-
 **Step 4: Creating the database**
 
  <ol>
@@ -130,8 +128,25 @@ npm install
 </ol>
 Your database is now ready to go!
  
+**Step 5: Setting up Google OAuth for User Authentication**
 
-**Step 4: Running the app**
+ <ol>
+  <li>Go to https://console.cloud.google.com/</li> 
+  <li>Click the menu on the top left nav bar (Three Bars)</li>
+  <li>Select APIs and Services > Credentials</li>
+  <li>Click Configure Consent Screen. The "OAuth consent screen" screen appears.
+</li>
+  <li>Click Create. A second "OAuth consent screen" screen appears.</li>
+  <li>Configure your project as needed</li>
+  <li>Now go to credentials</li>
+  <li>Select +Create Credentials on the top nav bar > OAuth Client ID</li>
+  <li>Select web application as Application type</li>
+  <li>Configure URIs as needed then click create</li>
+  <li>A popup should appear, from their copy and paste the client ID and clientSecret into the .env file</li>
+</ol>
+ 
+
+**Step 6: Running the app**
 ```shell
 npm run dev
 ```
@@ -156,6 +171,7 @@ The current method of logging in is using Google OAuth, that is, a 3rd party met
 - Authentication
 
 <div id="admin"></div>
+
 ### Admin functionalities
 - Edit the current map
 - Add teams with specific colors
