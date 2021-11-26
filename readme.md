@@ -124,7 +124,7 @@ npm install
   <li>Create it using the default settings</li>
   <li>Press import JSON</li>
   <li>select example.json in pdftron/public</li>
-  <li>aselect import</li>
+  <li>select import</li>
 </ol>
 Your database is now ready to go!
  
@@ -181,8 +181,8 @@ The current method of logging in is using Google OAuth, that is, a 3rd party met
 - Make permanent bookings for other users
 - Specify booking constraints
 - See all bookings for all users
-- Change a users team
-- Change a users authorization level
+- Change a user's team
+- Change a user's authorization level
 
 
 ## Future Directions
