@@ -2,12 +2,12 @@ import Head from 'next/head'
 import '../styles/globals.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { SessionProvider } from "next-auth/react"
-import { useSession, signIn } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import React, {useEffect, useState} from "react";
 import {addUserToDatabase, getUserIdandTeamId, isAdmin} from "../database/databaseCRUD";
 import Loader from "../components/loader"
 import { NavbarBS } from '../components/NavbarBS';
-
 
 
 export default function App({
@@ -38,14 +38,12 @@ export default function App({
 }
 
 function Auth({ children }) {
+    const router=useRouter()
     const { data: session, status } = useSession()
     const isUser = !!session?.user
     useEffect(() => {
         if (status === "loading") return // Do nothing while loading
-        if (!isUser) signIn() // If not authenticated, force log in
-        //Going to figure a way to force redirect instead of just button log in.
-
-
+        if (!isUser) router.push('/') // Redirects user to homepage if not logged in
     }, [isUser, status])
 
     
