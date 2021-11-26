@@ -52,14 +52,14 @@
     background-color: #fefefe;
     margin: auto;
     margin-top: 10%;
-    padding: 20px;
+    padding: 30px;
     border: 1px solid #888;
     border-radius: 15px;
     /* height: 50%; */
     /* width: 60%; */
 
     width: 650px;
-    height: 320px;
+    height: 350px;
     /* display: flex;
     flex-direction: column; */
     position: relative;
@@ -149,6 +149,12 @@
     justify-content: center;
     flex-direction: column;
     gap: 25px;
+}
+
+.canvas {
+    display: block;
+    position:absolute;
+    width: 100%;
 }
 
 .flexContainer2 {
@@ -262,4 +268,8 @@
 .bookBtn:hover,
 .bookBtn:focus {
     background-color: #00a3e4af;
+}
+
+.toContainer {
+    padding: 0 10px;
 }

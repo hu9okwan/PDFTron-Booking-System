@@ -1,12 +1,14 @@
 import React, {useState, useRef, useEffect} from "react";
 import TableDatePicker from "./datepicker";
 import styles from "../styles/Book.module.css"
+import "../styles/Book.module.css"
+
 import {createTableBooking, getAllTableBookings, createRoomBooking, getAllRoomBookings} from "../database/databaseCRUD";
 import { set } from "@firebase/database";
 import { css } from "@emotion/react";
 import { SyncLoader, ClipLoader } from 'react-spinners';
 
-const Modal = ({ userID, tableID, roomID, team, toggle, bookedTables, bookedRoomTimes, setBookedTables, setBookedRoomTimes }) => {
+const Modal = ({ userID, tableID, roomID, userTeamId, team, tableTeamId, toggle, bookedTables, bookedRoomTimes, setBookedTables, setBookedRoomTimes }) => {
     const closeModal = () => {
         toggle();
     };
@@ -21,7 +23,6 @@ const Modal = ({ userID, tableID, roomID, team, toggle, bookedTables, bookedRoom
 
     //tableId, startDate, endDate, userID
     const submitBooking = () => {
-        // change 1 to userID whenever sessions are implemented
         // console.log(startDate, endDate, tableID, team);
         setLoading(true)
         console.log(loading)
@@ -97,17 +98,34 @@ const Modal = ({ userID, tableID, roomID, team, toggle, bookedTables, bookedRoom
     const [startDate, setStartDate] = useState(false);
     const [endDate, setEndDate] = useState(false);
 
+    const [startTime, setStartTime] = useState(false)
+    const [endTime, setEndTime] = useState(false)
+
 
     const [successStatus, setSuccessStatus] = useState(false);
     const [errorStatus, setErrorStatus] = useState(false);
     const [bookedDates, setBookedDates] = useState({});
  
+    const [disabled, setDisabled] = useState(false)
 
     const InfoRender = () => {
 
         let html
 
-        if (successStatus) {
+        if (tableTeamId === 0) {
+            setDisabled(true)
+            html =  <div className={styles.dateInfoContainer}>
+                        This table is unavailable for booking.
+                    </div>
+        } else if (tableTeamId !== userTeamId && tableTeamId !== 1) {
+            setDisabled(true)
+            html =  <div className={styles.dateInfoContainer}>
+                        <div>This table is only bookable for</div>
+                        <div>the <strong>{team}</strong> team</div>
+                    </div>
+        }
+
+        else if (successStatus) {
             let startingDate
             let endingDate
 
@@ -142,7 +160,7 @@ const Modal = ({ userID, tableID, roomID, team, toggle, bookedTables, bookedRoom
                                 {startDate.toDateString()}
                             </div>
                             <div>
-                                {formatDate(startDate)}
+                                {/* {formatDate(startDate)} */}
                             </div>
                         </div>
             }
@@ -150,7 +168,7 @@ const Modal = ({ userID, tableID, roomID, team, toggle, bookedTables, bookedRoom
             html =  <div className={styles.dateInfoContainer}>
                         ⚠️ Selected date(s) are unavailable.
                     </div>
-        } else if (endDate && tableID) {
+        } else if (endDate && (tableID || roomID)) {
             html =  <div className={styles.dateInfoContainer}>
                         <div>
                             {startDate.toDateString()}
@@ -163,16 +181,18 @@ const Modal = ({ userID, tableID, roomID, team, toggle, bookedTables, bookedRoom
                         </div>
                     </div>
 
-        } else if (startDate && roomID) {
-            html =  <div className={styles.dateInfoContainer}>
-                        <div>
-                            {startDate.toDateString()}
-                        </div>
-                        <div>
-                            {formatDate(startDate)}
-                        </div>
-                    </div>
-        } else if (startDate && tableID) {
+        } 
+        // else if (startDate && roomID) {
+        //     html =  <div className={styles.dateInfoContainer}>
+        //                 <div>
+        //                     {startDate.toDateString()}
+        //                 </div>
+        //                 <div>
+        //                     {formatDate(startDate)}
+        //                 </div>
+        //             </div>
+        // } 
+        else if (startDate && (tableID || roomID)) {
             
             html =  <div className={styles.dateInfoContainer}>
                         {startDate.toDateString()}
@@ -200,6 +220,10 @@ const Modal = ({ userID, tableID, roomID, team, toggle, bookedTables, bookedRoom
                 <ClipLoader color={"#00a5e4"} css={override} size={45}/>
                 
 
+            )
+        } else if (tableTeamId === 0 || (tableTeamId !== userTeamId && tableTeamId !== 1)) {
+            return (
+                <></>
             )
         } else {
             return (
@@ -230,9 +254,10 @@ const Modal = ({ userID, tableID, roomID, team, toggle, bookedTables, bookedRoom
                 </span>
 
                 <div className={styles.selectContainer}>
-                    <TableDatePicker isModal={true} startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate} tableID={tableID} roomID={roomID} bookedTables={bookedTables} bookedRoomTimes={bookedRoomTimes}
+                    <TableDatePicker isModal={true} disabled={disabled} startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate} tableID={tableID} roomID={roomID} bookedTables={bookedTables} bookedRoomTimes={bookedRoomTimes}
                         timeSelect={tableID ? false : true} 
                         setSuccessStatus={setSuccessStatus}
+                        startTime={startTime} setStartTime={setStartTime} endTime={endTime} setEndTime={setEndTime}
                         />
                     <div className={styles.tableInfo}>
                         <h3 style={{textAlign: "center"}}>

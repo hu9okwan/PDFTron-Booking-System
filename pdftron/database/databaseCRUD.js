@@ -93,7 +93,7 @@ export const addUserToDatabase = async (session) => {
     await set(ref(db, 'users/' + data[1]), {
     name: name,
     email: userEmail,
-    teamId: 0,
+    teamId: 1,
     isAdmin: false,
     id: data[0]
   });
@@ -127,14 +127,17 @@ export const getAllUsers = async () => {
 }
 
 
-export const getUserId = async (userEmail) => {
+export const getUserIdandTeamId = async (userEmail) => {
+    let objIds = {}
     return get(child(dbRef, `users/`)).then((snapshot) => {
         if (snapshot.exists()) {
             const data = snapshot.val();
             for (let key in data) {
                 if (data[key]["email"] === userEmail) {
                     // console.log(data[key]["id"])
-                    return data[key]["id"];
+                    objIds["userId"] = data[key]["id"]
+                    objIds["teamId"] = data[key]["teamId"]
+                    return objIds;
                 }
             }
             return false;
@@ -209,34 +212,6 @@ export const getMaxHours = async () => {
     console.error(error);
   });
 };
-
-
-
-// export const getUserTableBookings = async (userID) => {
-//   return get(child(dbRef, `tables/`)).then((snapshot) => {
-//     let curBookings = [];
-//     if (snapshot.exists()) {
-//       const data = snapshot.val();
-
-
-//       for (let table of data) {
-//         for (let booking of table.bookings) {
-//           if (booking.userId === userID) {
-//             let ans = {table: table.id, startDate: booking.startDate, endDate: booking.endDate, teamId: table.teamId}
-//             console.log(ans);
-//             curBookings.push(ans);
-//           }
-//         }
-//       }
-//     } else {
-//       console.log("No data available");
-//     }
-//     return curBookings;
-
-//   }).catch((error) => {
-//     console.error(error);
-//   });
-// };
 
 
 export const getUserTableBookings = async (userID) => {
@@ -332,32 +307,6 @@ export const getRoomBookings = async (roomId) => {
         }
     })
 };
-
-// export const getUserRoomBookings = async (userID) => {
-//   return get(child(dbRef, `rooms/`)).then((snapshot) => {
-//     let curBookings = [];
-//     if (snapshot.exists()) {
-//       const data = snapshot.val();
-
-
-//       for (let table of data) {
-//         for (let booking of table.bookings) {
-//           if (booking.userId === userID) {
-//             let ans = {table: table.id, startDate: booking.startDate, endDate: booking.endDate, teamId: table.teamId}
-//             console.log(ans);
-//             curBookings.push(ans);
-//           }
-//         }
-//       }
-//     } else {
-//       console.log("No data available");
-//     }
-//     return curBookings;
-
-//   }).catch((error) => {
-//     console.error(error);
-//   });
-// };
 
 export const getUserRoomBookings = async (userID) => {
     let curBookings = [];
@@ -479,6 +428,18 @@ export const updateMaxTableDays = async (maxDays) => {
   console.log("Successfully updated max days")
 };
 
+
+export const updateUserInfo = async (userNewInfo) => {
+    let userObjId = await getUserObjId(userNewInfo.id)
+    await update(ref(db, 'users/' + userObjId ), {
+        name: userNewInfo.name,
+        email: userNewInfo.email,
+        isAdmin: userNewInfo.isAdmin,
+        teamId: parseInt(userNewInfo.teamId)
+    });
+    console.log("Successfully updated user")
+};
+
 // ============================ DELETE =======================================
 
 export const deleteTableBooking = async (tableBookingID) => {
@@ -491,7 +452,7 @@ export const deleteTableBooking = async (tableBookingID) => {
 
 export const deleteRoomBooking = async (roomBookingID) => {
     let path = await findBookingIdPath(roomBookingID)
-    await remove(ref(db, 'rooms/bookings/' + path));
+    await remove(ref(db, 'floorplan/data/objects/' + path));
     console.log("Successfully deleted this room booking")
 };
 
@@ -626,6 +587,26 @@ const getObjId = async (tableIdOrRoomId, id) => {
     })
 }
 
+const getUserObjId = async (id) => {
+    // gets the object key of firebase b/c the id of room or table does not always equal the object key
+    return get(child(dbRef, `users`)).then((snapshot) => {
+        if (snapshot.exists()) {
+            const data = snapshot.val();
+            console.log(data)
+            for (let objId in data) {
+                
+                if (data[objId]["id"] === id) {
+                    return objId
+                }
+            }
+        } else {
+            console.log("No data available");
+        }
+    }).catch((error) => {
+        console.log(error);
+    })
+}
+
 const formatDate = (date) => {
     var hours = date.getHours();
     var minutes = date.getMinutes();
@@ -642,7 +623,7 @@ const findNextAvailableUserId = async () => {
     // finds next lowest available user id 
 
     let allUsers = await getAllUsers()
-    console.log(allUsers, "********findNextAvailableUserId*")
+    // console.log(allUsers, "********findNextAvailableUserId*")
 
     let id_list = [];
     for (let obj of allUsers) {
