@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { fabric } from 'fabric';
 import { NavbarBS } from '../components/NavbarBS';
 import styles from "../styles/Book.module.css"
+import "../styles/Book.module.css"
+
 import Modal from "../components/modal";
 // const jsonObj = require('../public/tempJSON.json');
 import { getFloorPlan, getAllTableBookings, getAllRoomBookings, getUserId , getAllTeams} from "../database/databaseCRUD";
