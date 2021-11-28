@@ -79,24 +79,40 @@ export default function TimePicker(props) {
         return dateArray;
     }
 
-    const timeRange = (startTime, endTime, excludeTimesEnd, minutes = timeIntervalGap) => {
+    const timeRange = (startDate, endDate, minutes = timeIntervalGap) => {
+
+
         const timeArray = [];
-        let currentDate = new Date(startTime);
-      
-        if (excludeTimesEnd) {
-            while (currentDate.getTime() <= new Date(endTime).getTime()) {
-                timeArray.push(new Date(currentDate));
-                // Use UTC date to prevent problems with time zones and DST
-                currentDate.setUTCMinutes(currentDate.getUTCMinutes() + minutes);
+        let startTime = new Date(startDate);
+    
+        let endTime = new Date(endDate)
+
+        if (areDatesSameDay(startDate, endDate)) {
+            while (startTime < endTime) {
+
+                timeArray.push(new Date(startTime));
+                startTime.setUTCMinutes(startTime.getUTCMinutes() + minutes); 
             }
+                
         } else {
-            while (currentDate.getTime() != new Date(endTime).getTime()) {
-                timeArray.push(new Date(currentDate));
-                // Use UTC date to prevent problems with time zones and DST
-                currentDate.setUTCMinutes(currentDate.getUTCMinutes() + minutes);
+
+            let datesArr = dateRange(startDate, endDate) 
+
+            for (let date of datesArr) {
+                let curEndDate = new Date(date)
+                curEndDate.setHours(endTime.getHours())
+                
+                while (date < curEndDate) {
+
+                    timeArray.push(new Date(date));
+                    date.setUTCMinutes(date.getUTCMinutes() + minutes); 
+                }
+
             }
         }
-      
+        
+ 
+        // console.log(timeArray)
         return timeArray;
     }
 
@@ -146,50 +162,9 @@ export default function TimePicker(props) {
                 }
             }
         }
-
+        // console.log(excludedTimes)
         return excludedTimes
     }, [props.bookedRoomTimes, props.startDate, props.endDate])
-
-
-    // this is dupe function of above but idk how to pass variable into a useMemo hook
-    // so here would have an additional time disabled on the end time picker
-    const excludeBookedTimesEnd = useMemo(() => {
-
-        let excludedTimes = []
-        if (props.bookedRoomTimes !== undefined) {
-
-            for (let bookings of props.bookedRoomTimes) {
-
-                for (let key in bookings) {
-
-                    if (bookings[key] !== undefined && bookings[key]["roomId"] === props.roomId && props.startDate) {
-
-                        let existingStartDate = new Date(bookings[key]["startDate"])
-                        let existingEndDate = new Date(bookings[key]["endDate"])
-
-                        let timeRangeArr = timeRange(existingStartDate, existingEndDate, true)
-                        for (let time of timeRangeArr) {
-                            if (areDatesSameDay(time, props.startDate)){
-                                excludedTimes.push(time)
-                            }
-                            if (props.endDate) {
-                                let datesArr = dateRange(props.startDate, props.endDate)
-
-                                for (let date of datesArr) {
-                                    if (areDatesSameDay(date, props.endDate)){
-                                        excludedTimes.push(time)
-                                    }
-                                }
-                            }
-                        }                     
-                    }
-                }
-            }
-        }
-
-        return excludedTimes
-    }, [props.bookedRoomTimes, props.startDate, props.endDate])
-
 
     const onChange = (date) => {
         props.setStartTime(date)
@@ -231,7 +206,7 @@ export default function TimePicker(props) {
                 dateFormat="h:mm aa"
                 disabled={!props.startDate || !props.startTime}
                 placeholderText="End time"
-                excludeTimes={excludeBookedTimesEnd}
+                excludeTimes={excludeBookedTimes}                
             />
             </div>
         </>
