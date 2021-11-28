@@ -5,7 +5,7 @@ import { SessionProvider } from "next-auth/react"
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import React, {useEffect, useState} from "react";
-import {addUserToDatabase, getUserIdandTeamId, isAdmin} from "../database/databaseCRUD";
+import {addUserToDatabase, getUserSessionInfo, isAdmin} from "../database/databaseCRUD";
 import Loader from "../components/loader"
 import { NavbarBS } from '../components/NavbarBS';
 
@@ -49,35 +49,40 @@ function Auth({ children }) {
     
     
     const [isLoading, setLoading] = useState(true);
-    const [userId, setUserId] = useState()
-    // const [adminPriv, setAdminPriv] = useState(false)
-    const [userTeamId, setUserTeamId] = useState(1)
-
+    const [userInfo, setUserInfo] = useState(
+        {
+            userId: undefined,
+            teamId: 1,
+            isAdmin: false
+        }
+    )
 
     if (isUser) {
-        if (!userId) {
+        if (!userInfo.userId) {
             let userEmail = session.user.email
-            getUserIdandTeamId(userEmail).then(objIds => {
-                if (objIds.userId) {
-                    setUserId(objIds.userId)
-                    setUserTeamId(objIds.teamId)
-
-                    // isAdmin(userEmail).then(bool => {
-                    //     console.log("again")
-                    //     setAdminPriv(bool)
-                    // })
+            getUserSessionInfo(userEmail).then(async existingUserInfo => {
+                console.log(existingUserInfo)
+                if (!existingUserInfo) {
+                    let newUserInfo = await addUserToDatabase(session)
+                    setUserInfo({
+                        userId: newUserInfo.id,
+                        teamId: newUserInfo.teamId,
+                        isAdmin: newUserInfo.isAdmin
+                    })
                 } else {
-                    addUserToDatabase(session).then(id => {
-                        setUserId(id)
+                    setUserInfo({
+                        userId: existingUserInfo.userId,
+                        teamId: existingUserInfo.teamId,
+                        isAdmin: existingUserInfo.isAdmin
                     })
                 }
                 setLoading(false)
             })
         }
 
-        session.user["id"] = userId
-        session.user["teamId"] = userTeamId
-        // session.user["adminPriv"] = adminPriv
+        session.user["id"] = userInfo.userId
+        session.user["teamId"] = userInfo.teamId
+        session.user["isAdmin"] = userInfo.isAdmin
 
         console.log(session)
         if (isLoading){

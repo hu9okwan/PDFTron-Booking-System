@@ -97,7 +97,7 @@ export const addUserToDatabase = async (session) => {
     isAdmin: false,
     id: data[0]
   });
-  return data[0]
+  return {id: data[0], teamId: 1, isAdmin: false}
 };
 
 // ============================ READ =======================================
@@ -127,17 +127,18 @@ export const getAllUsers = async () => {
 }
 
 
-export const getUserIdandTeamId = async (userEmail) => {
-    let objIds = {}
+export const getUserSessionInfo = async (userEmail) => {
+    let userInfo = {}
     return get(child(dbRef, `users/`)).then((snapshot) => {
         if (snapshot.exists()) {
             const data = snapshot.val();
             for (let key in data) {
                 if (data[key]["email"] === userEmail) {
                     // console.log(data[key]["id"])
-                    objIds["userId"] = data[key]["id"]
-                    objIds["teamId"] = data[key]["teamId"]
-                    return objIds;
+                    userInfo["userId"] = data[key]["id"]
+                    userInfo["teamId"] = data[key]["teamId"]
+                    userInfo["isAdmin"] = data[key]["isAdmin"]
+                    return userInfo;
                 }
             }
             return false;
