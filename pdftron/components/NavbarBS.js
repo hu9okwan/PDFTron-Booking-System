@@ -1,7 +1,6 @@
 import {Navbar, Nav, NavDropdown} from 'react-bootstrap';
 import { signOut } from "next-auth/react"
 import { useSession } from 'next-auth/react';
-import {isAdmin as getAdminPriv } from "../database/databaseCRUD"
 import {useState , useEffect} from 'react';
 
 export const NavbarBS = () => {
@@ -16,22 +15,14 @@ export const NavbarBS = () => {
     )
     
     useEffect(() => {    
-        let active = true;
-        load()
-        return () => { active = false }
-    
-        async function load() {
-            if (session) {
-                setIsLoggedin(true)
-                setUserInfo({
-                    name: session.user.name,
-                    isAdmin: session.user.isAdmin
-                })
-            }
+        if (session) {
+            setIsLoggedin(true)
+            setUserInfo({
+                name: session.user.name,
+                isAdmin: session.user.isAdmin
+            })
         }
     }, [])
-
-
 
     return (
 
