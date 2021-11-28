@@ -6,7 +6,7 @@ import "../styles/Book.module.css"
 
 import Modal from "../components/modal";
 // const jsonObj = require('../public/tempJSON.json');
-import { getFloorPlan, getAllTableBookings, getAllRoomBookings, getUserId , getAllTeams} from "../database/databaseCRUD";
+import { getFloorPlan, getAllTableBookings, getAllRoomBookings, getUserId , getAllTeams, getAllUsers} from "../database/databaseCRUD";
 const jsonObj = require('../public/tempJSON.json');
 import  { useSession }  from 'next-auth/react';
 import TableDatePicker from "../components/datepicker";
@@ -100,8 +100,20 @@ import TableDatePicker from "../components/datepicker";
                 loadMap(canvas)
                 canvas.hoverCursor = 'pointer';
                 clickTable(canvas, teamObj);
-                hoverTable(canvas, teamObj);
                 panningZoom(canvas)
+
+                getAllUsers().then(allUsers => {
+                    let userData = []
+
+                    for (let user of allUsers) {
+                        let tempUserObj = {
+                            userId: user.id,
+                            userName: user.name
+                        }
+                        userData.push(tempUserObj)
+                    }
+                    hoverTable(canvas, teamObj, userData)
+                })
             })
         }
     }, [canvas]);
@@ -125,6 +137,30 @@ import TableDatePicker from "../components/datepicker";
         
     }
 
+    // const [userData, setUserData] = useState()
+
+    // useEffect(() => {    
+    //     let active = true;
+    //     load()
+    //     return () => { active = false }
+    
+    //     async function load() {
+    //         if (session) {
+    //             const allUsers = await Promise.resolve(getAllUsers());
+    //             let formattedData = []
+    //             for (let user of allUsers) {
+    //                 let tempUserObj = {
+    //                     userId: user.id,
+    //                     userName: user.name
+    //                 }
+    //                 formattedData.push(tempUserObj)
+    //             }
+    //             if (!active) { return }
+    //             setUserData(formattedData);
+    //         }
+    //     }
+    // }, [])
+
 
     const loadMap = async (canvas) => {
         getFloorPlan().then( floorPlan => {
@@ -143,7 +179,7 @@ import TableDatePicker from "../components/datepicker";
     }
 
 
-    const hoverTable = (canvas, teamObj) => {
+    const hoverTable = (canvas, teamObj, userData) => {
         let toolTip = document.getElementById("toolTip");
         let selected_object_opacity = 0.5;
         let original_opacity
@@ -152,10 +188,21 @@ import TableDatePicker from "../components/datepicker";
             if (e.target) {
                 // const status = e.target.reserved ? "Reserved" : "Available"
                 const tableOrRoom = e.target.tableID ? `Table ID: ${e.target.tableID}` : `Room ID: ${e.target.roomID}`
+                let userName
+
+                console.log(e.target.userId)
+                for (let user of userData) {
+                    if (user.userId === e.target.userId) {
+                        console.log(user.userId)
+                        userName = user.userName
+                    }
+                }
+                const bookedBy = userName ? `Booked by: ${userName}` : ""
                 toolTip.innerText =
                     `${tableOrRoom}
                     Team: ${teamObj[e.target.teamId]}
-                    Status: ${e.target.status}`
+                    Status: ${e.target.status}
+                    ${bookedBy}`
 
                 toolTip.style.visibility = 'visible'
 
@@ -209,18 +256,24 @@ import TableDatePicker from "../components/datepicker";
         selectedDateCopy.setHours(0,0,0,0)
 
         if (bookedTables !== undefined) { 
-            let bookedTableIDs = filterBookingDate(selectedDateCopy)
-
+            let bookedTableInfo = filterBookingDate(selectedDateCopy)
+            console.log(bookedTableInfo)
             let tables = canvas._objects
 
             if (tables !== undefined) {
                 for (let table of tables) {
         
-                    // grab teams and its colours from database instead
                     let fillColour;
-                    if (bookedTableIDs.includes(table["tableID"])){
+                    let userId 
+                    bookedTableInfo.some(e => {
+                        if (e.tableId === table["tableID"]) {
+                            userId = e.userId
+                        }
+                    })
+                    if (userId) {
                         fillColour = "#FF5C5B"
                         table["status"] = "Booked"
+                        table["userId"] = userId
                     } else {
                         fillColour = dataTeamsColours[table["teamId"]]
                         if (table["teamId"] === 0) {
@@ -229,7 +282,7 @@ import TableDatePicker from "../components/datepicker";
                             table["status"] = "Available"
                         }
                     }
-        
+
                     table.set("fill", fillColour)
                 }
             }
@@ -311,7 +364,7 @@ import TableDatePicker from "../components/datepicker";
 
 
     function filterBookingDate(date) {
-        let tableIDArray =  []
+        let tableBookingsInfo =  []
 
         for (let bookings of bookedTables) {
             for (let booking in bookings) {
@@ -325,13 +378,16 @@ import TableDatePicker from "../components/datepicker";
                     let dateRangeArr = dateRange(bookingStartDate, bookingEndDate)
 
                     if (dateRangeArr.includes(date.getTime())) {
-                        tableIDArray.push(bookings[booking]["tableId"])
-                        // console.log(bookings[booking]["tableId"])
+                        let bookingInfoObj = {
+                            tableId: bookings[booking]["tableId"],
+                            userId: bookings[booking]["userId"]
+                        }
+                        tableBookingsInfo.push(bookingInfoObj)
                     }
                 }
             }
         }
-        return tableIDArray
+        return tableBookingsInfo
     }
 
     const dateRange = (startDate, endDate, steps = 1) => {
