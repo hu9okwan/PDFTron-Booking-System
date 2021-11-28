@@ -56,8 +56,9 @@ export default function App() {
     ]
 
     var columnsRoom = [
-        { title: "Room", field: "roomId", width: "20%"},
-        { title: "Start Date", field: "startDate", type: "date", defaultSort: "asc", width: "40%"},
+        { title: "Room", field: "roomId", width: "10%"},
+        { title: "Start Date", field: "startDate", type: "date", defaultSort: "asc", width: "25%"},
+        { title: "End Date", field: "endDate", type: "date", defaultSort: "asc", width: "25%"},
         { title: "Time", field: "time", type: "time", width: "40%"},
     ]
 
@@ -107,9 +108,11 @@ export default function App() {
                     for (let booking in bookings) {
                         // console.log(bookings[booking])
                         let startDate = new Date(bookings[booking]["startDate"])
-                        let strTime = formatDate(startDate)
+                        let endDate = new Date(bookings[booking]["endDate"])
+                        let strTime = `${formatTime(startDate)} - ${formatTime(endDate)}`
 
                         bookings[booking]["startDate"] = startDate
+                        bookings[booking]["endDate"] = endDate
                         bookings[booking]["time"] = strTime
                         bookings[booking]["bookingId"] = booking
 
@@ -126,7 +129,7 @@ export default function App() {
             })
     }, [])
 
-    const formatDate = (date) => {
+    const formatTime = (date) => {
 
         var hours = date.getHours();
         var minutes = date.getMinutes();
@@ -136,20 +139,7 @@ export default function App() {
         minutes = minutes < 10 ? '0'+minutes : minutes;
         var strTime = hours + ':' + minutes + ' ' + ampm;
 
-        // get from DB max time booked for rooms vvvvvv to be dynamic
-        let endDate = new Date(date);
-        endDate.setMinutes(endDate.getMinutes() + 30)
-
-        var endHours = endDate.getHours();
-        var endMinutes = endDate.getMinutes();
-        var ampm = endHours >= 12 ? 'PM' : 'AM';
-        endHours = endHours % 12;
-        endHours = endHours ? endHours : 12; // the hour '0' should be '12'
-        endMinutes = endMinutes < 10 ? '0'+endMinutes : endMinutes;
-        var endTime = endHours + ':' + endMinutes + ' ' + ampm;
-
-        let timeRange = strTime + " - " + endTime
-        return timeRange;
+        return strTime;
     }
 
 

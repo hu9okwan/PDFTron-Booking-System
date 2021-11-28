@@ -48,10 +48,6 @@ const tableIcons = {
 export default function App() {
     const { data: session } = useSession()
 
-    let test = {0: 'Web'}
-
-
-
     const [dataUsers, setDataUsers] = useState([]); // table data
     const [dataTeams, setDataTeams] = useState({});
 
