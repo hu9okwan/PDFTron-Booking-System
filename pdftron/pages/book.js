@@ -64,8 +64,8 @@ import TableDatePicker from "../components/datepicker";
 
     const [rectData, setRectData] = useState (
         {
-            tableID: undefined,
-            roomID: undefined,
+            tableId: undefined,
+            roomId: undefined,
             team: undefined,
             teamId: undefined
         }
@@ -189,8 +189,8 @@ import TableDatePicker from "../components/datepicker";
             if (e.target) {
                 //clicked on object
                 let selectedRectData = {
-                    tableID: e.target.tableID,
-                    roomID: e.target.roomID,
+                    tableId: e.target.tableID,
+                    roomId: e.target.roomID,
                     team: teamObj[e.target.teamId],
                     teamId: e.target.teamId
                     }
@@ -376,7 +376,7 @@ import TableDatePicker from "../components/datepicker";
                 </div>
                 <canvas id="canvas" className={styles.canvas}></canvas>
                 <span id="toolTip" className={styles.toolTip}></span>
-                {state.seen ? <Modal userID={session.user.id} userTeamId={session.user.teamId} userEmail={session.user.email} tableID={rectData.tableID} roomID={rectData.roomID} team={rectData.team} tableTeamId={rectData.teamId} bookedTables={bookedTables} bookedRoomTimes={bookedRoomTimes} toggle={togglePop} setBookedTables={setBookedTables} setBookedRoomTimes={setBookedRoomTimes}>
+                {state.seen ? <Modal userId={session.user.id} userTeamId={session.user.teamId} userEmail={session.user.email} tableId={rectData.tableId} roomId={rectData.roomId} team={rectData.team} tableTeamId={rectData.teamId} bookedTables={bookedTables} bookedRoomTimes={bookedRoomTimes} toggle={togglePop} setBookedTables={setBookedTables} setBookedRoomTimes={setBookedRoomTimes}>
 
 
                 </Modal> : null}

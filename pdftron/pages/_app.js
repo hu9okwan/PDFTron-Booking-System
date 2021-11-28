@@ -61,7 +61,6 @@ function Auth({ children }) {
         if (!userInfo.userId) {
             let userEmail = session.user.email
             getUserSessionInfo(userEmail).then(async existingUserInfo => {
-                console.log(existingUserInfo)
                 if (!existingUserInfo) {
                     let newUserInfo = await addUserToDatabase(session)
                     setUserInfo({
@@ -84,7 +83,7 @@ function Auth({ children }) {
         session.user["teamId"] = userInfo.teamId
         session.user["isAdmin"] = userInfo.isAdmin
 
-        console.log(session)
+        // console.log(session)
         if (isLoading){
             return <Loader />
         }

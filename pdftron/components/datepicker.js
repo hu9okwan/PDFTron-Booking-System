@@ -23,12 +23,6 @@ import TimePicker from "../components/timepicker";
 
 
 export default function TableDatePicker(props) {
-    // const [startDate, setStartDate] = useState(new Date());
-    // const [endDate, setEndDate] = useState(new Date());
-
-
-
-
 
     const minSelectedStart = useMemo(() => {
         
@@ -42,7 +36,6 @@ export default function TableDatePicker(props) {
         }
         return new Date()
     })
-
 
 
     const dateRange = (startDate, endDate, steps = 1) => {
@@ -64,7 +57,7 @@ export default function TableDatePicker(props) {
         for (let bookings of props.bookedTables) {
 
             for (let key in bookings) {
-                if (bookings[key] !== undefined && bookings[key]["tableId"] === props.tableID) {
+                if (bookings[key] !== undefined && bookings[key]["tableId"] === props.tableId) {
 
                     let startDate = new Date(bookings[key]["startDate"])
                     let endDate = new Date(bookings[key]["endDate"])
@@ -83,32 +76,7 @@ export default function TableDatePicker(props) {
         
     }, [props.bookedTables])
 
-
-    // const excludeBookedTimes = useMemo(() => {
-    //     // console.log(props.bookedRoomTimes)
-    //     let excludedTimes = []
-    //     if (props.bookedRoomTimes !== undefined) {
-
-    //         for (let bookings of props.bookedRoomTimes) {
-
-    //             for (let key in bookings) {
-
-    //                 let existingStartDate = new Date(bookings[key]["startDate"])
-    //                 if (bookings[key] !== undefined && bookings[key]["roomId"] === props.roomID && props.startDate && existingStartDate !== undefined) {
-    //                     // console.log(props.startDate, "*****")
-    //                     if (existingStartDate.toDateString() === props.startDate.toDateString()) {
-    //                         console.log("yap")
-    //                         excludedTimes.push(existingStartDate);
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-
-    //     // console.log(excludedTimes)
-    //     return excludedTimes
-    // }, [props.bookedRoomTimes, props.startDate])
-    
+ 
 
     const onChange = (dates) => {
         // console.log(dates)
@@ -126,14 +94,6 @@ export default function TableDatePicker(props) {
         }
     }
 
-    const onChangeRoom = date => {
-        // console.log("yap")
-        // console.log(date)
-        props.setSuccessStatus(false)
-        props.setStartDate(date)
-    }
-
- 
     return (
         <div className={styles.datePickerContainer}>
 
@@ -141,12 +101,12 @@ export default function TableDatePicker(props) {
                 className={styles.datePicker}
                 // showTimeSelect={props.timeSelect}
                 dateFormat={"     MMMM d, yyyy"}
-                excludeDates={props.isModal && props.tableID && excludeBookedDates}
+                excludeDates={props.isModal && props.tableId && excludeBookedDates}
                 // excludeTimes={props.isModal && excludeBookedTimes}
                 selected={props.startDate}
                 minDate={minSelectedStart}
                 maxDate={props.isModal && props.disabled && new Date().setDate(new Date().getDate()-1)}
-                // minTime={props.isModal && props.roomID && minTimeStart}
+                // minTime={props.isModal && props.roomId && minTimeStart}
                 maxTime={new Date(0, 0, 0, 23, 30)}
                 startDate={props.startDate}
                 endDate={props.endDate}
@@ -154,9 +114,9 @@ export default function TableDatePicker(props) {
                 selectsRange={props.isModal}
                 todayButton={!props.isModal && "Today"}
                 onChange={(props.isModal && onChange) || onChange2}
-                showTimeInput={props.isModal && props.roomID}
+                showTimeInput={props.isModal && props.roomId}
                 timeInputLabel={false}
-                customTimeInput={props.isModal && props.roomID && <TimePicker startDate={props.startDate} endDate={props.endDate} startTime={props.startTime} setStartTime={props.setStartTime} endTime={props.endTime} setEndTime={props.setEndTime}/>}
+                customTimeInput={props.isModal && props.roomId && <TimePicker roomId={props.roomId} startDate={props.startDate} endDate={props.endDate} startTime={props.startTime} setStartTime={props.setStartTime} endTime={props.endTime} setEndTime={props.setEndTime} bookedRoomTimes={props.bookedRoomTimes} setSuccessStatus={props.setSuccessStatus}/>}
             />
 
         </div>

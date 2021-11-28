@@ -8,7 +8,7 @@ import { set } from "@firebase/database";
 import { css } from "@emotion/react";
 import { SyncLoader, ClipLoader } from 'react-spinners';
 
-const Modal = ({ userID, tableID, roomID, userTeamId, team, tableTeamId, toggle, bookedTables, bookedRoomTimes, setBookedTables, setBookedRoomTimes }) => {
+const Modal = ({ userId, tableId, roomId, userTeamId, team, tableTeamId, toggle, bookedTables, bookedRoomTimes, setBookedTables, setBookedRoomTimes }) => {
     const closeModal = () => {
         toggle();
     };
@@ -21,15 +21,15 @@ const Modal = ({ userID, tableID, roomID, userTeamId, team, tableTeamId, toggle,
     justify-content: center;
     `;
 
-    //tableId, startDate, endDate, userID
+    //tableId, startDate, endDate, userId
     const submitBooking = () => {
-        // console.log(startDate, endDate, tableID, team);
+        // console.log(startDate, endDate, tableId, team);
         setLoading(true)
-        console.log(loading)
+        // console.log(loading)
         if (!startDate) {
             return
-        } else if (roomID) {
-            createRoomBooking(roomID, startDate, userID).then(message => {
+        } else if (roomId) {
+            createRoomBooking(roomId, startDate, endDate, startTime, endTime, userId).then(message => {
                 if (message[0]) {
                     setSuccessStatus(true)
                     setLoading(false)
@@ -40,8 +40,8 @@ const Modal = ({ userID, tableID, roomID, userTeamId, team, tableTeamId, toggle,
                 }
                 reloadRooms()
             })
-        } else if (tableID) {
-            createTableBooking(tableID, startDate, endDate, userID).then(message => {
+        } else if (tableId) {
+            createTableBooking(tableId, startDate, endDate, userId).then(message => {
                 if (message[0]) {
                     setSuccessStatus(true)
                     console.log(message)
@@ -136,7 +136,7 @@ const Modal = ({ userID, tableID, roomID, userTeamId, team, tableTeamId, toggle,
                 endingDate = bookedDates.bookedEndDate.toDateString()
             }
 
-            if (tableID) {
+            if (tableId) {
                 html =  <div className={styles.dateInfoContainer}>
                             <div><strong>Booked for:</strong></div>
                             <div>
@@ -153,7 +153,7 @@ const Modal = ({ userID, tableID, roomID, userTeamId, team, tableTeamId, toggle,
                             </>
                             }
                         </div>
-            } else if (roomID) {
+            } else if (roomId) {
                 html = <div className={styles.dateInfoContainer}>
                             <div><strong>Booked for:</strong></div>
                             <div>
@@ -168,7 +168,7 @@ const Modal = ({ userID, tableID, roomID, userTeamId, team, tableTeamId, toggle,
             html =  <div className={styles.dateInfoContainer}>
                         ⚠️ Selected date(s) are unavailable.
                     </div>
-        } else if (endDate && (tableID || roomID)) {
+        } else if (endDate && (tableId || roomId)) {
             html =  <div className={styles.dateInfoContainer}>
                         <div>
                             {startDate.toDateString()}
@@ -182,7 +182,7 @@ const Modal = ({ userID, tableID, roomID, userTeamId, team, tableTeamId, toggle,
                     </div>
 
         } 
-        // else if (startDate && roomID) {
+        // else if (startDate && roomId) {
         //     html =  <div className={styles.dateInfoContainer}>
         //                 <div>
         //                     {startDate.toDateString()}
@@ -192,7 +192,7 @@ const Modal = ({ userID, tableID, roomID, userTeamId, team, tableTeamId, toggle,
         //                 </div>
         //             </div>
         // } 
-        else if (startDate && (tableID || roomID)) {
+        else if (startDate && (tableId || roomId)) {
             
             html =  <div className={styles.dateInfoContainer}>
                         {startDate.toDateString()}
@@ -254,14 +254,14 @@ const Modal = ({ userID, tableID, roomID, userTeamId, team, tableTeamId, toggle,
                 </span>
 
                 <div className={styles.selectContainer}>
-                    <TableDatePicker isModal={true} disabled={disabled} startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate} tableID={tableID} roomID={roomID} bookedTables={bookedTables} bookedRoomTimes={bookedRoomTimes}
-                        timeSelect={tableID ? false : true} 
+                    <TableDatePicker isModal={true} disabled={disabled} startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate} tableId={tableId} roomId={roomId} bookedTables={bookedTables} bookedRoomTimes={bookedRoomTimes}
+                        timeSelect={tableId ? false : true} 
                         setSuccessStatus={setSuccessStatus}
                         startTime={startTime} setStartTime={setStartTime} endTime={endTime} setEndTime={setEndTime}
                         />
                     <div className={styles.tableInfo}>
                         <h3 style={{textAlign: "center"}}>
-                            {tableID ? `${team} Table ${tableID}` : `${team} Room ${roomID}`}
+                            {tableId ? `${team} Table ${tableId}` : `${team} Room ${roomId}`}
                         </h3>
 
                         <InfoRender />

@@ -7,15 +7,7 @@ import styles from "../styles/Book.module.css"
 export default function TimePicker(props) {
 
 
-
-    
-    // potential way to store the time
-    
-    // set startDate to the startTime selected
-    // set endDate to the endTime selected
-    
     const timeIntervalGap = 60
-
 
     const minTimeStart = useMemo(() => {
         // restricts selecting times before current time if startDate is today
@@ -29,13 +21,6 @@ export default function TimePicker(props) {
             (!props.endDate || selectedEndDate.setHours(0,0,0,0) === todayDate.setHours(0,0,0,0))) {
             return new Date();
         } 
-        // else if (selectedStartDate.setHours(0,0,0,0) === todayDate.setHours(0,0,0,0) && 
-        //          selectedEndDate.setHours(0,0,0,0) !== todayDate.setHours(0,0,0,0)) {
-
-        //     return 
-        // }
-
-
 
         let minStartTime = new Date(props.startDate).setHours(0, 0, 0, 0)
         return minStartTime;
@@ -46,7 +31,6 @@ export default function TimePicker(props) {
     const minTimeEnd = useMemo(() => {
         // changes selectable end datetime to the set minBookTime you can book a room
         
-        console.log(props.startTime)
         if (props.startTime) {
             const minStartTime = new Date(props.startTime);
             minStartTime.setMinutes(props.startTime.getMinutes() + timeIntervalGap)
@@ -73,6 +57,7 @@ export default function TimePicker(props) {
             let date = new Date(props.startTime)
             date.setMinutes(props.startTime.getMinutes() + timeIntervalGap)
             // console.log(date, "****")
+            props.setEndTime(date)
             return date;
         }
 
@@ -81,14 +66,139 @@ export default function TimePicker(props) {
     }, [props.startTime, props.endTime])
 
 
+    const dateRange = (startDate, endDate, steps = 1) => {
+        const dateArray = [];
+        let currentDate = new Date(startDate);
+      
+        while (currentDate <= new Date(endDate)) {
+          dateArray.push(new Date(currentDate));
+          // Use UTC date to prevent problems with time zones and DST
+          currentDate.setUTCDate(currentDate.getUTCDate() + steps);
+        }
+      
+        return dateArray;
+    }
+
+    const timeRange = (startTime, endTime, excludeTimesEnd, minutes = timeIntervalGap) => {
+        const timeArray = [];
+        let currentDate = new Date(startTime);
+      
+        if (excludeTimesEnd) {
+            while (currentDate.getTime() <= new Date(endTime).getTime()) {
+                timeArray.push(new Date(currentDate));
+                // Use UTC date to prevent problems with time zones and DST
+                currentDate.setUTCMinutes(currentDate.getUTCMinutes() + minutes);
+            }
+        } else {
+            while (currentDate.getTime() != new Date(endTime).getTime()) {
+                timeArray.push(new Date(currentDate));
+                // Use UTC date to prevent problems with time zones and DST
+                currentDate.setUTCMinutes(currentDate.getUTCMinutes() + minutes);
+            }
+        }
+      
+        return timeArray;
+    }
+
+    const areDatesSameDay = (first, second) => {
+        if (first.getYear() === second.getYear() &&
+        first.getMonth() === second.getMonth() &&
+        first.getDate() === second.getDate()) {
+            return true
+        }
+        return false
+    }
+    
+
+    const excludeBookedTimes = useMemo(() => {
+        // console.log(props.bookedRoomTimes)
+        let excludedTimes = []
+        if (props.bookedRoomTimes !== undefined) {
+
+            for (let bookings of props.bookedRoomTimes) {
+
+                for (let key in bookings) {
+                    // console.log(bookings[key])
+
+                    if (bookings[key] !== undefined && bookings[key]["roomId"] === props.roomId && props.startDate) {
+
+                        let existingStartDate = new Date(bookings[key]["startDate"])
+                        let existingEndDate = new Date(bookings[key]["endDate"])
+
+                        // console.log(existingStartDate, "*****")
+
+                        let timeRangeArr = timeRange(existingStartDate, existingEndDate)
+                        for (let time of timeRangeArr) {
+                            if (areDatesSameDay(time, props.startDate)){
+                                excludedTimes.push(time)
+                            }
+                            if (props.endDate) {
+                                let datesArr = dateRange(props.startDate, props.endDate)
+
+                                for (let date of datesArr) {
+                                    if (areDatesSameDay(date, props.endDate)){
+                                        excludedTimes.push(time)
+                                    }
+                                }
+                            }
+                        }                     
+                    }
+                }
+            }
+        }
+
+        return excludedTimes
+    }, [props.bookedRoomTimes, props.startDate, props.endDate])
+
+
+    // this is dupe function of above but idk how to pass variable into a useMemo hook
+    // so here would have an additional time disabled on the end time picker
+    const excludeBookedTimesEnd = useMemo(() => {
+
+        let excludedTimes = []
+        if (props.bookedRoomTimes !== undefined) {
+
+            for (let bookings of props.bookedRoomTimes) {
+
+                for (let key in bookings) {
+
+                    if (bookings[key] !== undefined && bookings[key]["roomId"] === props.roomId && props.startDate) {
+
+                        let existingStartDate = new Date(bookings[key]["startDate"])
+                        let existingEndDate = new Date(bookings[key]["endDate"])
+
+                        let timeRangeArr = timeRange(existingStartDate, existingEndDate, true)
+                        for (let time of timeRangeArr) {
+                            if (areDatesSameDay(time, props.startDate)){
+                                excludedTimes.push(time)
+                            }
+                            if (props.endDate) {
+                                let datesArr = dateRange(props.startDate, props.endDate)
+
+                                for (let date of datesArr) {
+                                    if (areDatesSameDay(date, props.endDate)){
+                                        excludedTimes.push(time)
+                                    }
+                                }
+                            }
+                        }                     
+                    }
+                }
+            }
+        }
+
+        return excludedTimes
+    }, [props.bookedRoomTimes, props.startDate, props.endDate])
+
 
     const onChange = (date) => {
-        // maybe grab time from date here and replace the startDate's time with it
         props.setStartTime(date)
+        props.setSuccessStatus(false)
     }
 
     const onChangeEnd = (date) => {
         props.setEndTime(date)
+        props.setSuccessStatus(false)
     }
 
     return (
@@ -106,8 +216,9 @@ export default function TimePicker(props) {
                 dateFormat="h:mm aa"
                 disabled={!props.startDate}
                 placeholderText="Start time"
+                excludeTimes={excludeBookedTimes}
             />
-            <span className={styles.toContainer}>~</span>
+            <span className={styles.toContainer}>–</span>
             <DatePicker
                 onChange={onChangeEnd}
                 showTimeSelect
@@ -120,6 +231,7 @@ export default function TimePicker(props) {
                 dateFormat="h:mm aa"
                 disabled={!props.startDate || !props.startTime}
                 placeholderText="End time"
+                excludeTimes={excludeBookedTimesEnd}
             />
             </div>
         </>

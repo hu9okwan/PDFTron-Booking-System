@@ -9,13 +9,13 @@ const dbRef = ref(getDatabase());
 
 // ============================ CREATE =======================================
 
-export const createTableBooking = async (tableId, startDate, endDate, userID) => {
+export const createTableBooking = async (tableId, startDate, endDate, userId) => {
   // /reservations/4 (4 needs to be uniquely generated)
 
-    console.log(tableId, startDate, endDate, userID);
+    console.log(tableId, startDate, endDate, userId);
 
     if (endDate === null) {
-        endDate = startDate
+        endDate = new Date(startDate)
     }
 
     return isAvailable(startDate, endDate, tableId).then(async (status) => {
@@ -33,7 +33,7 @@ export const createTableBooking = async (tableId, startDate, endDate, userID) =>
                 tableId: tableId,
                 startDate: startDateTimestamp,
                 endDate: endDateTimestamp,
-                userId: userID
+                userId: userId
             });
             console.log(`booking id: ${bookingId}`)
             let bookingDateString = startDate === endDate ? `${startDate.toDateString()}` : `${startDate.toDateString()} to ${endDate.toDateString()}`
@@ -47,18 +47,37 @@ export const createTableBooking = async (tableId, startDate, endDate, userID) =>
     })
 };
 
-export const createRoomBooking = async (roomId, startDate, userID) => {
-    // /reservations/4 (4 needs to be uniquely generated)
-  
-    console.log(roomId, startDate, userID);
+export const createRoomBooking = async (roomId, startDate, endDate, startTime, endTime, userId) => {
+
+    
+    if (endDate === null) {
+        endDate = new Date(startDate)
+    }
+
+    // console.log(startDate, endDate, startTime, endTime)
+    
+    return isRoomAvailable(startDate, endDate, startTime, endTime, roomId).then(async (status) => {
+        
+        
+    //     return ["testing"]
+    // })
+
+    startDate.setHours(startTime.getHours())
+    startDate.setMinutes(startTime.getMinutes())
     startDate.setSeconds(0)
-    startDate.setMilliseconds(0)
-  
-    return isRoomAvailable(startDate, roomId).then(async (status) => {
-        // console.log(status)
+
+    endDate.setHours(endTime.getHours())
+    endDate.setMinutes(endTime.getMinutes())
+    endDate.setSeconds(0)
+
+
+    // return isRoomAvailable(startDate, roomId).then(async (status) => {
+    //     // console.log(status)
 
         if (status) {
             let startDateTimestamp = startDate.getTime()
+            let endDateTimestamp = endDate.getTime()
+
 
             let objId = await getObjId("roomID", roomId)
 
@@ -66,7 +85,8 @@ export const createRoomBooking = async (roomId, startDate, userID) => {
             await set(ref(db, 'floorplan/data/objects/' + objId + '/bookings/' + 'bookId_' + bookingIdRoom), {
                 roomId: roomId,
                 startDate: startDateTimestamp,
-                userId: userID
+                endDate: endDateTimestamp,
+                userId: userId
             });
             console.log(`booking id: ${bookingIdRoom}`)
             let returnMsg = [status, `The room has been booked for: ${startDate.toDateString()} at ${formatDate(startDate)}`, startDate]
@@ -537,24 +557,66 @@ const isAvailable = (startDate, endDate, tableId) => {
 }
 
 
-const isRoomAvailable = (startDate, roomId) => {
+const isRoomAvailable = (startDate, endDate, startTime, endTime, roomId) => {
     let avail = true
 
     return getRoomBookings(roomId).then(allCurrentBookings => {
         allCurrentBookings.forEach(bookingsForRoom => {
             for (let key in bookingsForRoom) {
                 if (bookingsForRoom[key] !== undefined) {
-                    let existingBookingStartDateEpoch = bookingsForRoom[key].startDate
-                    let startDateEpoch = startDate.getTime()
+                    let existingBookingStartDate = new Date(bookingsForRoom[key].startDate)
+                    let existingBookingEndDate = new Date(bookingsForRoom[key].endDate)
 
-                    // console.log(existingBookingStartDateEpoch, "existing")
-                    // console.log(startDateEpoch,"current")
-                    // console.log(existingBookingStartDateEpoch === startDateEpoch)
-                    let rightNow = new Date().getTime()
+                    let a = new Date()
+                    a.setHours(existingBookingStartDate.getHours())
+                    a.setMinutes(existingBookingStartDate.getMinutes())
+                    a.setSeconds(0)
+                    a = a.getTime()
 
-                    if (existingBookingStartDateEpoch === startDateEpoch ||
-                        startDateEpoch <= rightNow) {
-                        avail = false
+                    let b = new Date()
+                    b.setHours(existingBookingEndDate.getHours())
+                    b.setMinutes(existingBookingEndDate.getMinutes())
+                    b.setSeconds(0)
+                    b = b.getTime()
+
+
+                    let c = new Date()
+                    c.setHours(startTime.getHours())
+                    c.setMinutes(startTime.getMinutes())
+                    c.setSeconds(0)
+                    c = c.getTime()
+
+                    let d = new Date()
+                    d.setHours(endTime.getHours())
+                    d.setMinutes(endTime.getMinutes())
+                    d.setSeconds(0)
+                    d = d.getTime()
+
+                    let existingDateRange = dateRange(existingBookingStartDate, existingBookingEndDate)
+                    let requestBookDateRange = dateRange(startDate, endDate)
+
+                    for (let existDate of existingDateRange) {
+
+                        for (let bookDate of requestBookDateRange) {
+                            if (areDatesSameDay(existDate, bookDate)) {
+
+                                console.log("logic")
+
+
+                                 console.log("*****")
+
+                                
+                                if ((a <= c && d <= b) ||
+                                    (a <= c && c < b) ||
+                                    (a < d && d <= b) ||
+                                    (c <= a && b <= d) ||
+                                    (a === c && b === d)
+                                    ) {
+                                        avail = false
+                                }
+                                
+                            }
+                        }
                     }
                 }
             }
@@ -635,4 +697,28 @@ const findNextAvailableUserId = async () => {
     while (set.has(id)) { id++ }
 
     return [id, allUsers.length]
+}
+
+
+const dateRange = (startDate, endDate, steps = 1) => {
+    const dateArray = [];
+    let currentDate = new Date(startDate);
+  
+    while (currentDate <= new Date(endDate)) {
+      dateArray.push(new Date(currentDate));
+      // Use UTC date to prevent problems with time zones and DST
+      currentDate.setUTCDate(currentDate.getUTCDate() + steps);
+    }
+  
+    return dateArray;
+}
+
+
+const areDatesSameDay = (first, second) => {
+    if (first.getYear() === second.getYear() &&
+    first.getMonth() === second.getMonth() &&
+    first.getDate() === second.getDate()) {
+        return true
+    }
+    return false
 }
