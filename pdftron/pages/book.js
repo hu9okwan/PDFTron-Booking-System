@@ -406,20 +406,23 @@ import TableDatePicker from "../components/datepicker";
     
 
     const changeDate = (move) => {
-        const date = new Date()
-        date.setHours(0,0,0,0)
-        selectedDate.setHours(0,0,0,0)
+        const today = new Date()
+        today.setHours(0,0,0,0)
+        
+        let selectedDateCopy = new Date(selectedDate)
+        selectedDateCopy.setHours(0,0,0,0)
 
-        if (selectedDate.getTime() === date.getTime() && move === "prev") {
+        if (selectedDateCopy.getTime() === today.getTime() && move === "prev") {
             return
         }
         if (move === "prev") {
-            date.setDate(selectedDate.getDate() - 1)
-            setSelectedDate(date)
+            selectedDateCopy.setDate(selectedDateCopy.getDate() - 1)
+            setSelectedDate(selectedDateCopy)
         } else if (move === "next") {
-            date.setDate(selectedDate.getDate() + 1)
-            setSelectedDate(date)
+            selectedDateCopy.setDate(selectedDateCopy.getDate() + 1)
+            setSelectedDate(selectedDateCopy)
         }
+
     }
 
     return (
