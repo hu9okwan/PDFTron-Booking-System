@@ -10,8 +10,6 @@ const dbRef = ref(getDatabase());
 // ============================ CREATE =======================================
 
 export const createTeam = async(newTeamInfo) => {
-    // const id = await findNextAvailableTeamId();
-    let id = newTeamInfo.id
     await set(ref(db, 'teams/' + id), {
         name: newTeamInfo.name,
         id: newTeamInfo.id,
