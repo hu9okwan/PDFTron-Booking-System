@@ -1,11 +1,8 @@
 import React, { useState, useEffect, forwardRef } from "react";
 import styles from '../styles/Table.module.css'
 import { NavbarBS } from "../components/NavbarBS";
+import AuthZ from "../components/authz";
 import {
-    getUserTableBookings,
-    getUserRoomBookings,
-    deleteTableBooking,
-    deleteRoomBooking,
     getAllTeams,
     createTeam,
     deleteTeam,
@@ -56,7 +53,7 @@ const tableIcons = {
 
 
 export default function App() {
-    const { data: session } = useSession();
+
     let teamColumns = [
         { title: 'Team ID', field: 'id'},
         { title: 'Team Name', field: 'name' },
@@ -125,6 +122,7 @@ export default function App() {
 
 
     return (
+        <AuthZ>
         <div className={styles.settings}>
             <h3>General Settings<hr></hr></h3>
             <div style={{ maxWidth: '100%' }}>
@@ -202,7 +200,7 @@ export default function App() {
                 />
             </div>
         </div>
-
+        </ AuthZ >
     )
 
 }

@@ -4,7 +4,7 @@ import { NavbarBS } from "../components/NavbarBS";
 import {  deleteTableBooking, deleteRoomBooking, getAllRoomBookings, getAllTableBookings, getAllUsers } from "../database/databaseCRUD";
 import MaterialTable from "material-table";
 import { Paper } from '@material-ui/core';
-
+import AuthZ from "../components/authz";
 
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -184,7 +184,7 @@ export default function App() {
     };
 
     return (
-        <>
+        <AuthZ>
             <div className={styles.tableContainer}>
                 <div className={styles.materialTable}>
                     <MaterialTable
@@ -261,7 +261,7 @@ export default function App() {
                     />
                 </div>
             </div>
-        </>
+        </AuthZ>
     );
 }
 App.auth = true;

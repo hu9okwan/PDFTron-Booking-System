@@ -4,6 +4,7 @@ import { NavbarBS } from '../components/NavbarBS';
 import styles from '../styles/Edit.module.css'
 import {saveToDatabase, getFloorPlan, getAllTeams} from "../database/databaseCRUD";
 import {N} from 'react-bootstrap/Button';
+import AuthZ from "../components/authz";
 
 
 export default function Edit() {
@@ -279,7 +280,7 @@ export default function Edit() {
 
 
     return (
-        <>
+        <AuthZ>
             <div className={styles.flexContainerButtons}>
                 <canvas id="canvas"></canvas>
                 <span id="toolTip" className={styles.toolTip}></span>
@@ -307,8 +308,7 @@ export default function Edit() {
                 </div>
 
             </div>
-
-        </>
+        </AuthZ>
 
     );
 }
