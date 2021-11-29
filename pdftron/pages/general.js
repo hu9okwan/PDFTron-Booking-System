@@ -181,12 +181,15 @@ export default function App() {
                         onRowUpdate: (newData) =>
                             new Promise(async (resolve) => {
                                 await updateTeamInfo(newData);
+                                console.log("New data")
                                 console.log(newData);
                                 initializeTeamData();
                                 resolve()
                             }),
-                        onRowAdd: () =>
+                        onRowAdd: (updateData) =>
                             new Promise(async (resolve) => {
+                                console.log(updateData)
+                                await createTeam(updateData);
                                 initializeTeamData()
                                 resolve()
                             })
