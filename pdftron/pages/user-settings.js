@@ -23,6 +23,7 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 
+
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
     Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -56,25 +57,25 @@ export default function App() {
     const [errorMessages, setErrorMessage] = useState([])
 
     useEffect(() => {
-        getSetTeams()
+        getSetTeams();
         initializeTableData()
-    }, [])
+    }, []);
 
 
 
     const getSetTeams = async () => {
         // creates a mapping for 'lookup' property in columns {0: "Web", 1: "Finance", ...}
         const allTeams = await getAllTeams()
-    
+
         let teamObj = {}
         for (let team of allTeams) {
             teamObj[team.id] = team.name
         }
         console.log(teamObj)
         setDataTeams(teamObj)
-        
+
     }
-    
+
 
     const initializeTableData = () => {
         getAllUsers()
@@ -111,7 +112,7 @@ export default function App() {
         let dataCopy = dataUsers.slice()
         dataCopy.splice(removeIndex, 1)
         setDataUsers(dataCopy)
-        
+
     }
 
     var columns = [
@@ -134,9 +135,9 @@ export default function App() {
                 data={dataUsers}
                 icons={tableIcons}
                 style={{backgroundImage: 'linear-gradient(rgba(0,0,0,0), rgba(235, 246, 253, 1))'}}
-                options={{ 
-                    // paging: false, 
-                    actionsColumnIndex: -1, 
+                options={{
+                    // paging: false,
+                    actionsColumnIndex: -1,
                     pageSize: 10,
                     headerStyle: {
                         backgroundColor: 'rgba(0,165,228,0.25)',
@@ -160,9 +161,9 @@ export default function App() {
                     //         resolve()
                     // }),
                 }}
-                localization={{ body: { 
+                localization={{ body: {
                     editRow: { deleteText: "Are you sure you want to delete this user? WARNING: All their existing bookings will be deleted." }
-                } 
+                }
             }}
 
             />

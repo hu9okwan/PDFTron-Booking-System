@@ -13,8 +13,8 @@ export const NavbarBS = () => {
             isAdmin: false,
         }
     )
-    
-    useEffect(() => {    
+
+    useEffect(() => {
         if (session) {
             setIsLoggedin(true)
             setUserInfo({
@@ -22,7 +22,7 @@ export const NavbarBS = () => {
                 isAdmin: session.user.isAdmin
             })
         }
-    }, [])
+    }, []);
 
     return (
 
@@ -37,9 +37,11 @@ export const NavbarBS = () => {
                 {isLoggedin && <Nav.Link href="/my-bookings">My Bookings</Nav.Link>}
 
                 {isLoggedin && userInfo.isAdmin && <NavDropdown href="/admindashboard" title="Admin Settings">
+                    <NavDropdown.Item href="/general">General Settings</NavDropdown.Item>
                     <NavDropdown.Item href="/user-settings">User Settings</NavDropdown.Item>
                     <NavDropdown.Item href="/all-bookings">See All Bookings</NavDropdown.Item>
                     <NavDropdown.Item href="/edit">Edit Map</NavDropdown.Item>
+
                     </NavDropdown>}
                 {isLoggedin && <NavDropdown title={userInfo.name} align="end" id="basic-nav-dropdown">
                     {/* <NavDropdown.Item href="#">Settings</NavDropdown.Item>

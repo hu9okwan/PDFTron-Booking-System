@@ -19,6 +19,24 @@
     margin:auto;
 }
 
+.settings {
+    display: flex;
+    flex-direction: column;
+    gap: 80px;
+    width: 85vw;
+    margin:auto;
+    flex: 1;
+    justify-content: center;
+}
+
+/*  Stuff for general settings page */
+.team {
+ display: flex;
+
+}
+
+
+
 @media only screen and (max-width: 1200px) {
     .tableContainer {
         flex-direction: column;
@@ -27,3 +45,6 @@
         width: 100%;
     }
 }
+
+
+

@@ -180,8 +180,8 @@ export default function App() {
         }
 
 
-        
-    }
+
+    };
 
     return (
         <>
@@ -196,10 +196,10 @@ export default function App() {
                         data={dataTable}
                         icons={tableIcons}
                         style={{backgroundImage: 'linear-gradient(rgba(0,0,0,0), rgba(235, 246, 253, 1))'}}
-                        options={{ 
-                            // paging: false, 
+                        options={{
+                            // paging: false,
                             // filtering: true,
-                            actionsColumnIndex: -1, 
+                            actionsColumnIndex: -1,
                             pageSize: 10,
                             headerStyle: {
                                 backgroundColor: 'rgba(0,165,228,0.25)',
@@ -215,10 +215,10 @@ export default function App() {
                                     resolve()
                                 }),
                         }}
-                        localization={{ body: { 
+                        localization={{ body: {
                             editRow: { deleteText: 'Are you sure you want to delete this booking?' } ,
                             emptyDataSourceMessage: "You currently have no table bookings"
-                        } 
+                        }
                     }}
 
                     />
@@ -233,10 +233,10 @@ export default function App() {
                         data={dataRoom}
                         icons={tableIcons}
                         style={{backgroundImage: 'linear-gradient(rgba(0,0,0,0), rgba(235, 246, 253, 1))'}}
-                        options={{ 
-                            // paging: false, 
+                        options={{
+                            // paging: false,
                             // filtering: true,
-                            actionsColumnIndex: -1, 
+                            actionsColumnIndex: -1,
                             pageSize: 10,
                             headerStyle: {
                                 backgroundColor: 'rgba(0,165,228,0.25)',
@@ -252,10 +252,10 @@ export default function App() {
                                     resolve()
                                 }),
                         }}
-                        localization={{ body: { 
+                        localization={{ body: {
                                             editRow: { deleteText: 'Are you sure you want to delete this booking?' } ,
                                             emptyDataSourceMessage: "You currently have no room bookings"
-                                        } 
+                                        }
                                     }}
 
                     />
@@ -265,4 +265,4 @@ export default function App() {
     );
 }
 App.auth = true;
-  
+
