@@ -1,7 +1,7 @@
 import React, { useState, useEffect, forwardRef } from "react";
 import styles from '../styles/Table.module.css'
 import { NavbarBS } from "../components/NavbarBS";
-import {
+git pimport {
     getUserTableBookings,
     getUserRoomBookings,
     deleteTableBooking,
