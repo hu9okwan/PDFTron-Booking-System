@@ -191,6 +191,8 @@ The current method of logging in is using Google OAuth, that is, a 3rd party met
 - Ability to have multiple booking floors
 - Mobile Responsiveness
 - Have admins being able to configure Company Logo
+- Be able to update floor plan from admin view
+- Be able to reserve tables from x date to y date
 - Email notifications when room booked/deleted
 
 <p align="right">(<a href="#top">back to top</a>)</p>
