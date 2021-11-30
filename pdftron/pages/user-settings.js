@@ -5,7 +5,7 @@ import { getAllUsers, getAllTeams, updateUserInfo } from "../database/databaseCR
 import { useSession } from 'next-auth/react';
 import MaterialTable from "material-table";
 import { Paper } from '@material-ui/core';
-
+import AuthZ from "../components/authz";
 
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -124,7 +124,7 @@ export default function App() {
     ]
 
     return (
-        <>
+        <AuthZ>
             <div className={styles.tableContainer, styles.userTableContainer}>
             <MaterialTable
                 components={{
@@ -169,7 +169,7 @@ export default function App() {
             />
 
             </div>
-        </>
+        </AuthZ>
     );
 }
 App.auth = true;

@@ -9,12 +9,11 @@ const dbRef = ref(getDatabase());
 
 // ============================ CREATE =======================================
 
-export const createTeam = async(teamName, teamColor) => {
-    const id = await findNextAvailableTeamId();
+export const createTeam = async(newTeamInfo) => {
     await set(ref(db, 'teams/' + id), {
-        name: teamName,
-        id: id,
-        colour: teamColor
+        name: newTeamInfo.name,
+        id: newTeamInfo.id,
+        colour: newTeamInfo.colour
     });
 };
 
