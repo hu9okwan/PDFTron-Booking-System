@@ -1,6 +1,4 @@
-import firebase from "firebase/compat/app";
-import {getDatabase, ref, child, set, onValue, get, update, remove } from 'firebase/database'
-import { snapshotViewportBox } from "framer-motion";
+import {getDatabase, ref, child, set, get, update, remove } from 'firebase/database'
 import initFirebase from "./initFirebase"
 
 initFirebase();
@@ -116,10 +114,10 @@ export const saveToDatabase = async (tableData) => {
 };
 
 export const addUserToDatabase = async (session) => {
-    let name = session.user.name
-    let userEmail = session.user.email
-    let data = await findNextAvailableUserId();
-    await set(ref(db, 'users/' + data[1]), {
+  let name = session.user.name
+  let userEmail = session.user.email
+  let data = await findNextAvailableUserId();
+  await set(ref(db, 'users/' + data[1]), {
     name: name,
     email: userEmail,
     teamId: 1,
