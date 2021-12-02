@@ -1,5 +1,5 @@
 import styles from '../styles/Home.module.css'
-import Login from '../components/Login'
+import Login from '../components/login'
 import { NavbarBS } from '../components/NavbarBS';
 import 'bootstrap/dist/css/bootstrap.css'
 

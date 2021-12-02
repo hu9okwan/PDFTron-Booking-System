@@ -7,7 +7,7 @@ module.exports = {
       ref  : 'origin/deploy',
       repo : 'git@github.com-office-booking-system:ericchanko/PDFTron-Internal-Booking.git',
       path : '/home/ec2-user/officeBookingSystem',
-      'post-deploy' : 'node -v && npm -v && npm install --no-optional && cp /home/ec2-user/.env.local.office-booking-system /home/ec2-user/officeBookingSystem/current/.env && npm run build && pm2 reload officeBookingSystem'
+      'post-deploy' : 'npm install --no-optional && cp /home/ec2-user/.env.local.office-booking-system /home/ec2-user/officeBookingSystem/current/.env && npm run build && pm2 reload officeBookingSystem'
     }
   }
 };
