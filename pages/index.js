@@ -14,7 +14,7 @@ export default function Home() {
                     <section className={styles.section}>
                         <h1>Booking Portal</h1>
                         <h2>Book your workspace today!</h2>
-                        <p>Welcome to PDFTron's Internal Table/Room Booking system!
+                        <p>Welcome to PDFTron&apos;s Internal Table/Room Booking system!
                             Begin by logging in with your valid @PDFTron email address.
                             Contact your system administrator for assistance if required</p>
                         {/* <section className={styles.section}> */}
