@@ -18,7 +18,7 @@ export default function Edit() {
             height: 800,
             width: 1000,
             snapAngle: 90,
-            backgroundImage: '../office-outline.png'
+            backgroundImage: '/office-outline.png'
         })
     );
 
@@ -32,7 +32,7 @@ export default function Edit() {
                 preventObjOut(canvas);
                 limitRotation(canvas);
                 hotkeys(canvas);
-                hoverTable(canvas, teamObj); 
+                hoverTable(canvas, teamObj);
             })
         }
     }, [canvas]);
@@ -263,7 +263,7 @@ export default function Edit() {
     const getSetTeams = async () => {
         // creates a mapping {0: "Web", 1: "Finance", ...}
         const allTeams = await getAllTeams()
-    
+
         let teamObj = {}
         let teamColours = {}
         for (let team of allTeams) {
@@ -275,7 +275,7 @@ export default function Edit() {
         setDataTeamsColours(teamColours)
 
         return teamObj
-        
+
     }
 
 
