@@ -3,5 +3,5 @@ import {signIn} from "next-auth/react";
 import React from "react";
 
 export default function Login () {
-  return <GoogleButton onClick={() => signIn("google", { callbackUrl: 'http://localhost:3000/book' })}>Sign in with Google</GoogleButton>
+  return <GoogleButton onClick={() => signIn("google", { callbackUrl: 'http://obs.pdftron.com/book' })}>Sign in with Google</GoogleButton>
 }
