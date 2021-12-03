@@ -18,7 +18,7 @@ export default function Edit() {
             height: 800,
             width: 1000,
             snapAngle: 90,
-            backgroundImage: 'https://obs.pdftron.com/office-outline.png'
+            backgroundImage: '/office-outline.png'
         })
     );
 
