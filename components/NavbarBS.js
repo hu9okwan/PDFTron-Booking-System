@@ -46,7 +46,7 @@ export const NavbarBS = () => {
                 {isLoggedin && <NavDropdown title={userInfo.name} align="end" id="basic-nav-dropdown">
                     {/* <NavDropdown.Item href="#">Settings</NavDropdown.Item>
                     <NavDropdown.Divider /> */}
-                    <NavDropdown.Item onClick={() => signOut({ callbackUrl: 'http://obs.pdftron.com/' })}>Logout</NavDropdown.Item>
+                    <NavDropdown.Item onClick={() => signOut({ callbackUrl: 'https://obs.pdftron.com/' })}>Logout</NavDropdown.Item>
                 </NavDropdown>}
             </Nav>
         </Navbar.Collapse> }
