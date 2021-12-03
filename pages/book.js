@@ -57,7 +57,7 @@ import TableDatePicker from "../components/datepicker";
         new fabric.Canvas('canvas', {
             height: 800,
             width: 1000,
-            backgroundImage: '/office-outline.png'
+            backgroundImage: 'https://obs.pdftron.com/office-outline.png'
         })
     );
 
