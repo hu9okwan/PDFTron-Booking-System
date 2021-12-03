@@ -24,11 +24,11 @@ import TableDatePicker from "../components/datepicker";
     // // get userId this way if getting it from session doesnt work from _app.js
     // const [userId, setUserId] = useState()
 
-    // useEffect(() => {    
+    // useEffect(() => {
     //     let active = true;
     //     load()
     //     return () => { active = false }
-    
+
     //     async function load() {
     //         if (session) {
     //             const res = await Promise.resolve(getUserId(session.user.email));
@@ -57,7 +57,7 @@ import TableDatePicker from "../components/datepicker";
         new fabric.Canvas('canvas', {
             height: 800,
             width: 1000,
-            backgroundImage: '../office-outline.png'
+            backgroundImage: '../public/office-outline.png'
         })
     );
 
@@ -72,11 +72,11 @@ import TableDatePicker from "../components/datepicker";
     )
 
     const [bookedTables, setBookedTables] = useState()
-    // useEffect(() => {    
+    // useEffect(() => {
     //     let active = true;
     //     load()
     //     return () => { active = false }
-    
+
     //     async function load() {
     //         const res = await Promise.resolve(getAllTableBookings());
     //         if (!active) { return }
@@ -91,7 +91,7 @@ import TableDatePicker from "../components/datepicker";
 
     const [dataTeams, setDataTeams] = useState({});
     const [dataTeamsColours, setDataTeamsColours] = useState({});
-    
+
 
     useEffect(() => {
         if (canvas) {
@@ -122,7 +122,7 @@ import TableDatePicker from "../components/datepicker";
     const getSetTeams = async () => {
         // creates a mapping {0: "Web", 1: "Finance", ...}
         const allTeams = await getAllTeams()
-    
+
         let teamObj = {}
         let teamColours = {}
         for (let team of allTeams) {
@@ -134,16 +134,16 @@ import TableDatePicker from "../components/datepicker";
         setDataTeamsColours(teamColours)
 
         return teamObj
-        
+
     }
 
     // const [userData, setUserData] = useState()
 
-    // useEffect(() => {    
+    // useEffect(() => {
     //     let active = true;
     //     load()
     //     return () => { active = false }
-    
+
     //     async function load() {
     //         if (session) {
     //             const allUsers = await Promise.resolve(getAllUsers());
@@ -255,16 +255,16 @@ import TableDatePicker from "../components/datepicker";
         let selectedDateCopy = new Date(selectedDate)
         selectedDateCopy.setHours(0,0,0,0)
 
-        if (bookedTables !== undefined) { 
+        if (bookedTables !== undefined) {
             let bookedTableInfo = filterBookingDate(selectedDateCopy)
             console.log(bookedTableInfo)
             let tables = canvas._objects
 
             if (tables !== undefined) {
                 for (let table of tables) {
-        
+
                     let fillColour;
-                    let userId 
+                    let userId
                     bookedTableInfo.some(e => {
                         if (e.tableId === table["tableID"]) {
                             userId = e.userId
@@ -371,7 +371,7 @@ import TableDatePicker from "../components/datepicker";
                 if (bookings[booking] !== undefined) {
 
                     let bookingStartDate = new Date(bookings[booking]["startDate"])
-                    bookingStartDate.setHours(0,0,0,0)                    
+                    bookingStartDate.setHours(0,0,0,0)
                     let bookingEndDate = new Date(bookings[booking]["endDate"])
                     bookingEndDate.setHours(0,0,0,0)
 
@@ -393,22 +393,22 @@ import TableDatePicker from "../components/datepicker";
     const dateRange = (startDate, endDate, steps = 1) => {
         const dateArray = [];
         let currentDate = new Date(startDate);
-      
+
         while (currentDate <= new Date(endDate)) {
             let dateEpoch = new Date(currentDate).getTime()
             dateArray.push(dateEpoch);
             // Use UTC date to prevent problems with time zones and DST
             currentDate.setUTCDate(currentDate.getUTCDate() + steps);
         }
-      
+
         return dateArray;
     }
-    
+
 
     const changeDate = (move) => {
         const today = new Date()
         today.setHours(0,0,0,0)
-        
+
         let selectedDateCopy = new Date(selectedDate)
         selectedDateCopy.setHours(0,0,0,0)
 
