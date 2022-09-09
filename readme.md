@@ -196,7 +196,7 @@ The current method of logging in is using Google OAuth, that is, a 3rd party met
 - Email notifications when room booked/deleted
 - Bug Fixes
     1. infinite loading when room hours arent submittted
-    2. making sure users cant access admin views
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
